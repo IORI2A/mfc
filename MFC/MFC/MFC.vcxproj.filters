@@ -15,6 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="appmodul.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
