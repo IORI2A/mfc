@@ -15,46 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MFC.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MFCDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="MFC.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MFCDlg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="MFC.rc">
-      <Filter>资源文件</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\MFC.rc2">
-      <Filter>资源文件</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\MFC.ico">
-      <Filter>资源文件</Filter>
-    </Image>
   </ItemGroup>
 </Project>
