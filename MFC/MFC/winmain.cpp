@@ -11,6 +11,11 @@
 #include "stdafx.h"
 #include "sal.h"
 
+class CDerived : public CObject
+{
+public:
+	int m_nCode;
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // Standard WinMain implementation
@@ -19,9 +24,11 @@
 int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	_In_ LPTSTR lpCmdLine, int nCmdShow)
 {
+	CDerived obj;
+
 	//ASSERT(hPrevInstance == NULL);
 
-	int nReturnCode = -1;
+	int nReturnCode = obj.m_nCode; // -1;
 	//CWinThread* pThread = AfxGetThread();
 //	CWinApp* pApp = AfxGetApp();
 //
