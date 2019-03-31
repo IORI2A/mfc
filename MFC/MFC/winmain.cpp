@@ -11,7 +11,10 @@
 #include "stdafx.h"
 #include "sal.h"
 
+#include "MyObject.h"
+
 class CDerived : public CObject
+//class CDerived : public CMyObject
 {
 public:
 	int m_nCode;
@@ -29,7 +32,7 @@ int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	//ASSERT(hPrevInstance == NULL);
 
 	int nReturnCode = obj.m_nCode; // -1;
-	//CWinThread* pThread = AfxGetThread();
+	CWinThread* pThread = AfxGetThread();
 //	CWinApp* pApp = AfxGetApp();
 //
 //	// AFX internal initialization
