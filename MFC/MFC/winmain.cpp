@@ -12,6 +12,15 @@
 #include "sal.h"
 
 
+
+class CDerived : public CMyObject
+{
+public:
+	int m_nCode;
+};
+
+
+
 /////////////////////////////////////////////////////////////////////////////
 // Standard WinMain implementation
 //  Can be replaced as long as 'AfxWinInit' is called first
@@ -19,6 +28,10 @@
 int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	_In_ LPTSTR lpCmdLine, int nCmdShow)
 {
+	//CDerived obj;
+
+	CFile fl;
+
 	ASSERT(hPrevInstance == NULL);
 
 	int nReturnCode = -1;
