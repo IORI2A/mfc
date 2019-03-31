@@ -153,20 +153,13 @@
   <ItemGroup>
     <ClCompile Include="afxcrit.cpp" />
     <ClCompile Include="appmodul.cpp" />
-    <ClCompile Include="MyObject.cpp" />
-    <ClCompile Include="MyObject2.cpp" />
     <ClCompile Include="objcore.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afximpl.h" />
-    <ClInclude Include="MyObject.h" />
-    <ClInclude Include="MyObject2.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="MyObject2.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

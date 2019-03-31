@@ -225,11 +225,3 @@ void AFXAPI AfxDoForAllClasses(void (AFX_CDECL *pfn)(const CRuntimeClass*, void*
 #endif //_DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
-
-//
-//CObject::CObject()
-//{
-//	int i, j;
-//	int m = i + j;
-//	::OutputDebugString(_T("COjbect"));
-//};
