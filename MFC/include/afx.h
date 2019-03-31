@@ -562,12 +562,13 @@ public:
 	//   compiler errors instead of unexpected behavior if you pass objects
 	//   by value or assign objects.
 protected:
-	CObject()
-	{
-		int i, j;
-		int m = i + j;
-		::OutputDebugString(_T("COjbect"));
-	};
+	CObject();
+	//CObject()
+	//{
+	//	int i, j;
+	//	int m = i + j;
+	//	::OutputDebugString(_T("COjbect"));
+	//};
 private:
 	CObject(const CObject& objectSrc);              // no implementation
 	void operator=(const CObject& objectSrc);       // no implementation

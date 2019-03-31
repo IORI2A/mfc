@@ -24,6 +24,15 @@
     <ClCompile Include="MyObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="objcore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="afxcrit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyObject2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -35,5 +44,16 @@
     <ClInclude Include="MyObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="afximpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyObject2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MyObject2.inl">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

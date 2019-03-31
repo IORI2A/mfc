@@ -47,9 +47,16 @@ public:
 
 	// Implementation
 public:
-	static const CRuntimeClass classCObject;
+	static const CRuntimeClass classCMyObject;
 #ifdef _AFXDLL
 	static CRuntimeClass* PASCAL _GetBaseClass();
 	static CRuntimeClass* PASCAL GetThisClass();
 #endif
+};
+
+class CMyDerived : public CMyObject
+{
+public:
+	CMyDerived();
+	~CMyDerived();
 };

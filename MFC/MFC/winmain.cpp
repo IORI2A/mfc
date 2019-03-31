@@ -12,9 +12,12 @@
 #include "sal.h"
 
 #include "MyObject.h"
+#include "MyObject2.h"
 
-class CDerived : public CObject
+//class CDerived : public CObject
+//class CDerived : public CMyDerived
 //class CDerived : public CMyObject
+class CDerived : public CMyObject2
 {
 public:
 	int m_nCode;
