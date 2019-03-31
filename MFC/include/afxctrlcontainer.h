@@ -18,7 +18,7 @@ void AfxRegisterMFCCtrlClasses();
 /*============================================================================*/
 // CMFCControlContainer
 
-class CMFCControlContainer : public CObject
+class CMFCControlContainer : public CMyObject
 {
 public:
 // Constructor

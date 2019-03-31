@@ -21,7 +21,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CSmartDockingManager : public CObject
+class CSmartDockingManager : public CMyObject
 {
 public:
 	CSmartDockingManager();

@@ -23,7 +23,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CSettingsStore : public CObject
+class CSettingsStore : public CMyObject
 {
 	friend class CSettingsStoreSP;
 	DECLARE_DYNCREATE(CSettingsStore)
@@ -50,16 +50,16 @@ public:
 	virtual BOOL Write(LPCTSTR lpszValueName, LPCTSTR lpszVal);
 	virtual BOOL Write(LPCTSTR lpszValueName, const CRect& rect);
 	virtual BOOL Write(LPCTSTR lpszValueName, LPBYTE pData, UINT nBytes);
-	virtual BOOL Write(LPCTSTR lpszValueName, CObject& obj);
-	virtual BOOL Write(LPCTSTR lpszValueName, CObject* pObj);
+	virtual BOOL Write(LPCTSTR lpszValueName, CMyObject& obj);
+	virtual BOOL Write(LPCTSTR lpszValueName, CMyObject* pObj);
 
 	virtual BOOL Read(LPCTSTR lpszValueName, int& nValue);
 	virtual BOOL Read(LPCTSTR lpszValueName, DWORD& dwValue);
 	virtual BOOL Read(LPCTSTR lpszValueName, CString& strValue);
 	virtual BOOL Read(LPCTSTR lpszValueName, CRect& rect);
 	virtual BOOL Read(LPCTSTR lpszValueName, BYTE** ppData, UINT* pcbData);
-	virtual BOOL Read(LPCTSTR lpszValueName, CObject& obj);
-	virtual BOOL Read(LPCTSTR lpszValueName, CObject*& pObj);
+	virtual BOOL Read(LPCTSTR lpszValueName, CMyObject& obj);
+	virtual BOOL Read(LPCTSTR lpszValueName, CMyObject*& pObj);
 
 protected:
 	ATL::CRegKey m_reg;

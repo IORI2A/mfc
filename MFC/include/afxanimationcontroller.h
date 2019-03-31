@@ -30,7 +30,7 @@ class CAnimationVariable;
 /// <remarks>
 /// This class encapsulates IUIAnimationTransition interface and serves as a base class for all transitions.
 /// </remarks>
-class CBaseTransition : public CObject
+class CBaseTransition : public CMyObject
 {
 	DECLARE_DYNAMIC(CBaseTransition);
 public:
@@ -291,7 +291,7 @@ protected:
 /// Because keyframes may depend on transitions, which in their turn depend on keyframes, it's important to prevent
 /// infinite recursions when building keyframe chains.
 /// </remarks>
-class CBaseKeyFrame : public CObject
+class CBaseKeyFrame : public CMyObject
 {
 	DECLARE_DYNAMIC(CBaseKeyFrame);
 	friend class CAnimationGroup;
@@ -742,7 +742,7 @@ public:
 /// to place an animation object to correct group, but if a Group ID is not specified, an object is placed in the default group with ID 0.
 /// If you call SetID with different GroupID, an animation object will be moved to another group (a new group is created if necessary).
 /// </remarks>
-class CAnimationBaseObject : public CObject
+class CAnimationBaseObject : public CMyObject
 {
 	DECLARE_DYNAMIC(CAnimationBaseObject)
 	friend class CAnimationController;
@@ -2099,7 +2099,7 @@ public:
 /// from CAnimationController and override OnAnimationManagerStatusChanged and/or OnAnimationTimerPostUpdate and invalidate one or
 /// more windows when necessary.
 /// </remarks>
-class CAnimationController : public CObject
+class CAnimationController : public CMyObject
 {
 	DECLARE_DYNCREATE(CAnimationController)
 protected:

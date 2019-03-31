@@ -30,7 +30,7 @@
 /*============================================================================*/
 // CMFCPropertyGridProperty object
 
-class CMFCPropertyGridProperty : public CObject
+class CMFCPropertyGridProperty : public CMyObject
 {
 	DECLARE_DYNAMIC(CMFCPropertyGridProperty)
 

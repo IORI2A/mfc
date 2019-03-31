@@ -15,31 +15,31 @@
 /////////////////////////////////////////////////////////////////////////////
 // Runtime Typing
 
-// special runtime-class structure for CObject (no base class)
-const struct CRuntimeClass CObject::classCObject =
-	{ "CObject", sizeof(CObject), 0xffff, NULL, NULL, NULL };
+// special runtime-class structure for CMyObject (no base class)
+const struct CRuntimeClass CMyObject::classCMyObject =
+	{ "CMyObject", sizeof(CMyObject), 0xffff, NULL, NULL, NULL };
 
-CRuntimeClass* CObject::GetRuntimeClass() const
+CRuntimeClass* CMyObject::GetRuntimeClass() const
 {
-	return _RUNTIME_CLASS(CObject);
+	return _RUNTIME_CLASS(CMyObject);
 }
 
 #ifdef _AFXDLL
-CRuntimeClass* PASCAL CObject::_GetBaseClass()
+CRuntimeClass* PASCAL CMyObject::_GetBaseClass()
 {
 	return NULL;
 }
-CRuntimeClass* PASCAL CObject::GetThisClass()
+CRuntimeClass* PASCAL CMyObject::GetThisClass()
 {
-	return _RUNTIME_CLASS(CObject);
+	return _RUNTIME_CLASS(CMyObject);
 }
 #endif
 
-BOOL CObject::IsKindOf(const CRuntimeClass* pClass) const
+BOOL CMyObject::IsKindOf(const CRuntimeClass* pClass) const
 {
 	ENSURE(this != NULL);
-	// it better be in valid memory, at least for CObject size
-	ASSERT(AfxIsValidAddress(this, sizeof(CObject)));
+	// it better be in valid memory, at least for CMyObject size
+	ASSERT(AfxIsValidAddress(this, sizeof(CMyObject)));
 
 	// simple SI case
 	CRuntimeClass* pClassThis = GetRuntimeClass();
@@ -48,7 +48,7 @@ BOOL CObject::IsKindOf(const CRuntimeClass* pClass) const
 	return pClassThis->IsDerivedFrom(pClass);
 }
 
-CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, CObject* pObject)
+CMyObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, CMyObject* pObject)
 {
 	if (pObject != NULL && pObject->IsKindOf(pClass))
 		return pObject;
@@ -57,7 +57,7 @@ CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, CObject* pObject)
 }
 
 #ifdef _DEBUG
-CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, CObject* pObject)
+CMyObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, CMyObject* pObject)
 {
 	ASSERT(pObject == NULL || pObject->IsKindOf(pClass));
 	return pObject;
@@ -68,7 +68,7 @@ CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, CObject* pObject)
 // Diagnostic Support
 
 #ifdef _DEBUG
-void AFXAPI AfxAssertValidObject(const CObject* pOb,
+void AFXAPI AfxAssertValidObject(const CMyObject* pOb,
 	LPCSTR lpszFileName, int nLine)
 {
 	if (pOb == NULL)
@@ -78,7 +78,7 @@ void AFXAPI AfxAssertValidObject(const CObject* pOb,
 			AfxDebugBreak();
 		return;     // quick escape
 	}
-	if (!AfxIsValidAddress(pOb, sizeof(CObject)))
+	if (!AfxIsValidAddress(pOb, sizeof(CMyObject)))
 	{
 		TRACE(traceAppMsg, 0, "ASSERT_VALID fails with illegal pointer.\n");
 		if (AfxAssertFailedLine(lpszFileName, nLine))
@@ -87,7 +87,7 @@ void AFXAPI AfxAssertValidObject(const CObject* pOb,
 	}
 
 	// check to make sure the VTable pointer is valid
-	ASSERT(sizeof(CObject) == sizeof(void*));
+	ASSERT(sizeof(CMyObject) == sizeof(void*));
 	if (!AfxIsValidAddress(*(void**)pOb, sizeof(void*), FALSE))
 	{
 		TRACE(traceAppMsg, 0, "ASSERT_VALID fails with illegal vtable pointer.\n");
@@ -106,12 +106,12 @@ void AFXAPI AfxAssertValidObject(const CObject* pOb,
 	pOb->AssertValid();
 }
 
-void CObject::AssertValid() const
+void CMyObject::AssertValid() const
 {
 	ASSERT(this != NULL);
 }
 
-void CObject::Dump(CDumpContext& dc) const
+void CMyObject::Dump(CDumpContext& dc) const
 {
 	dc << "a " << GetRuntimeClass()->m_lpszClassName <<
 		" at " << (void*)this << "\n";
@@ -123,7 +123,7 @@ void CObject::Dump(CDumpContext& dc) const
 ////////////////////////////////////////////////////////////////////////////
 // Allocation/Creation
 
-CObject* CRuntimeClass::CreateObject()
+CMyObject* CRuntimeClass::CreateObject()
 {
 	ENSURE(this);
 
@@ -136,7 +136,7 @@ CObject* CRuntimeClass::CreateObject()
 		return NULL;
 	}
 
-	CObject* pObject = NULL;
+	CMyObject* pObject = NULL;
 	TRY
 	{
 		pObject = (*m_pfnCreateObject)();
@@ -149,7 +149,7 @@ CObject* CRuntimeClass::CreateObject()
 ////////////////////////////////////////////////////////////////////////////
 // Class loader & class serialization
 
-BOOL CObject::IsSerializable() const
+BOOL CMyObject::IsSerializable() const
 {
 	return (GetRuntimeClass()->m_wSchema != 0xffff);
 }

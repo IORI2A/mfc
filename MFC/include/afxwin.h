@@ -142,7 +142,7 @@ using ATL::CAtlTransactionManager;
 /*============================================================================*/
 // Classes declared in this file
 
-//CObject
+//CMyObject
 	//CException
 		//CSimpleException
 			class CResourceException;// Win resource failure exception
@@ -309,7 +309,7 @@ void AFXAPI AfxDrawDitheredBitmap(CDC *pDC, int x, int y, const CBitmap &rSrc, C
 /*============================================================================*/
 // CGdiObject abstract class for CDC SelectObject
 
-class CGdiObject : public CObject
+class CGdiObject : public CMyObject
 {
 	DECLARE_DYNCREATE(CGdiObject)
 public:
@@ -557,7 +557,7 @@ public:
 /*============================================================================*/
 // The device context
 
-class CDC : public CObject
+class CDC : public CMyObject
 {
 	DECLARE_DYNCREATE(CDC)
 public:
@@ -1055,7 +1055,7 @@ public:
 /*============================================================================*/
 // CImageList
 
-class CImageList : public CObject
+class CImageList : public CMyObject
 {
 	DECLARE_DYNCREATE(CImageList)
 
@@ -1132,7 +1132,7 @@ public:
 /*============================================================================*/
 // CMenu
 
-class CMenu : public CObject
+class CMenu : public CMyObject
 {
 	DECLARE_DYNCREATE(CMenu)
 public:
@@ -1710,7 +1710,7 @@ typedef struct _ARM64_PARAMS ARM64_PARAMS, *PARM64_PARAMS;
 
 class COccManager;      // forward reference (see ..\src\occimpl.h)
 
-class AFX_NOVTABLE CCmdTarget : public CObject
+class AFX_NOVTABLE CCmdTarget : public CMyObject
 {
 	DECLARE_DYNAMIC(CCmdTarget)
 protected:
@@ -1989,7 +1989,7 @@ enum DSCREASON
 
 /// <summary>
 /// CGestureConfig class allows to customize Windows gesture features such as zoom, pan or rotate. This class is used in CWnd::SetGestureConfig and CWnd::GetGestureConfig methods.</summary>
-class CGestureConfig : public CObject
+class CGestureConfig : public CMyObject
 {
 	friend class CWnd;
 
@@ -4594,7 +4594,7 @@ public:
 
 // Overridables
 public:
-	virtual BOOL IsSelected(const CObject* pDocItem) const; // support for OLE
+	virtual BOOL IsSelected(const CMyObject* pDocItem) const; // support for OLE
 
 	// OLE scrolling support (used for drag/drop as well)
 	virtual BOOL OnScroll(UINT nScrollCode, UINT nPos, BOOL bDoScroll = TRUE);
@@ -4623,7 +4623,7 @@ protected:
 	virtual void OnActivateFrame(UINT nState, CFrameWnd* pFrameWnd);
 
 	// General drawing/updating
-	virtual void OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint);
+	virtual void OnUpdate(CView* pSender, LPARAM lHint, CMyObject* pHint);
 	virtual void OnDraw(CDC* pDC) = 0;
 
 	// Printing support
@@ -4997,7 +4997,7 @@ COleMessageFilter* AFXAPI AfxOleGetMessageFilter();
 /*============================================================================*/
 // CCommandLineInfo
 
-class CCommandLineInfo : public CObject
+class CCommandLineInfo : public CMyObject
 {
 public:
 	// Sets default values
@@ -5041,7 +5041,7 @@ protected:
 /*============================================================================*/
 // CDocManager
 
-class CDocManager : public CObject
+class CDocManager : public CMyObject
 {
 	DECLARE_DYNAMIC(CDocManager)
 public:
@@ -5643,7 +5643,7 @@ public:
 	virtual ~CDocTemplate() = 0;
 
 	// back pointer to OLE or other server (NULL if none or disabled)
-	CObject* m_pAttachedFactory;
+	CMyObject* m_pAttachedFactory;
 
 	// Class ID for preview handler - used for registration
 	CString m_strCLSID;
@@ -6002,7 +6002,7 @@ public:
 
 	// Update Views (simple update - DAG only)
 	void UpdateAllViews(CView* pSender, LPARAM lHint = 0L,
-		CObject* pHint = NULL);
+		CMyObject* pHint = NULL);
 
 // Overridables
 	// Special notifications

@@ -277,8 +277,8 @@ public:
 	virtual BOOL LoadMDIState(LPCTSTR lpszProfileName);
 	virtual BOOL SaveMDIState(LPCTSTR lpszProfileName);
 
-	virtual CMDIChildWndEx* CreateDocumentWindow(LPCTSTR lpcszDocName, CObject* pObj);
-	virtual CMDIChildWndEx* CreateNewWindow(LPCTSTR lpcszDocName, CObject* pObj);
+	virtual CMDIChildWndEx* CreateDocumentWindow(LPCTSTR lpcszDocName, CMyObject* pObj);
+	virtual CMDIChildWndEx* CreateNewWindow(LPCTSTR lpcszDocName, CMyObject* pObj);
 
 // Implementation
 protected:

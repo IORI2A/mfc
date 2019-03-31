@@ -26,7 +26,7 @@ struct AFX_DYNAMIC_LAYOUT_ITEM;
 /// <summary>
 /// Dynamic layout performs automatic reposition of controls hosted in a window.
 /// </summary>
-class CMFCDynamicLayout : public CObject
+class CMFCDynamicLayout : public CMyObject
 {
 	DECLARE_DYNAMIC(CMFCDynamicLayout)
 

@@ -31,7 +31,7 @@ class CMFCToolBarMenuButton;
 
 #define AFX_DUMMY_AMPERSAND_SEQUENCE  _T("\001\001")
 
-class CMFCToolBarButton : public CObject
+class CMFCToolBarButton : public CMyObject
 {
 	friend class CMFCToolBarButtonsListButton;
 	DECLARE_SERIAL(CMFCToolBarButton)

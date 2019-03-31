@@ -397,7 +397,7 @@ protected:
 
 	// implementation helpers
 	virtual void LoadFromStorage();
-	virtual void SaveToStorage(CObject* pObject = NULL);
+	virtual void SaveToStorage(CMyObject* pObject = NULL);
 	CDocItem* GetNextItemOfKind(POSITION& pos, CRuntimeClass* pClass) const;
 
 	// overridables. Currently called by search/organize/preview/live-icon handlers to load data from stream
@@ -895,7 +895,7 @@ public:
 
 	// overridables you may want to implement yourself
 	virtual void OnUpdate(COleServerItem* pSender,
-		LPARAM lHint, CObject* pHint, DVASPECT nDrawAspect);
+		LPARAM lHint, CMyObject* pHint, DVASPECT nDrawAspect);
 		// the default implementation always calls NotifyChanged
 
 	virtual BOOL OnDrawEx(CDC* pDC, DVASPECT nDrawAspect, CSize& rSize);
@@ -1108,7 +1108,7 @@ protected:
 	void UpdateVisibleLock(BOOL bVisible, BOOL bRemoveRefs);
 	virtual void OnShowViews(BOOL bVisible);
 
-	virtual void SaveToStorage(CObject* pObject = NULL);
+	virtual void SaveToStorage(CMyObject* pObject = NULL);
 
 // Interface Maps
 public:
@@ -1171,7 +1171,7 @@ public:
 		// call this after you change some global attribute like
 		//  document dimensions
 	void UpdateAllItems(COleServerItem* pSender,
-		LPARAM lHint = 0L, CObject* pHint = NULL,
+		LPARAM lHint = 0L, CMyObject* pHint = NULL,
 		DVASPECT nDrawAspect = DVASPECT_CONTENT);
 
 	// changes to the entire document (automatically notifies clients)

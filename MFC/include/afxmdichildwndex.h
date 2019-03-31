@@ -304,7 +304,7 @@ public:
 
 	CDockingManager* GetDockingManager() { return &m_dockManager; }
 
-	virtual LPCTSTR GetDocumentName(CObject** pObj);
+	virtual LPCTSTR GetDocumentName(CMyObject** pObj);
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CMFCAcceleratorKey : public CObject
+class CMFCAcceleratorKey : public CMyObject
 {
 public:
 	CMFCAcceleratorKey();

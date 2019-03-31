@@ -24,7 +24,7 @@
 class CPane;
 class CPaneContainer;
 
-class CPaneContainerManager : public CObject
+class CPaneContainerManager : public CMyObject
 {
 	friend class CPaneContainer;
 	friend class CMultiPaneFrameWnd;

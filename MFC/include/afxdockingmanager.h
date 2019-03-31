@@ -89,7 +89,7 @@ struct AFX_AUTOHIDE_DOCKSITE_SAVE_INFO
 
 #define AFX_SD_MARKERS_NUM 5
 
-class CSmartDockingInfo : public CObject
+class CSmartDockingInfo : public CMyObject
 {
 public:
 	CSmartDockingInfo();
@@ -110,7 +110,7 @@ public:
 	BOOL		m_bIsAlphaMarkers;
 };
 
-class CDockingManager : public CObject
+class CDockingManager : public CMyObject
 {
 	friend class CMDIChildWndEx;
 	friend class COleCntrFrameWndEx;

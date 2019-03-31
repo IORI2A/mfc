@@ -101,22 +101,22 @@ public:
 	int GetInt(LPCTSTR lpszEntry, int nDefault = 0);
 	CString GetString(LPCTSTR lpszEntry, LPCTSTR lpzDefault = _T(""));
 	BOOL GetBinary(LPCTSTR lpszEntry, LPBYTE* ppData, UINT* pBytes);
-	BOOL GetObject(LPCTSTR lpszEntry, CObject& obj);
+	BOOL GetObject(LPCTSTR lpszEntry, CMyObject& obj);
 	BOOL WriteInt(LPCTSTR lpszEntry, int nValue );
 	BOOL WriteString(LPCTSTR lpszEntry, LPCTSTR lpszValue );
 	BOOL WriteBinary(LPCTSTR lpszEntry, LPBYTE pData, UINT nBytes);
-	BOOL WriteObject(LPCTSTR lpszEntry, CObject& obj);
+	BOOL WriteObject(LPCTSTR lpszEntry, CMyObject& obj);
 
 	// These functions load and store values from a given subkey
 	// of the "Custom" subkey. For simpler access you may use GetInt() etc.
 	int GetSectionInt( LPCTSTR lpszSubSection, LPCTSTR lpszEntry, int nDefault = 0);
 	CString GetSectionString( LPCTSTR lpszSubSection, LPCTSTR lpszEntry, LPCTSTR lpszDefault = _T(""));
 	BOOL GetSectionBinary(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, LPBYTE* ppData, UINT* pBytes);
-	BOOL GetSectionObject(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, CObject& obj);
+	BOOL GetSectionObject(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, CMyObject& obj);
 	BOOL WriteSectionInt( LPCTSTR lpszSubSection, LPCTSTR lpszEntry, int nValue );
 	BOOL WriteSectionString( LPCTSTR lpszSubSection, LPCTSTR lpszEntry, LPCTSTR lpszValue );
 	BOOL WriteSectionBinary(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, LPBYTE pData, UINT nBytes);
-	BOOL WriteSectionObject(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, CObject& obj);
+	BOOL WriteSectionObject(LPCTSTR lpszSubSection, LPCTSTR lpszEntry, CMyObject& obj);
 
 	// WinHelp override:
 	virtual void OnAppContextHelp(CWnd* pWndControl, const DWORD dwHelpIDArray []);

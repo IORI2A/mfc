@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CKeyboardManager : public CObject
+class CKeyboardManager : public CMyObject
 {
 // Constructor/Destructor:
 public:

@@ -60,7 +60,7 @@ public:
 /*============================================================================*/
 // CMFCTabInfo
 
-class CMFCTabInfo : public CObject
+class CMFCTabInfo : public CMyObject
 {
 	friend class CMFCTabCtrl;
 	friend class CMFCBaseTabCtrl;

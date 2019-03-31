@@ -22,7 +22,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CMFCFontInfo : public CObject
+class CMFCFontInfo : public CMyObject
 {
 public:
 	CMFCFontInfo(LPCTSTR lpszName, LPCTSTR lpszScript, BYTE nCharSet, BYTE nPitchAndFamily, int nType) :

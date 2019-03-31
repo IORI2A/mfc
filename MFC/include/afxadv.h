@@ -48,7 +48,7 @@
 
 // Classes declared in this file
 
-//CObject
+//CMyObject
 	//CFile
 		//CMemFile
 			class CSharedFile;          // Shared memory file
@@ -161,7 +161,7 @@ AFX_INLINE CString& CRecentFileList::operator[](int nIndex)
 /*============================================================================*/
 // CDockState - used for docking serialization
 
-class CDockState : public CObject
+class CDockState : public CMyObject
 {
 	DECLARE_SERIAL(CDockState)
 	CDockState();

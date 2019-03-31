@@ -328,10 +328,10 @@ public:
 	BOOL IsTransparentCaption() const { return m_bIsTransparentCaption; }
 	int GetKeyboardNavigationLevel() const { return m_nKeyboardNavLevel; }
 
-	void SetKeyboardNavigationLevel(CObject* pLevel, BOOL bSetFocus = TRUE);
+	void SetKeyboardNavigationLevel(CMyObject* pLevel, BOOL bSetFocus = TRUE);
 
-	CObject* GetKeyboardNavLevelParent() const { return m_pKeyboardNavLevelParent; }
-	CObject* GetKeyboardNavLevelCurrent() const { return m_pKeyboardNavLevelCurrent; }
+	CMyObject* GetKeyboardNavLevelParent() const { return m_pKeyboardNavLevelParent; }
+	CMyObject* GetKeyboardNavLevelCurrent() const { return m_pKeyboardNavLevelCurrent; }
 
 	// Accessibility:
 	virtual BOOL OnSetAccData(long lVal);
@@ -406,8 +406,8 @@ protected:
 	CSize m_sizeMainButton;
 
 	CToolTipCtrl* m_pToolTip;
-	CObject*      m_pKeyboardNavLevelParent;
-	CObject*      m_pKeyboardNavLevelCurrent;
+	CMyObject*      m_pKeyboardNavLevelParent;
+	CMyObject*      m_pKeyboardNavLevelCurrent;
 
 	CMFCRibbonCaptionButton      m_CaptionButtons[AFX_RIBBON_CAPTION_BUTTONS];
 	CMFCRibbonQuickAccessToolBar m_QAToolbar;

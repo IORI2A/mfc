@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CUserTool : public CObject
+class CUserTool : public CMyObject
 {
 	friend class CUserToolsManager;
 

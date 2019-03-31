@@ -51,7 +51,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class CSmartDockingStandaloneGuide : public CObject
+class CSmartDockingStandaloneGuide : public CMyObject
 {
 public:
 	enum SDMarkerPlace
@@ -161,7 +161,7 @@ protected:
 	friend class CSmartDockingGroupGuidesManager;
 };
 
-class CSmartDockingGroupGuidesManager : public CObject
+class CSmartDockingGroupGuidesManager : public CMyObject
 {
 public:
 	CSmartDockingGroupGuidesManager();

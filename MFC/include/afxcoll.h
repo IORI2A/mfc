@@ -28,21 +28,21 @@
 /////////////////////////////////////////////////////////////////////////////
 // Classes declared in this file
 
-//CObject
+//CMyObject
 	// Arrays
 	class CByteArray;           // array of BYTE
 	class CWordArray;           // array of WORD
 	class CDWordArray;          // array of DWORD
 	class CUIntArray;           // array of UINT
 	class CPtrArray;            // array of void*
-	class CObArray;             // array of CObject*
+	class CObArray;             // array of CMyObject*
 
 	// Lists
 	class CPtrList;             // list of void*
-	class CObList;              // list of CObject*
+	class CObList;              // list of CMyObject*
 
 	// Maps (aka Dictionaries)
-	class CMapWordToOb;         // map from WORD to CObject*
+	class CMapWordToOb;         // map from WORD to CMyObject*
 	class CMapWordToPtr;        // map from WORD to void*
 	class CMapPtrToWord;        // map from void* to WORD
 	class CMapPtrToPtr;         // map from void* to void*
@@ -51,7 +51,7 @@
 	class CStringArray;         // array of CStrings
 	class CStringList;          // list of CStrings
 	class CMapStringToPtr;      // map from CString to void*
-	class CMapStringToOb;       // map from CString to CObject*
+	class CMapStringToOb;       // map from CString to CMyObject*
 	class CMapStringToString;   // map from CString to CString
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CByteArray : public CObject
+class CByteArray : public CMyObject
 {
 
 	DECLARE_SERIAL(CByteArray)
@@ -136,7 +136,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CWordArray : public CObject
+class CWordArray : public CMyObject
 {
 
 	DECLARE_SERIAL(CWordArray)
@@ -211,7 +211,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CDWordArray : public CObject
+class CDWordArray : public CMyObject
 {
 
 	DECLARE_SERIAL(CDWordArray)
@@ -286,7 +286,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CUIntArray : public CObject
+class CUIntArray : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CUIntArray)
@@ -359,7 +359,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CPtrArray : public CObject
+class CPtrArray : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CPtrArray)
@@ -432,7 +432,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CObArray : public CObject
+class CObArray : public CMyObject
 {
 
 	DECLARE_SERIAL(CObArray)
@@ -454,36 +454,36 @@ public:
 	void RemoveAll();
 
 	// Accessing elements
-	CObject* GetAt(INT_PTR nIndex) const;
-	void SetAt(INT_PTR nIndex, CObject* newElement);
+	CMyObject* GetAt(INT_PTR nIndex) const;
+	void SetAt(INT_PTR nIndex, CMyObject* newElement);
 
-	CObject*& ElementAt(INT_PTR nIndex);
+	CMyObject*& ElementAt(INT_PTR nIndex);
 
 	// Direct Access to the element data (may return NULL)
-	const CObject** GetData() const;
-	CObject** GetData();
+	const CMyObject** GetData() const;
+	CMyObject** GetData();
 
 	// Potentially growing the array
-	void SetAtGrow(INT_PTR nIndex, CObject* newElement);
+	void SetAtGrow(INT_PTR nIndex, CMyObject* newElement);
 
-	INT_PTR Add(CObject* newElement);
+	INT_PTR Add(CMyObject* newElement);
 
 	INT_PTR Append(const CObArray& src);
 	void Copy(const CObArray& src);
 
 	// overloaded operator helpers
-	CObject* operator[](INT_PTR nIndex) const;
-	CObject*& operator[](INT_PTR nIndex);
+	CMyObject* operator[](INT_PTR nIndex) const;
+	CMyObject*& operator[](INT_PTR nIndex);
 
 	// Operations that move elements around
-	void InsertAt(INT_PTR nIndex, CObject* newElement, INT_PTR nCount = 1);
+	void InsertAt(INT_PTR nIndex, CMyObject* newElement, INT_PTR nCount = 1);
 
 	void RemoveAt(INT_PTR nIndex, INT_PTR nCount = 1);
 	void InsertAt(INT_PTR nStartIndex, CObArray* pNewArray);
 
 // Implementation
 protected:
-	CObject** m_pData;   // the actual array of data
+	CMyObject** m_pData;   // the actual array of data
 	INT_PTR m_nSize;     // # of elements (upperBound - 1)
 	INT_PTR m_nMaxSize;  // max allocated
 	INT_PTR m_nGrowBy;   // grow amount
@@ -500,14 +500,14 @@ public:
 
 protected:
 	// local typedefs for class templates
-	typedef CObject* BASE_TYPE;
-	typedef CObject* BASE_ARG_TYPE;
+	typedef CMyObject* BASE_TYPE;
+	typedef CMyObject* BASE_ARG_TYPE;
 };
 
 
 ////////////////////////////////////////////////////////////////////////////
 
-class CStringArray : public CObject
+class CStringArray : public CMyObject
 {
 
 	DECLARE_SERIAL(CStringArray)
@@ -592,7 +592,7 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CPtrList : public CObject
+class CPtrList : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CPtrList)
@@ -691,7 +691,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CObList : public CObject
+class CObList : public CMyObject
 {
 
 	DECLARE_SERIAL(CObList)
@@ -701,7 +701,7 @@ protected:
 	{
 		CNode* pNext;
 		CNode* pPrev;
-		CObject* data;
+		CMyObject* data;
 	};
 public:
 
@@ -715,19 +715,19 @@ public:
 	BOOL IsEmpty() const;
 
 	// peek at head or tail
-	CObject*& GetHead();
-	const CObject* GetHead() const;
-	CObject*& GetTail();
-	const CObject* GetTail() const;
+	CMyObject*& GetHead();
+	const CMyObject* GetHead() const;
+	CMyObject*& GetTail();
+	const CMyObject* GetTail() const;
 
 // Operations
 	// get head or tail (and remove it) - don't call on empty list!
-	CObject* RemoveHead();
-	CObject* RemoveTail();
+	CMyObject* RemoveHead();
+	CMyObject* RemoveTail();
 
 	// add before head or after tail
-	POSITION AddHead(CObject* newElement);
-	POSITION AddTail(CObject* newElement);
+	POSITION AddHead(CMyObject* newElement);
+	POSITION AddTail(CMyObject* newElement);
 
 
 	// add another list of elements before head or after tail
@@ -740,25 +740,25 @@ public:
 	// iteration
 	POSITION GetHeadPosition() const;
 	POSITION GetTailPosition() const;
-	CObject*& GetNext(POSITION& rPosition); // return *Position++
-	const CObject* GetNext(POSITION& rPosition) const; // return *Position++
-	CObject*& GetPrev(POSITION& rPosition); // return *Position--
-	const CObject* GetPrev(POSITION& rPosition) const; // return *Position--
+	CMyObject*& GetNext(POSITION& rPosition); // return *Position++
+	const CMyObject* GetNext(POSITION& rPosition) const; // return *Position++
+	CMyObject*& GetPrev(POSITION& rPosition); // return *Position--
+	const CMyObject* GetPrev(POSITION& rPosition) const; // return *Position--
 
 	// getting/modifying an element at a given position
-	CObject*& GetAt(POSITION position);
-	const CObject* GetAt(POSITION position) const;
-	void SetAt(POSITION pos, CObject* newElement);
+	CMyObject*& GetAt(POSITION position);
+	const CMyObject* GetAt(POSITION position) const;
+	void SetAt(POSITION pos, CMyObject* newElement);
 
 	void RemoveAt(POSITION position);
 
 	// inserting before or after a given position
-	POSITION InsertBefore(POSITION position, CObject* newElement);
-	POSITION InsertAfter(POSITION position, CObject* newElement);
+	POSITION InsertBefore(POSITION position, CMyObject* newElement);
+	POSITION InsertAfter(POSITION position, CMyObject* newElement);
 
 
 	// helper functions (note: O(n) speed)
-	POSITION Find(CObject* searchValue, POSITION startAfter = NULL) const;
+	POSITION Find(CMyObject* searchValue, POSITION startAfter = NULL) const;
 						// defaults to starting at the HEAD
 						// return NULL if not found
 	POSITION FindIndex(INT_PTR nIndex) const;
@@ -785,14 +785,14 @@ public:
 	void AssertValid() const;
 #endif
 	// local typedefs for class templates
-	typedef CObject* BASE_TYPE;
-	typedef CObject* BASE_ARG_TYPE;
+	typedef CMyObject* BASE_TYPE;
+	typedef CMyObject* BASE_ARG_TYPE;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CStringList : public CObject
+class CStringList : public CMyObject
 {
 
 	DECLARE_SERIAL(CStringList)
@@ -901,7 +901,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapWordToPtr : public CObject
+class CMapWordToPtr : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CMapWordToPtr)
@@ -983,7 +983,7 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapPtrToWord : public CObject
+class CMapPtrToWord : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CMapPtrToWord)
@@ -1066,7 +1066,7 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapPtrToPtr : public CObject
+class CMapPtrToPtr : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CMapPtrToPtr)
@@ -1151,7 +1151,7 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapWordToOb : public CObject
+class CMapWordToOb : public CMyObject
 {
 
 	DECLARE_SERIAL(CMapWordToOb)
@@ -1160,7 +1160,7 @@ protected:
 	struct CAssoc
 	{
 		CAssoc* pNext;
-		CObject* value;
+		CMyObject* value;
 		WORD key;
 	};
 
@@ -1176,14 +1176,14 @@ public:
 	BOOL IsEmpty() const;
 
 	// Lookup
-	BOOL Lookup(WORD key, CObject*& rValue) const;
+	BOOL Lookup(WORD key, CMyObject*& rValue) const;
 
 // Operations
 	// Lookup and add if not there
-	CObject*& operator[](WORD key);
+	CMyObject*& operator[](WORD key);
 
 	// add a new (key, value) pair
-	void SetAt(WORD key, CObject* newValue);
+	void SetAt(WORD key, CMyObject* newValue);
 
 	// removing existing (key, ?) pair
 	BOOL RemoveKey(WORD key);
@@ -1191,7 +1191,7 @@ public:
 
 	// iterating all (key, value) pairs
 	POSITION GetStartPosition() const;
-	void GetNextAssoc(POSITION& rNextPosition, WORD& rKey, CObject*& rValue) const;
+	void GetNextAssoc(POSITION& rNextPosition, WORD& rKey, CMyObject*& rValue) const;
 
 	// advanced features for derived classes
 	UINT GetHashTableSize() const;
@@ -1228,14 +1228,14 @@ protected:
 	// local typedefs for CTypedPtrMap class template
 	typedef WORD BASE_KEY;
 	typedef WORD BASE_ARG_KEY;
-	typedef CObject* BASE_VALUE;
-	typedef CObject* BASE_ARG_VALUE;
+	typedef CMyObject* BASE_VALUE;
+	typedef CMyObject* BASE_ARG_VALUE;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapStringToPtr : public CObject
+class CMapStringToPtr : public CMyObject
 {
 
 	DECLARE_DYNAMIC(CMapStringToPtr)
@@ -1318,7 +1318,7 @@ protected:
 
 /////////////////////////////////////////////////////////////////////////////
 
-class CMapStringToOb : public CObject
+class CMapStringToOb : public CMyObject
 {
 
 	DECLARE_SERIAL(CMapStringToOb)
@@ -1329,7 +1329,7 @@ protected:
 		CAssoc* pNext;
 		UINT nHashValue;  // needed for efficient iteration
 		CString key;
-		CObject* value;
+		CMyObject* value;
 	};
 
 public:
@@ -1344,15 +1344,15 @@ public:
 	BOOL IsEmpty() const;
 
 	// Lookup
-	BOOL Lookup(LPCTSTR key, CObject*& rValue) const;
+	BOOL Lookup(LPCTSTR key, CMyObject*& rValue) const;
 	BOOL LookupKey(LPCTSTR key, LPCTSTR& rKey) const;
 
 // Operations
 	// Lookup and add if not there
-	CObject*& operator[](LPCTSTR key);
+	CMyObject*& operator[](LPCTSTR key);
 
 	// add a new (key, value) pair
-	void SetAt(LPCTSTR key, CObject* newValue);
+	void SetAt(LPCTSTR key, CMyObject* newValue);
 
 	// removing existing (key, ?) pair
 	BOOL RemoveKey(LPCTSTR key);
@@ -1360,7 +1360,7 @@ public:
 
 	// iterating all (key, value) pairs
 	POSITION GetStartPosition() const;
-	void GetNextAssoc(POSITION& rNextPosition, CString& rKey, CObject*& rValue) const;
+	void GetNextAssoc(POSITION& rNextPosition, CString& rKey, CMyObject*& rValue) const;
 
 	// advanced features for derived classes
 	UINT GetHashTableSize() const;
@@ -1396,13 +1396,13 @@ protected:
 	// local typedefs for CTypedPtrMap class template
 	typedef CString BASE_KEY;
 	typedef LPCTSTR BASE_ARG_KEY;
-	typedef CObject* BASE_VALUE;
-	typedef CObject* BASE_ARG_VALUE;
+	typedef CMyObject* BASE_VALUE;
+	typedef CMyObject* BASE_ARG_VALUE;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
-class CMapStringToString : public CObject
+class CMapStringToString : public CMyObject
 {
 
 	DECLARE_SERIAL(CMapStringToString)

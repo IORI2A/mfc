@@ -333,7 +333,7 @@ public:
 /// <summary>
 /// An abstract class, which provides a interface for creating and managing D2D resources such as brushes, layers and texts.
 /// </summary>
-class CD2DResource : public CObject
+class CD2DResource : public CMyObject
 {
 	DECLARE_DYNAMIC(CD2DResource)
 
@@ -1879,7 +1879,7 @@ protected:
 /// <summary>
 /// ID2D1RenderTarget wrapper.
 /// </summary>
-class CRenderTarget : public CObject
+class CRenderTarget : public CMyObject
 {
 	DECLARE_DYNAMIC(CRenderTarget)
 

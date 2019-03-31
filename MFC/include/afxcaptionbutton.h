@@ -29,7 +29,7 @@
 #define AFX_HTMAXBUTTON   HTHELP + 5
 #define AFX_HTMINBUTTON   HTHELP + 6
 
-class CMFCCaptionButton : public CObject
+class CMFCCaptionButton : public CMyObject
 {
 public:
 	CMFCCaptionButton();

@@ -29,7 +29,7 @@
 
 class CMFCTasksPane;
 
-class CMFCTasksPanePropertyPage : public CObject
+class CMFCTasksPanePropertyPage : public CMyObject
 {
 public:
 	CMFCTasksPanePropertyPage(LPCTSTR lpszName, CMFCTasksPane *pTaskPane)
@@ -49,7 +49,7 @@ public:
 	CMFCTasksPane* m_pTaskPane;
 };
 
-class CMFCTasksPaneTaskGroup : public CObject
+class CMFCTasksPaneTaskGroup : public CMyObject
 {
 public:
 	CMFCTasksPaneTaskGroup(LPCTSTR lpszName, BOOL bIsBottom, BOOL bIsSpecial = FALSE, BOOL bIsCollapsed = FALSE, CMFCTasksPanePropertyPage* pPage = NULL, HICON hIcon = NULL)
@@ -106,7 +106,7 @@ public:
 	COLORREF m_clrTextHot;
 };
 
-class CMFCTasksPaneTask : public CObject
+class CMFCTasksPaneTask : public CMyObject
 {
 public:
 	CMFCTasksPaneTask(CMFCTasksPaneTaskGroup* pGroup, LPCTSTR lpszName, int nIcon, UINT uiCommandID, DWORD_PTR dwUserData = 0, HWND hwndTask = NULL, BOOL bAutoDestroyWindow = FALSE, int nWindowHeight = 0)

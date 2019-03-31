@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CMenuTearOffManager : public CObject
+class CMenuTearOffManager : public CMyObject
 {
 
 public:

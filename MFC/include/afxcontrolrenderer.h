@@ -52,7 +52,7 @@ public:
 	BOOL     m_bPreMultiplyCheck;
 };
 
-class CMFCControlRenderer : public CObject
+class CMFCControlRenderer : public CMyObject
 {
 	DECLARE_DYNCREATE(CMFCControlRenderer)
 

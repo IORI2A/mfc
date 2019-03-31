@@ -37,7 +37,7 @@ typedef struct tagAFXDrawState
 }
 CAfxDrawState;
 
-class CMFCToolBarImages : public CObject
+class CMFCToolBarImages : public CMyObject
 {
 	friend class CMFCDropDownFrame;
 	friend class CMFCImageEditorDialog;

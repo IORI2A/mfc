@@ -26,7 +26,7 @@ class CPaneFrameWnd;
 class CPane;
 class CDockablePane;
 
-class CRecentPaneContainerInfo : public CObject
+class CRecentPaneContainerInfo : public CMyObject
 {
 public:
 	CRecentPaneContainerInfo();
@@ -51,7 +51,7 @@ public:
 };
 
 
-class CRecentDockSiteInfo : public CObject
+class CRecentDockSiteInfo : public CMyObject
 {
 public:
 	CRecentDockSiteInfo(CPane* pBar);

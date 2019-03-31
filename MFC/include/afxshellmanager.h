@@ -39,7 +39,7 @@ typedef struct _AFX_SHELLITEMINFO
 }
 AFX_SHELLITEMINFO, FAR *LPAFX_SHELLITEMINFO;
 
-class CShellManager : public CObject
+class CShellManager : public CMyObject
 {
 	friend class CMFCShellListCtrl;
 

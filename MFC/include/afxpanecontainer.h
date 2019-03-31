@@ -25,7 +25,7 @@ class CPane;
 class CDockablePane;
 class CPaneDivider;
 
-class CPaneContainer : public CObject  
+class CPaneContainer : public CMyObject  
 {
 	friend class CPaneContainerManager;
 	friend class CRecentPaneContainerInfo;
@@ -46,7 +46,7 @@ public:
 		BC_FIND_BY_CONTAINER
 	};
 
-	CPaneContainer* FindSubPaneContainer(const CObject* pObject, BC_FIND_CRITERIA findCriteria);
+	CPaneContainer* FindSubPaneContainer(const CMyObject* pObject, BC_FIND_CRITERIA findCriteria);
 
 	BOOL IsEmpty() const;
 	BOOL IsLeftPartEmpty(BOOL bCheckVisibility = FALSE) const;

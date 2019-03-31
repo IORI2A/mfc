@@ -71,7 +71,7 @@ class CMFCPropertySheetListBox : public CListBox
 /*============================================================================*/
 // CMFCPropertySheetCategoryInfo
 
-class CMFCPropertySheetCategoryInfo : public CObject
+class CMFCPropertySheetCategoryInfo : public CMyObject
 {
 	DECLARE_DYNAMIC(CMFCPropertySheetCategoryInfo)
 

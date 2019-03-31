@@ -24,7 +24,7 @@ class CDockablePane;
 #pragma component(minrebuild, off)
 #endif
 
-class CMFCAutoHideButton : public CObject
+class CMFCAutoHideButton : public CMyObject
 {
 	DECLARE_DYNCREATE(CMFCAutoHideButton)
 public:

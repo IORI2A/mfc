@@ -32,7 +32,7 @@ enum AFX_ROW_ALIGNMENT
 	AFX_ROW_ALIGN_BOTTOM = 1
 };
 
-class CDockingPanesRow : public CObject
+class CDockingPanesRow : public CMyObject
 {
 	DECLARE_DYNAMIC(CDockingPanesRow);
 

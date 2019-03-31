@@ -103,7 +103,7 @@ typedef HRESULT (__stdcall * GETCURRENTTHEMENAME)(OUT LPWSTR pszThemeFileName, i
 
 typedef HTHEME (__stdcall * GETWINDOWTHEME)(HWND hWnd);
 
-class CMFCBaseVisualManager : public CObject
+class CMFCBaseVisualManager : public CMyObject
 {
 public:
 	CMFCBaseVisualManager();

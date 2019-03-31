@@ -30,7 +30,7 @@
 
 // Classes declared in this file
 
-//CObject
+//CMyObject
 	class CSyncObject;
 		class CSemaphore;
 		class CMutex;
@@ -46,7 +46,7 @@ class CMultiLock;
 /*============================================================================*/
 // Basic synchronization object
 
-class CSyncObject : public CObject
+class CSyncObject : public CMyObject
 {
 	DECLARE_DYNAMIC(CSyncObject)
 

@@ -37,7 +37,7 @@
 
 #define AFX_TOOLTIP_TYPES           11
 
-class CTooltipManager : public CObject
+class CTooltipManager : public CMyObject
 {
 public:
 

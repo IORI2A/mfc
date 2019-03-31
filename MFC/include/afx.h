@@ -179,7 +179,7 @@
 
 struct CRuntimeClass;          // object type information
 
-class CObject;                        // the root of all objects classes
+class CMyObject;                        // the root of all objects classes
 
 	class CException;                 // the root of all exceptions
 		class CArchiveException;      // archive exception
@@ -193,7 +193,7 @@ class CObject;                        // the root of all objects classes
 		class CStdioFile;             // buffered stdio text/binary file
 		class CMemFile;               // memory based file
 
-// Non CObject classes
+// Non CMyObject classes
 struct CFileStatus;                   // file status information
 struct CMemoryState;                  // diagnostic memory support
 
@@ -322,9 +322,9 @@ inline BOOL AFXAPI AfxAssertFailedLine(LPCSTR lpszFileName, int nLine)
 
 void AFX_CDECL AfxTrace(LPCTSTR lpszFormat, ...);
 // Note: file names are still ANSI strings (filenames rarely need UNICODE)
-void AFXAPI AfxAssertValidObject(const CObject* pOb,
+void AFXAPI AfxAssertValidObject(const CMyObject* pOb,
 				LPCSTR lpszFileName, int nLine);
-void AFXAPI AfxDump(const CObject* pOb); // Dump an object from CodeView
+void AFXAPI AfxDump(const CMyObject* pOb); // Dump an object from CodeView
 
 #include <atltrace.h>
 
@@ -458,7 +458,7 @@ struct CRuntimeClass
 	LPCSTR m_lpszClassName;
 	int m_nObjectSize;
 	UINT m_wSchema; // schema number of the loaded class
-	CObject* (PASCAL* m_pfnCreateObject)(); // NULL => abstract class
+	CMyObject* (PASCAL* m_pfnCreateObject)(); // NULL => abstract class
 #ifdef _AFXDLL
 	CRuntimeClass* (PASCAL* m_pfnGetBaseClass)();
 #else
@@ -466,14 +466,14 @@ struct CRuntimeClass
 #endif
 
 // Operations
-	CObject* CreateObject();
+	CMyObject* CreateObject();
 	BOOL IsDerivedFrom(const CRuntimeClass* pBaseClass) const;
 
 	// dynamic name lookup and creation
 	static CRuntimeClass* PASCAL FromName(LPCSTR lpszClassName);
 	static CRuntimeClass* PASCAL FromName(LPCWSTR lpszClassName);
-	static CObject* PASCAL CreateObject(LPCSTR lpszClassName);
-	static CObject* PASCAL CreateObject(LPCWSTR lpszClassName);
+	static CMyObject* PASCAL CreateObject(LPCSTR lpszClassName);
+	static CMyObject* PASCAL CreateObject(LPCWSTR lpszClassName);
 
 // Implementation
 	void Store(CArchive& ar) const;
@@ -536,15 +536,15 @@ inline void __cdecl Afx_clearerr_s(FILE *stream)
 #endif
 
 /*============================================================================*/
-// class CObject is the root of all compliant objects
+// class CMyObject is the root of all compliant objects
 
-class AFX_NOVTABLE CObject
+class AFX_NOVTABLE CMyObject
 {
 public:
 
 // Object model (types, destruction, allocation)
 	virtual CRuntimeClass* GetRuntimeClass() const;
-	virtual ~CObject() = 0;  // virtual destructors are necessary
+	virtual ~CMyObject() = 0;  // virtual destructors are necessary
 
 	// Diagnostic allocations
 	void* PASCAL operator new(size_t nSize);
@@ -562,10 +562,10 @@ public:
 	//   compiler errors instead of unexpected behavior if you pass objects
 	//   by value or assign objects.
 protected:
-	CObject();
+	CMyObject();
 private:
-	CObject(const CObject& objectSrc);              // no implementation
-	void operator=(const CObject& objectSrc);       // no implementation
+	CMyObject(const CMyObject& objectSrc);              // no implementation
+	void operator=(const CMyObject& objectSrc);       // no implementation
 
 // Attributes
 public:
@@ -583,7 +583,7 @@ public:
 
 // Implementation
 public:
-	static const CRuntimeClass classCObject;
+	static const CRuntimeClass classCMyObject;
 #ifdef _AFXDLL
 	static CRuntimeClass* PASCAL _GetBaseClass();
 	static CRuntimeClass* PASCAL GetThisClass();
@@ -601,14 +601,14 @@ public:
 	ASSERT((object)->IsKindOf(RUNTIME_CLASS(class_name)))
 
 // RTTI helper macros/functions
-const CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, const CObject* pObject);
-CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, CObject* pObject);
+const CMyObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, const CMyObject* pObject);
+CMyObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, CMyObject* pObject);
 #define DYNAMIC_DOWNCAST(class_name, object) \
 	(class_name*)AfxDynamicDownCast(RUNTIME_CLASS(class_name), object)
 
 #ifdef _DEBUG
-const CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, const CObject* pObject);
-CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, CObject* pObject);
+const CMyObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, const CMyObject* pObject);
+CMyObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, CMyObject* pObject);
 #define STATIC_DOWNCAST(class_name, object) \
 	(static_cast<class_name*>(AfxStaticDownCast(RUNTIME_CLASS(class_name), object)))
 #else
@@ -651,11 +651,11 @@ public: \
 // not serializable, but dynamically constructable
 #define DECLARE_DYNCREATE(class_name) \
 	DECLARE_DYNAMIC(class_name) \
-	static CObject* PASCAL CreateObject();
+	static CMyObject* PASCAL CreateObject();
 
 #define _DECLARE_DYNCREATE(class_name) \
 	_DECLARE_DYNAMIC(class_name) \
-	static CObject* PASCAL CreateObject();
+	static CMyObject* PASCAL CreateObject();
 
 #define DECLARE_SERIAL(class_name) \
 	_DECLARE_DYNCREATE(class_name) \
@@ -705,13 +705,13 @@ public: \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL, NULL)
 
 #define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
-	CObject* PASCAL class_name::CreateObject() \
+	CMyObject* PASCAL class_name::CreateObject() \
 		{ return new class_name; } \
 	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, \
 		class_name::CreateObject, NULL)
 
 #define IMPLEMENT_SERIAL(class_name, base_class_name, wSchema) \
-	CObject* PASCAL class_name::CreateObject() \
+	CMyObject* PASCAL class_name::CreateObject() \
 		{ return new class_name; } \
 	extern AFX_CLASSINIT _init_##class_name; \
 	_IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, wSchema, \
@@ -727,7 +727,7 @@ public: \
 /*============================================================================*/
 // Exceptions
 
-class AFX_NOVTABLE CException : public CObject
+class AFX_NOVTABLE CException : public CMyObject
 {
 	// abstract class for dynamic type checking
 	DECLARE_DYNAMIC(CException)
@@ -1019,7 +1019,7 @@ public:
 
 using ATL::CAtlTransactionManager;
 
-class CFile : public CObject
+class CFile : public CMyObject
 {
 	DECLARE_DYNAMIC(CFile)
 
@@ -1327,7 +1327,7 @@ public:
 using ATL::CTime;
 using ATL::CTimeSpan;
 
-class CFileFind : public CObject
+class CFileFind : public CMyObject
 {
 public:
 	CFileFind();
@@ -1515,7 +1515,7 @@ struct CMemoryState
 	enum blockUsage
 	{
 		freeBlock,    // memory not used
-		objectBlock,  // contains a CObject derived class object
+		objectBlock,  // contains a CMyObject derived class object
 		bitBlock,     // contains ::operator new data
 		crtBlock,
 		ignoredBlock,
@@ -1542,7 +1542,7 @@ struct CMemoryState
 };
 
 // Enumerate allocated objects or runtime classes
-void AFXAPI AfxDoForAllObjects(void (AFX_CDECL *pfn)(CObject* pObject, void* pContext),
+void AFXAPI AfxDoForAllObjects(void (AFX_CDECL *pfn)(CMyObject* pObject, void* pContext),
 	void* pContext);
 void AFXAPI AfxDoForAllClasses(void (AFX_CDECL *pfn)(const CRuntimeClass* pClass,
 	void* pContext), void* pContext);
@@ -1567,7 +1567,7 @@ BOOL AFXAPI AfxDiagnosticInit(void);
 #endif // _DEBUG
 
 /*============================================================================*/
-// Archives for serializing CObject data
+// Archives for serializing CMyObject data
 
 // needed for implementation
 template<class TYPE, class ARG_TYPE>
@@ -1595,7 +1595,7 @@ public:
 	BOOL IsBufferEmpty() const;
 
 	CFile* GetFile() const;
-	UINT GetObjectSchema(); // only valid when reading a CObject*
+	UINT GetObjectSchema(); // only valid when reading a CMyObject*
 	void SetObjectSchema(UINT nSchema);
 
 	// pointer to document being serialized -- must set to serialize
@@ -1618,10 +1618,10 @@ public:
 public:
 	// Object I/O is pointer based to avoid added construction overhead.
 	// Use the Serialize member function directly for embedded objects.
-	friend CArchive& AFXAPI operator<<(CArchive& ar, const CObject* pOb);
+	friend CArchive& AFXAPI operator<<(CArchive& ar, const CMyObject* pOb);
 
-	friend CArchive& AFXAPI operator>>(CArchive& ar, CObject*& pOb);
-	friend CArchive& AFXAPI operator>>(CArchive& ar, const CObject*& pOb);
+	friend CArchive& AFXAPI operator>>(CArchive& ar, CMyObject*& pOb);
+	friend CArchive& AFXAPI operator>>(CArchive& ar, const CMyObject*& pOb);
 
 	// insertion operations
 	CArchive& operator<<(BYTE by);
@@ -1675,10 +1675,10 @@ public:
 	CArchive& operator>>(bool& b);
 
 	// object read/write
-	CObject* ReadObject(const CRuntimeClass* pClass);
-	void WriteObject(const CObject* pOb);
+	CMyObject* ReadObject(const CRuntimeClass* pClass);
+	void WriteObject(const CMyObject* pOb);
 	// advanced object mapping (used for forced references)
-	void MapObject(const CObject* pOb);
+	void MapObject(const CMyObject* pOb);
 
 	// advanced versioning support
 	void WriteClass(const CRuntimeClass* pClassRef);
@@ -1720,7 +1720,7 @@ protected:
 	BYTE* m_lpBufMax;
 	BYTE* m_lpBufStart;
 
-	// array/map for CObject* and CRuntimeClass* load/store
+	// array/map for CMyObject* and CRuntimeClass* load/store
 	UINT m_nMapCount;
 	union
 	{
@@ -1777,8 +1777,8 @@ public:
 		return *this;
 	}
 	CDumpContext& operator<<(const void* lp);
-	CDumpContext& operator<<(const CObject* pOb);
-	CDumpContext& operator<<(const CObject& ob);
+	CDumpContext& operator<<(const CMyObject* pOb);
+	CDumpContext& operator<<(const CMyObject& ob);
 	CDumpContext& operator<<(BYTE by);
 	CDumpContext& operator<<(WORD w);
 	CDumpContext& DumpAsHex(BYTE b);

@@ -203,7 +203,7 @@ template<> UINT AFXAPI HashKey<const struct tagVARIANT&> (const struct tagVARIAN
 // CArray<TYPE, ARG_TYPE>
 
 template<class TYPE, class ARG_TYPE = const TYPE&>
-class CArray : public CObject
+class CArray : public CMyObject
 {
 public:
 // Construction
@@ -633,7 +633,7 @@ void CArray<TYPE, ARG_TYPE>::Serialize(CArchive& ar)
 {
 	ASSERT_VALID(this);
 
-	CObject::Serialize(ar);
+	CMyObject::Serialize(ar);
 	if (ar.IsStoring())
 	{
 		ar.WriteCount(m_nSize);
@@ -650,7 +650,7 @@ void CArray<TYPE, ARG_TYPE>::Serialize(CArchive& ar)
 template<class TYPE, class ARG_TYPE>
 void CArray<TYPE, ARG_TYPE>::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+	CMyObject::Dump(dc);
 
 	dc << "with " << m_nSize << " elements";
 	if (dc.GetDepth() > 0)
@@ -665,7 +665,7 @@ void CArray<TYPE, ARG_TYPE>::Dump(CDumpContext& dc) const
 template<class TYPE, class ARG_TYPE>
 void CArray<TYPE, ARG_TYPE>::AssertValid() const
 {
-	CObject::AssertValid();
+	CMyObject::AssertValid();
 
 	if (m_pData == NULL)
 	{
@@ -686,7 +686,7 @@ void CArray<TYPE, ARG_TYPE>::AssertValid() const
 // CList<TYPE, ARG_TYPE>
 
 template<class TYPE, class ARG_TYPE = const TYPE&>
-class CList : public CObject
+class CList : public CMyObject
 {
 protected:
 	struct CNode
@@ -1169,7 +1169,7 @@ void CList<TYPE, ARG_TYPE>::Serialize(CArchive& ar)
 {
 	ASSERT_VALID(this);
 
-	CObject::Serialize(ar);
+	CMyObject::Serialize(ar);
 
 	if (ar.IsStoring())
 	{
@@ -1202,7 +1202,7 @@ void CList<TYPE, ARG_TYPE>::Serialize(CArchive& ar)
 template<class TYPE, class ARG_TYPE>
 void CList<TYPE, ARG_TYPE>::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+	CMyObject::Dump(dc);
 
 	dc << "with " << m_nCount << " elements";
 	if (dc.GetDepth() > 0)
@@ -1223,7 +1223,7 @@ void CList<TYPE, ARG_TYPE>::Dump(CDumpContext& dc) const
 template<class TYPE, class ARG_TYPE>
 void CList<TYPE, ARG_TYPE>::AssertValid() const
 {
-	CObject::AssertValid();
+	CMyObject::AssertValid();
 
 	if (m_nCount == 0)
 	{
@@ -1244,7 +1244,7 @@ void CList<TYPE, ARG_TYPE>::AssertValid() const
 // CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>
 
 template<class KEY, class ARG_KEY, class VALUE, class ARG_VALUE>
-class CMap : public CObject
+class CMap : public CMyObject
 {
 public:
 	// CPair
@@ -1743,7 +1743,7 @@ void CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>::Serialize(CArchive& ar)
 {
 	ASSERT_VALID(this);
 
-	CObject::Serialize(ar);
+	CMyObject::Serialize(ar);
 
 	if (ar.IsStoring())
 	{
@@ -1792,7 +1792,7 @@ void CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>::Serialize(CArchive& ar)
 template<class KEY, class ARG_KEY, class VALUE, class ARG_VALUE>
 void CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>::Dump(CDumpContext& dc) const
 {
-	CObject::Dump(dc);
+	CMyObject::Dump(dc);
 
 	dc << "with " << m_nCount << " elements";
 	if (dc.GetDepth() > 0)
@@ -1818,7 +1818,7 @@ void CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>::Dump(CDumpContext& dc) const
 template<class KEY, class ARG_KEY, class VALUE, class ARG_VALUE>
 void CMap<KEY, ARG_KEY, VALUE, ARG_VALUE>::AssertValid() const
 {
-	CObject::AssertValid();
+	CMyObject::AssertValid();
 
 	ASSERT(m_nHashTableSize > 0);
 	ASSERT(m_nCount == 0 || m_pHashTable != NULL);
@@ -2002,9 +2002,9 @@ public:
 
 	// add before head or after tail
 	POSITION AddHead(CObList* newElement)
-		{ return _CTypedPtrList<CObList, CObList*>::AddHead((CObject*)newElement); }
+		{ return _CTypedPtrList<CObList, CObList*>::AddHead((CMyObject*)newElement); }
 	POSITION AddTail(CObList* newElement)
-		{ return _CTypedPtrList<CObList, CObList*>::AddTail((CObject*)newElement); }
+		{ return _CTypedPtrList<CObList, CObList*>::AddTail((CMyObject*)newElement); }
 
 	// add another list of elements before head or after tail
 	void AddHead(CTypedPtrList<CObList, CObList*>* pNewList)

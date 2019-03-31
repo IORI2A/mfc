@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CDrawingManager : public CObject
+class CDrawingManager : public CMyObject
 {
 public:
 	CDrawingManager(CDC& dc);

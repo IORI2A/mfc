@@ -18,7 +18,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CMFCCmdUsageCount : public CObject
+class CMFCCmdUsageCount : public CMyObject
 {
 public:
 	CMFCCmdUsageCount();

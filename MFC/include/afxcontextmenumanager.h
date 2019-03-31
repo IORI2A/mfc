@@ -22,7 +22,7 @@
 
 class CMFCPopupMenu;
 
-class CContextMenuManager : public CObject
+class CContextMenuManager : public CMyObject
 {
 	friend class CMFCPopupMenuBar;
 

@@ -21,7 +21,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CUserToolsManager : public CObject
+class CUserToolsManager : public CMyObject
 {
 public:
 	//--------------

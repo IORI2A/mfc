@@ -20,7 +20,7 @@
 #pragma component(minrebuild, off)
 #endif
 
-class CMouseManager : public CObject
+class CMouseManager : public CMyObject
 {
 	DECLARE_SERIAL(CMouseManager)
 
