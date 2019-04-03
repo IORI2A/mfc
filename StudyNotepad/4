@@ -1,0 +1,69 @@
+
+
+class AFX_NOVTABLE CObject
+error C2470: “CObject”: 看起来像函数定义，但没有参数列表；跳过明显的函数体
+定义宏 AFX_NOVTABLE 后无问题
+
+
+
+
+使用 VAssistX 查看 CObject 的构造、析构函数总是导航到 afx.inl 中。
+afx.h 中有引用 afx.inl ，但相关 构造、析构函数定义又被宏 _AFX_INLINE 【未定义】 限制 （#ifdef _AFX_INLINE）
+宏 _AFX_INLINE 又被宏 _AFX_ENABLE_INLINES 【未定义】 限制 （#ifdef _AFX_ENABLE_INLINES）
+宏 _AFX_ENABLE_INLINES 又被宏 _DEBUG 【有定义】 及 _AFX_DISABLE_INLINES 【有定义】 限制 （#ifdef _DEBUG） （#ifndef _AFX_DISABLE_INLINES）
+也就是说调试版本下 _AFX_INLINE 是无定义的，也即 afx.h 中引入的 afx.inl 中的构造、析构函数定义 是不存在的（无效的）
+
+
+
+后反复尝试各种方法编译MFC原工程中，无意间发现有个 afxinl1.cpp 有引入 afx.inl 。 （说明 头文件、源文件 都可引入 INL 文件）
+#define _AFX_INLINE
+#include "afx.inl"
+
+这里定义了宏 _AFX_INLINE ， 并且将其定义为 空的。也即 CObject 的构造、析构函数就是非内联的。
+是否可推得 调试版本 的程序 才会使用（编译、链接）到 afxinl1.cpp 。
+
+
+
+非调试版本 宏 _AFX_INLINE 应该是定义为如下：
+
+#define _AFX_INLINE AFX_INLINE
+
+#ifndef AFX_INLINE
+	#define AFX_INLINE inline /*__forceinline*/
+#endif
+
+也即 CObject 的构造、析构函数在 非调试版本 是定义为内联的（ inline ）。
+
+
+
+
+
+
+之前 写的 CMyObject 应该 仿照 实现一个 afxinl1.cpp 引入 afx.inl ， 应该也可以编译通过了？
+确认是，加入 afxinl1.cpp 就引入了 构造、析构函数等的非内联定义，相关错误就消失了。
+
+
+
+
+
+
+MFC 是否是利用这样一种机制来实现 调试和发布 版本间的 函数非内联与内联切换？
+如果是这种方式，总感觉有点别扭，还有其它的实现方式么？
+
+
+
+
+
+
+一点思考总结：
+MFC 源码中（VS2008） 有如何 README 文件 描述如何再生成各种版本MFC。
+根据指导操作，未能成功生成MFC，但已经一定的生成过程信息，且可分析MAK文件内容，查看到一点东西。
+通过不断摸索和尝试、猜想（龙其是根据MAK内容中的各种宏指定），比较偏向于 AFX.INL 中的 被宏锁定的构造函数等定义，是在不同编译命令下指定相关宏的开/关，来构造代码的。（具体MAK文件有点难，未细究）
+如果真是这样，有一点不太明白：构造函数等定义，都是被标记为内联。而如果是调试版本，就没有关联到这些内联的定义，那么调试版本的定义在哪儿呢。
+
+
+
+加入 afxinl1.cpp 后， 报
+c:\users\lz\documents\github\mfc\mfc\include\afx.inl(91): error C2653: “CObject”: 不是类或命名空间名称
+
+替换 “CObject” 为 “CMyObject” 后，构造函数等无法解析错误消失。
