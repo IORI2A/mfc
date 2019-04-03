@@ -241,34 +241,34 @@ _AFXCOLL_INLINE INT_PTR CObArray::GetUpperBound() const
 	{ return m_nSize-1; }
 _AFXCOLL_INLINE void CObArray::RemoveAll()
 	{ SetSize(0); }
-_AFXCOLL_INLINE CObject* CObArray::GetAt(INT_PTR nIndex) const
+_AFXCOLL_INLINE CMyObject* CObArray::GetAt(INT_PTR nIndex) const
 	{ ASSERT(nIndex >= 0 && nIndex < m_nSize);
 		if( nIndex < 0 || nIndex >= m_nSize )
 			AfxThrowInvalidArgException();
 		return m_pData[nIndex]; }
-_AFXCOLL_INLINE void CObArray::SetAt(INT_PTR nIndex, CObject* newElement)
+_AFXCOLL_INLINE void CObArray::SetAt(INT_PTR nIndex, CMyObject* newElement)
 	{ ASSERT(nIndex >= 0 && nIndex < m_nSize);
 		if( nIndex < 0 || nIndex >= m_nSize )
 			AfxThrowInvalidArgException();
 		m_pData[nIndex] = newElement; }
 
-_AFXCOLL_INLINE CObject*& CObArray::ElementAt(INT_PTR nIndex)
+_AFXCOLL_INLINE CMyObject*& CObArray::ElementAt(INT_PTR nIndex)
 	{ ASSERT(nIndex >= 0 && nIndex < m_nSize);
 		if( nIndex < 0 || nIndex >= m_nSize )
 			AfxThrowInvalidArgException();
 		return m_pData[nIndex]; }
-_AFXCOLL_INLINE const CObject** CObArray::GetData() const
-	{ return (const CObject**)m_pData; }
-_AFXCOLL_INLINE CObject** CObArray::GetData()
-	{ return (CObject**)m_pData; }
-_AFXCOLL_INLINE INT_PTR CObArray::Add(CObject* newElement)
+_AFXCOLL_INLINE const CMyObject** CObArray::GetData() const
+	{ return (const CMyObject**)m_pData; }
+_AFXCOLL_INLINE CMyObject** CObArray::GetData()
+	{ return (CMyObject**)m_pData; }
+_AFXCOLL_INLINE INT_PTR CObArray::Add(CMyObject* newElement)
 	{ INT_PTR nIndex = m_nSize;
 		SetAtGrow(nIndex, newElement);
 		return nIndex; }
 
-_AFXCOLL_INLINE CObject* CObArray::operator[](INT_PTR nIndex) const
+_AFXCOLL_INLINE CMyObject* CObArray::operator[](INT_PTR nIndex) const
 	{ return GetAt(nIndex); }
-_AFXCOLL_INLINE CObject*& CObArray::operator[](INT_PTR nIndex)
+_AFXCOLL_INLINE CMyObject*& CObArray::operator[](INT_PTR nIndex)
 	{ return ElementAt(nIndex); }
 
 
@@ -408,63 +408,63 @@ _AFXCOLL_INLINE INT_PTR CObList::GetSize() const
 	{ return m_nCount; }
 _AFXCOLL_INLINE BOOL CObList::IsEmpty() const
 	{ return m_nCount == 0; }
-_AFXCOLL_INLINE CObject*& CObList::GetHead()
+_AFXCOLL_INLINE CMyObject*& CObList::GetHead()
 	{ ASSERT(m_pNodeHead != NULL);
 		return m_pNodeHead->data; }
-_AFXCOLL_INLINE const CObject* CObList::GetHead() const
+_AFXCOLL_INLINE const CMyObject* CObList::GetHead() const
 	{ ASSERT(m_pNodeHead != NULL);
 		return m_pNodeHead->data; }
-_AFXCOLL_INLINE CObject*& CObList::GetTail()
+_AFXCOLL_INLINE CMyObject*& CObList::GetTail()
 	{ ASSERT(m_pNodeTail != NULL);
 		return m_pNodeTail->data; }
-_AFXCOLL_INLINE const CObject* CObList::GetTail() const
+_AFXCOLL_INLINE const CMyObject* CObList::GetTail() const
 	{ ASSERT(m_pNodeTail != NULL);
 		return m_pNodeTail->data; }
 _AFXCOLL_INLINE POSITION CObList::GetHeadPosition() const
 	{ return (POSITION) m_pNodeHead; }
 _AFXCOLL_INLINE POSITION CObList::GetTailPosition() const
 	{ return (POSITION) m_pNodeTail; }
-_AFXCOLL_INLINE CObject*& CObList::GetNext(POSITION& rPosition) // return *Position++
+_AFXCOLL_INLINE CMyObject*& CObList::GetNext(POSITION& rPosition) // return *Position++
 	{ CNode* pNode = (CNode*) rPosition;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		rPosition = (POSITION) pNode->pNext;
 		return pNode->data; }
-_AFXCOLL_INLINE const CObject* CObList::GetNext(POSITION& rPosition) const // return *Position++
+_AFXCOLL_INLINE const CMyObject* CObList::GetNext(POSITION& rPosition) const // return *Position++
 	{ CNode* pNode = (CNode*) rPosition;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		rPosition = (POSITION) pNode->pNext;
 		return pNode->data; }
-_AFXCOLL_INLINE CObject*& CObList::GetPrev(POSITION& rPosition) // return *Position--
+_AFXCOLL_INLINE CMyObject*& CObList::GetPrev(POSITION& rPosition) // return *Position--
 	{ CNode* pNode = (CNode*) rPosition;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		rPosition = (POSITION) pNode->pPrev;
 		return pNode->data; }
-_AFXCOLL_INLINE const CObject* CObList::GetPrev(POSITION& rPosition) const // return *Position--
+_AFXCOLL_INLINE const CMyObject* CObList::GetPrev(POSITION& rPosition) const // return *Position--
 	{ CNode* pNode = (CNode*) rPosition;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		rPosition = (POSITION) pNode->pPrev;
 		return pNode->data; }
-_AFXCOLL_INLINE CObject*& CObList::GetAt(POSITION position)
+_AFXCOLL_INLINE CMyObject*& CObList::GetAt(POSITION position)
 	{ CNode* pNode = (CNode*) position;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		return pNode->data; }
-_AFXCOLL_INLINE const CObject* CObList::GetAt(POSITION position) const
+_AFXCOLL_INLINE const CMyObject* CObList::GetAt(POSITION position) const
 	{ CNode* pNode = (CNode*) position;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
 			AfxThrowInvalidArgException();
 		return pNode->data; }
-_AFXCOLL_INLINE void CObList::SetAt(POSITION pos, CObject* newElement)
+_AFXCOLL_INLINE void CObList::SetAt(POSITION pos, CMyObject* newElement)
 	{ CNode* pNode = (CNode*) pos;
 		ASSERT(AfxIsValidAddress(pNode, sizeof(CNode)));
 		if( pNode == NULL )
@@ -609,7 +609,7 @@ _AFXCOLL_INLINE INT_PTR CMapWordToOb::GetSize() const
 	{ return m_nCount; }
 _AFXCOLL_INLINE BOOL CMapWordToOb::IsEmpty() const
 	{ return m_nCount == 0; }
-_AFXCOLL_INLINE void CMapWordToOb::SetAt(WORD key, CObject* newValue)
+_AFXCOLL_INLINE void CMapWordToOb::SetAt(WORD key, CMyObject* newValue)
 	{ (*this)[key] = newValue; }
 _AFXCOLL_INLINE POSITION CMapWordToOb::GetStartPosition() const
 	{ return (m_nCount == 0) ? NULL : BEFORE_START_POSITION; }
@@ -639,7 +639,7 @@ _AFXCOLL_INLINE INT_PTR CMapStringToOb::GetSize() const
 	{ return m_nCount; }
 _AFXCOLL_INLINE BOOL CMapStringToOb::IsEmpty() const
 	{ return m_nCount == 0; }
-_AFXCOLL_INLINE void CMapStringToOb::SetAt(LPCTSTR key, CObject* newValue)
+_AFXCOLL_INLINE void CMapStringToOb::SetAt(LPCTSTR key, CMyObject* newValue)
 	{ (*this)[key] = newValue; }
 _AFXCOLL_INLINE POSITION CMapStringToOb::GetStartPosition() const
 	{ return (m_nCount == 0) ? NULL : BEFORE_START_POSITION; }

@@ -152,13 +152,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="afxcrit.cpp" />
+    <ClCompile Include="afxinl1.cpp" />
+    <ClCompile Include="afxmem.cpp" />
     <ClCompile Include="appmodul.cpp" />
+    <ClCompile Include="arcobj.cpp" />
+    <ClCompile Include="array_o.cpp" />
+    <ClCompile Include="dumpcont.cpp" />
     <ClCompile Include="filecore.cpp" />
+    <ClCompile Include="map_so.cpp" />
+    <ClCompile Include="map_wo.cpp" />
     <ClCompile Include="objcore.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="afximpl.h" />
+    <ClInclude Include="elements.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

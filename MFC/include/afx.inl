@@ -87,36 +87,36 @@ __declspec(selectany) void* _pIncludeInitManaged = (void*)_AfxInitManaged;
 #ifndef AFX_INL_INCLUDE_GUARD
 #define AFX_INL_INCLUDE_GUARD
 
-// CObject
-_AFX_INLINE CObject::CObject()
+// CMyObject
+_AFX_INLINE CMyObject::CMyObject()
 	{ }
-_AFX_INLINE CObject::~CObject()
+_AFX_INLINE CMyObject::~CMyObject()
 	{ }
-_AFX_INLINE void CObject::Serialize(CArchive&)
-	{ /* CObject does not serialize anything by default */ }
-_AFX_INLINE void* PASCAL CObject::operator new(size_t, void* p)
+_AFX_INLINE void CMyObject::Serialize(CArchive&)
+	{ /* CMyObject does not serialize anything by default */ }
+_AFX_INLINE void* PASCAL CMyObject::operator new(size_t, void* p)
 	{ return p; }
 #ifndef _DEBUG
 // _DEBUG versions in afxmem.cpp
-_AFX_INLINE void PASCAL CObject::operator delete(void* p)
+_AFX_INLINE void PASCAL CMyObject::operator delete(void* p)
 	{ ::operator delete(p); }
-_AFX_INLINE void PASCAL CObject::operator delete(void* p, void*)
+_AFX_INLINE void PASCAL CMyObject::operator delete(void* p, void*)
 	{ ::operator delete(p); }
-_AFX_INLINE void* PASCAL CObject::operator new(size_t nSize)
+_AFX_INLINE void* PASCAL CMyObject::operator new(size_t nSize)
 	{ return ::operator new(nSize); }
 // _DEBUG versions in objcore.cpp
 #ifdef _AFXDLL
-_AFX_INLINE void CObject::AssertValid() const
+_AFX_INLINE void CMyObject::AssertValid() const
 	{ /* no asserts in release builds */ }
-_AFX_INLINE void CObject::Dump(CDumpContext&) const
+_AFX_INLINE void CMyObject::Dump(CDumpContext&) const
 	{ /* no dumping in release builds */ }
 #endif //_AFXDLL
 #endif //!_DEBUG
-_AFX_INLINE const CObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, const CObject* pObject)
-	{ return (const CObject*)AfxDynamicDownCast(pClass, (CObject*)pObject); }
+_AFX_INLINE const CMyObject* AFX_CDECL AfxDynamicDownCast(CRuntimeClass* pClass, const CMyObject* pObject)
+	{ return (const CMyObject*)AfxDynamicDownCast(pClass, (CMyObject*)pObject); }
 #ifdef _DEBUG
-_AFX_INLINE const CObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, const CObject* pObject)
-	{ return (const CObject*)AfxStaticDownCast(pClass, (CObject*)pObject); }
+_AFX_INLINE const CMyObject* AFX_CDECL AfxStaticDownCast(CRuntimeClass* pClass, const CMyObject* pObject)
+	{ return (const CMyObject*)AfxStaticDownCast(pClass, (CMyObject*)pObject); }
 #endif
 
 // exceptions
@@ -377,11 +377,11 @@ _AFX_INLINE CArchive::CArchive(const CArchive& /* arSrc */)
 	{ }
 _AFX_INLINE void CArchive::operator=(const CArchive& /* arSrc */)
 	{ }
-_AFX_INLINE CArchive& AFXAPI operator<<(CArchive& ar, const CObject* pOb)
+_AFX_INLINE CArchive& AFXAPI operator<<(CArchive& ar, const CMyObject* pOb)
 	{ ar.WriteObject(pOb); return ar; }
-_AFX_INLINE CArchive& AFXAPI operator>>(CArchive& ar, CObject*& pOb)
+_AFX_INLINE CArchive& AFXAPI operator>>(CArchive& ar, CMyObject*& pOb)
 	{ pOb = ar.ReadObject(NULL); return ar; }
-_AFX_INLINE CArchive& AFXAPI operator>>(CArchive& ar, const CObject*& pOb)
+_AFX_INLINE CArchive& AFXAPI operator>>(CArchive& ar, const CMyObject*& pOb)
 	{ pOb = ar.ReadObject(NULL); return ar; }
 
 _AFX_INLINE void CArchive::EnsureRead(void *lpBuf, UINT nCount)

@@ -109,7 +109,7 @@ _AFXDLGS_INLINE void CPropertySheet::MapDialogRect(LPRECT lpRect) const
 	{ ASSERT(::IsWindow(m_hWnd)); ::MapDialogRect(m_hWnd, lpRect); }
 _AFXDLGS_INLINE CPropertyPage* CPropertySheet::GetPage(int nPage) const
 { 
-	CPropertyPage *pPage=STATIC_DOWNCAST(CPropertyPage, (CObject*)m_pages[nPage]); 
+	CPropertyPage *pPage=STATIC_DOWNCAST(CPropertyPage, (CMyObject*)m_pages[nPage]); 
 	ENSURE(pPage);
 	return pPage;
 }

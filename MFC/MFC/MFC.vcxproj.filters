@@ -30,6 +30,27 @@
     <ClCompile Include="filecore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="afxinl1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="afxmem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="arcobj.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="array_o.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="map_wo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="map_so.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="dumpcont.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -39,6 +60,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="afximpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="elements.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
