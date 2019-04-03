@@ -13,11 +13,14 @@
 
 
 
-class CDerived : public CMyObject
-{
-public:
-	int m_nCode;
-};
+//class CDerived : public CMyObject
+//{
+//public:
+//	int m_nCode;
+//
+//	CDerived() {}
+//	~CDerived() {}
+//};
 
 
 
@@ -30,7 +33,7 @@ int AFXAPI AfxWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	//CDerived obj;
 
-	CFile fl;
+	//CFile fl;
 
 	ASSERT(hPrevInstance == NULL);
 

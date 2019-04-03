@@ -1019,6 +1019,15 @@ public:
 
 using ATL::CAtlTransactionManager;
 
+//class CDerived : public CMyObject
+//{
+//public:
+//	int m_nCode;
+//
+//	CDerived() {}
+//	~CDerived() {}
+//};
+
 class CFile : public CMyObject
 {
 	DECLARE_DYNAMIC(CFile)
@@ -1068,7 +1077,7 @@ public:
 
 	enum SeekPosition { begin = 0x0, current = 0x1, end = 0x2 };
 
-	static AFX_DATA const HANDLE hFileNull;
+	static /*AFX_DATA*/ const HANDLE hFileNull;
 
 // Constructors
 	CFile();

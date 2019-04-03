@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="afxcrit.cpp" />
     <ClCompile Include="appmodul.cpp" />
+    <ClCompile Include="filecore.cpp" />
     <ClCompile Include="objcore.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
