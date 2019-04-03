@@ -1,0 +1,47 @@
+stdafx.h // includes the standard includes that are used for most of the project.  These are compiled into a pre-compiled header (标准系统包含文件的包含文件，或是经常使用但不常更改的特定于项目的包含文件)
+每种类型的/每个项目的stdafx.h的内容都不相同     自由裁剪
+
+stdafx.cpp : 只包括标准包含文件（stdafx.h）的源文件   【目的，用于生成预编译头】
+*.pch 将作为预编译头
+*.obj 将包含预编译类型信息
+
+afx.h  _AFXDLL 项目属性中定义的宏  
+未使用到前 可以 不定义 _AFXDLL
+
+
+#include <windows.h>  // windows 程序应当使用 windows.h，不能直接使用 winbase.h。  // 程序入口点（函数） 是不带 "_t"的。如 WinMain
+
+#include <tchar.h>  // 进行通用性的映射。 程序入口点（函数）带 "_t"。 如 _tWinMain --> WinMain / wWinMain
+
+使用预编译头 (项目属性配置 “创建”预编译头)  *.pch 文件位于 .\MFC\MFC\Debug
+(后续如果预编译头无更改，项目属性是否可配置为 “使用”预编译头。==》 更改为 “使用”后， 报错【fatal error C1083: 无法打开预编译头文件:“Debug\MFC.pch”: No such file or directory】)
+
+
+
+
+
+_DEBUG
+项目是调试版本时，默认是_DEBUG。 （但最好在项目属性的预定义宏中也定义_DEBUG，以便查看代码时高亮。）
+
+
+
+__debugbreak() 
+VS引导运行下，会弹出一个对话框。 指示 【XXX已触发一个断点。】 【可选择 “中断”、“继续”、“忽略”】
+直接运行EXE，会弹出一个对话框。 指示 【XXX已停止工作。】 【可选择 “调试”、“关闭程序”】
+
+_CrtDbgReport
+VS引导运行下/直接运行EXE，会弹出一个对话框。 指示 【Debug Assertion Failed!  带文件名， 行号】 【可选择 “中止”、“重试”、“忽略”】
+
+调测断点函数 和 断言报告函数。
+
+
+
+
+#define AAABBBCCC(f) (f)  // 运算f，有括号更安全
+
+
+#include <crtdbg.h>  // 引入 _CRT_ASSERT
+
+
+WM_QUIT， if it is in the queue then the message box won't display
+如果消息队列中有 WM_QUIT 消息，那么就不会成功显示任何对话框
