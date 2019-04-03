@@ -1,0 +1,37 @@
+C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat
+实际是引用下面的（%VS90COMNTOOLS% = C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools）
+C:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\Tools\vsvars32.bat
+
+: 设置环境变量名/值（当前窗口有效）
+set 变量名=值
+
+: 查看环境变量值
+echo %变量名% 
+
+需要以管理员身份启动CMD (否则报 访问拒绝)
+cd C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin
+VCVARS32
+cd C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\src
+nmake /f atlmfc.mak MFC LIBNAME=mfcdll2008
+
+名称指定与默认名称有冲突。
+
+
+nmake /f atlmfc.mak MFC LIBNAME=mfc90
+
+mfc90.exp : error LNK2001: 无法解析的外部符号 "public: virtual long __stdcall CFileDialog::XFileDialogEvents::OnOverwrite(struct IFileDialog *,struct IShellItem *,enum tagFDE_OVERWRITE_RESPONSE *)" (?OnOverwrite@XFileDialogEvents@CFileDialog@@UAGJPAUIFileDialog@@PAUIShellItem@@PAW4tagFDE_OVERWRITE_RESPONSE@@@Z)
+mfc90.exp : error LNK2001: 无法解析的外部符号 "public: virtual long __stdcall CFileDialog::XFileDialogEvents::OnShareViolation(struct IFileDialog *,struct IShellItem *,enum tagFDE_SHAREVIOLATION_RESPONSE *)" (?OnShareViolation@XFileDialogEvents@CFileDialog@@UAGJPAUIFileDialog@@PAUIShellItem@@PAW4tagFDE_SHAREVIOLATION_RESPONSE@@@Z)
+INTEL\mfc90.DLL : fatal error LNK1120: 2 个无法解析的外部命令
+
+
+
+INTEL\$NW
+对应于
+C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\src\mfc\intel\$NW
+
+
+
+直接使用 mfcdll.mak 也报类似错误
+NMAKE /f mfcdll.mak DEBUG=1 LIBNAME=MYMFC
+
+
