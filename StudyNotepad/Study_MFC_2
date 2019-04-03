@@ -1,0 +1,413 @@
+增加 afxwin.h 时，报错：d:\program files\microsoft visual studio 10.0\vc\atlmfc\include\afx.h(24): fatal error C1189: #error :  Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version. Please #define _AFXDLL or do not use /MD[d]
+
+错误源头：
+#ifdef _DLL
+#ifndef _AFXDLL
+#error Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version. Please #define _AFXDLL or do not use /MD[d]
+#endif
+#endif
+
+但目前并未建立 afx.h 文件。估计是项目默认的包含目录是有指向 VC 中的 MFC 的。
+
+$(VCInstallDir)include
+$(VCInstallDir)atlmfc\include
+$(WindowsSdkDir)include
+$(FrameworkSDKDir)\include
+
+主要可删除项目的以上包含目录中的 $(VCInstallDir)atlmfc\include
+
+为工程配置增加的 afxwin.h 文件的包含目录。 $(SolutionDir)include
+
+
+
+
+$(XXXXX)  是工程项目属性中的宏 （变量）
+
+
+
+
+CObject
+
+CCmdTarget
+
+CWinThread --》 CCmdTarget --》CObject
+
+AfxGetThread
+
+
+
+protected:   // 构造函数 使用保护限制（protected）。使得用户不可直接使用 CObject
+	CObject();
+private:    // 复制构造函数和赋值函数 使用私有限制（private）。使得不可值传递/赋值 CObject  及其子类
+	CObject(const CObject& objectSrc);              // no implementation
+	void operator=(const CObject& objectSrc);       // no implementation
+
+
+
+
+测试项目 MFCTEST 应当使用 测试目标的内容。该项目包含目录属性也配置为 $(VCInstallDir)include;$(WindowsSdkDir)include;$(SolutionDir)include
+避免 包含目录指向 VC 中的 MFC 的 stdafx.h 等头文件。
+
+
+CObject 类 使用基本构造/复制函数
+
+测试 CObject 类 的 构造/复制 操作控制。
+
+
+
+.inl文件
+https://www.cnblogs.com/findumars/p/4340936.html
+
+
+
+
+CObject 在 afx.h 中定义 
+
+
+类  虚函数  纯虚函数  类接口   
+构造函数/析构函数 无定义
+
+
+
+1>MyCObject.obj : error LNK2001: 无法解析的外部符号 "protected: __thiscall CMyObject::CMyObject(void)" (??0CMyObject@@IAE@XZ)
+1>MyCObject.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CMyObject::Serialize(class CArchive &)" (?Serialize@CMyObject@@UAEXAAVCArchive@@@Z)
+1>MyCObject.obj : error LNK2001: 无法解析的外部符号 "public: static void __stdcall CMyObject::operator delete(void *)" (??3CMyObject@@SGXPAX@Z)
+1>MyCObject.obj : error LNK2001: 无法解析的外部符号 "public: virtual __thiscall CMyObject::~CMyObject(void)" (??1CMyObject@@UAE@XZ)
+
+
+
+
+winmain.cpp  具有主函数入口
+
+winmain.cpp 使用 stdafx.h
+stdafx.h 使用 afx.h
+
+
+#error Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version. Please #define _AFXDLL or do not use /MD[d]
+工程项目属性中 配置 【MFC使用】=【在共享 DLL 中使用 MFC】
+
+
+
+afx.h 使用 afxver_.h
+afxver_.h 使用 afxv_w32.h
+afxver_.h 使用 afxv_dll.h
+
+afx.h 使用 atltrace.h
+atltrace.h 使用 atldef.h
+atldef.h 使用 atlrc.h
+
+atltrace.h 使用 atlconv.h
+atlconv.h 使用 atlalloc.h
+
+atltrace.h 使用 atldebugapi.h
+
+afx.h 使用 afxstr.h
+afxstr.h 使用 atlcore.h
+atlcore.h 使用 atlchecked.h
+atlchecked 使用 atlexcept.h
+
+atlcore.h 使用 atlsimpcoll.h
+
+afxstr.h 使用 cstringt.h
+cstringt.h 使用 atlsimpstr.h
+atlsimpstr.h -- atlmem.h
+atlmem.h -- atlcommem.h
+atlcommem.h == atlcomcli.h
+
+cstringt.h == cstringt.inl
+
+
+afx.h == atltransactionmanager.h
+
+
+afx.h == atltime.h
+
+afx.h == afxcoll.h
+afxcoll.h == afxstat_.h
+afxstat_.h == atltypes.h
+
+
+afxstat_.h == afxtls_.h
+
+
+afx.h == afx.inl
+
+
+stdafx.h == afxplex_.h
+
+stdafx.h == atlbase.h
+atlbase.h == atliface.h
+
+
+atlbase.h == statreg.h
+
+
+stdafx.h == afxtempl.h
+
+
+stdafx.h == afxwin.h
+afxwin.h == afxres.h
+
+
+afxwin.h == afxctrlcontainer.h
+
+
+afxwin.h == atlhandler.h
+atlhandler.h == atlstr.h
+
+
+afxwin.h == afxcomctl32.h
+
+
+afxwin.h == afxanimationcontroller.h
+afxanimationcontroller.h == afxanimationhelper.h
+
+
+afxwin.h == afxmsg_.h
+
+
+afxwin.h == afxdd_.h
+
+
+afxwin.h == afxrendertarget.h
+
+
+afxwin.h == afxdll_.h
+
+
+afxwin.h == afxcomctl32.inl
+
+
+afxwin.h == afxwin4.inl
+
+
+stdafx.h == afxdlgs.h
+
+
+stdafx.h == afxext.h
+
+
+stdafx.h == afxcom_.h
+
+
+stdafx.h == afxole.h
+afxole.h == afxdisp.h
+afxdisp.h == atlcomtime.h
+
+
+afxdisp.h == afxocc.h
+afxocc.h == olebind.h
+
+
+afxocc.h == ocdbid.h
+
+
+afxocc.h == ocdb.h
+
+
+stdafx.h == afxdtctl.h
+
+
+stdafx.h == afxthemehelper.h
+
+
+stdafx.h == afxdocob.h
+
+
+stdafx.h == afxdao.h
+afxdao.h == afxdb_.h
+
+
+stdafx.h == afxodlgs.h
+
+
+stdafx.h == afxctl.h
+
+
+stdafx.h == afxdb.h
+
+
+stdafx.h == afxmt.h
+
+
+stdafx.h == afxinet.h
+
+
+stdafx.h == afxpriv.h
+afxpriv.h == afxadv.h
+
+
+afxpriv.h == afxconv.h
+
+
+afxpriv.h == afxpriv2.h
+
+
+stdafx.h == afximpl.h
+
+
+stdafx.h == winhand_.h
+winhand_.h == fixalloc.h
+
+
+stdafx.h == oleimpl2.h
+
+
+stdafx.h == ctlimpl.h
+
+
+stdafx.h == dbimpl.h
+
+
+stdafx.h == daoimpl.h
+
+
+stdafx.h == sockimpl.h
+
+
+stdafx.h == afxsock.h
+afxsock.h == atlsocket.h
+atlsocket.h == atlsocket.inl
+
+
+stdafx.h == afxcmn.h
+afxcmn.h == afxcmn3.inl
+
+
+stdafx.h == afxcview.h
+
+
+stdafx.h == afxrich.h
+
+
+stdafx.h == afxhtml.h
+
+
+stdafx.h == afxdhtml.h
+afxhtml.h == atlcom.h
+atlcom.h == atlstdthunk.h
+
+
+
+程序主入口函数 （_tWinMain） 在 appmodul.cpp
+
+1>  winmain.cpp
+1>LINK : fatal error LNK1561: 必须定义入口点
+
+winmain.cpp 与 appmodul.cpp 使用相同的头文件 
+#include "stdafx.h"
+#include "sal.h"
+
+
+
+
+
+
+
+
+DEBUG版本
+
+appmodul.cpp  具有主函数入口
+
+项目增加单一文件 appmodul.cpp
+
+
+1>  appmodul.cpp
+1>e:\lz\test\mfc\mfc\appmodul.cpp(11): fatal error C1083: 无法打开包括文件:“stdafx.h”: No such file or directory
+
+使用 stdafx.h  (\Microsoft Visual Studio 10.0\VC\atlmfc\src\mfc)
+stdafx.h == afx.h
+
+#error Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version. Please #define _AFXDLL or do not use /MD[d]
+工程项目属性中 配置 【MFC使用】=【在共享 DLL 中使用 MFC】
+
+
+afx.h == afxver_.h
+afxver_.h == afxv_w32.h
+
+afxver_.h == afxv_dll.h
+
+
+afx.h == atltrace.h
+atltrace.h == atldef.h
+atldef.h == atlrc.h
+
+
+atltrace.h = atlconv.h
+atlconv.h == atlalloc.h
+
+
+atltrace.h == atldebugapi.h
+
+
+afx.h == afxstr.h
+afxstr.h == atlcore.h
+atlcore.h == atlchecked.h
+atlchecked.h == atlexcept.h
+
+
+atlcore.h == atlsimpcoll.h
+
+
+afxstr.h == cstringt.h
+cstringt.h == atlsimpstr.h
+atlsimpstr.h == atlmem.h
+atlmem.h == atlcommem.h
+atlcommem.h == atlcomcli.h
+
+
+cstringt.h == cstringt.inl
+
+
+afx.h == atltransactionmanager.h
+
+
+afx.h == atltime.h
+
+
+afx.h == afxcoll.h
+afxcoll.h == afxstat_.h
+afxstat_.h == atltypes.h
+
+
+afxstat_.h == afxtls_.h
+
+
+afx.h == afx.inl
+
+
+stdafx.h == afxplex_.h
+
+
+stdafx.h == atlbase.h
+atlbase.h == atliface.h
+
+
+atlbase.h == statreg.h
+
+
+stdafx.h == afxtempl.h
+
+
+stdafx.h == afxwin.h
+afxwin.h == afxres.h
+
+
+afxwin.h == afxctrlcontainer.h
+
+
+afxwin.h == atlhandler.h
+atlhandler.h == atlstr.h
+
+
+afxwin.h == afxcomctl32.h
+
+
+afxwin.h == afxanimationcontroller.h
+afxanimationcontroller.h == afxanimationhelper.h
+
+
+afxwin.h == afxmsg_.h
+
+
+afxwin.h == afxdd_.h
