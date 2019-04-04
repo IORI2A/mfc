@@ -1,0 +1,9 @@
+CObject类的实现 可能是结合 afx.h 、 afx.inl 、afxinl1.cpp 实现的。
+afxinl1.cpp中有语句：
+#define _AFX_INLINE
+#include "afx.inl"
+
+
+
+编译MFC源码好像需要定义宏 _AFXDLL
+项目属性中进行预定义
