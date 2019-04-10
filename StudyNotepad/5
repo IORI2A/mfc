@@ -1,0 +1,176 @@
+
+
+
+WINAPI、AFXAPI 等一般都 定义的函数 调用规范
+
+ = afxver_.h
+#ifndef AFXAPI
+#define AFXAPI __stdcall
+#endif
+
+_tWinMain = AfxWinMain
+
+
+annotations  注释
+
+
+_$notnull 宏名中可以带$符号？
+The dollar sign is also a valid identifier in Visual C++. 
+
+// dollar_sign_identifier.cpp
+struct $Y1$ {
+   void $Test$() {}
+};
+
+int main() {
+   $Y1$ $x$;
+   $x$.$Test$();
+}
+
+
+SAL    source-code annotation language (SAL)
+代码安全增强与标准注解语言SAL
+<sal.h>
+
+
+
+A.cpp 文件引用 B.cpp 中的函数实例 func_in_b ，必须在 A.cpp 中 对 func_in_b 进行声明。
+
+
+
+头文件放置公用部分 （接口）
+
+
+
+分析 ASSERT 的实现
+
+#include <crtdbg.h>  // ASSERT _CrtDbgReport _CRT_ASSERT
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Diagnostic support
+
+#ifdef _DEBUG
+
+BOOL AFXAPI AfxAssertFailedLine(LPCSTR lpszFileName, int nLine);
+#define THIS_FILE          __FILE__
+#define DEBUG_ONLY(f)      (f)
+
+#else   // _DEBUG
+
+#define DEBUG_ONLY(f)      ((void)0)
+
+#endif // !_DEBUG
+
+#define ASSERT(f)          DEBUG_ONLY((void) ((f) || !::AfxAssertFailedLine(THIS_FILE, __LINE__) || (AfxDebugBreak(), 0)))
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Special AfxDebugBreak: used to break into debugger at critical times
+
+#ifndef AfxDebugBreak
+#define AfxDebugBreak() __debugbreak()
+#endif
+
+
+#ifdef _DEBUG 
+
+// NOTE: in separate module so it can replaced if needed
+
+BOOL AFXAPI AfxAssertFailedLine(LPCSTR lpszFileName, int nLine)
+{
+#ifndef _AFX_NO_DEBUG_CRT
+	// we remove WM_QUIT because if it is in the queue then the message box
+	// won't display
+	MSG msg;
+	BOOL bQuit = PeekMessage(&msg, NULL, WM_QUIT, WM_QUIT, PM_REMOVE);
+	BOOL bResult = _CrtDbgReport(_CRT_ASSERT, lpszFileName, nLine, NULL, NULL);
+	if (bQuit)
+		PostQuitMessage((int)msg.wParam);
+	return bResult;
+#else
+	// Not supported.
+#error _AFX_NO_DEBUG_CRT is not supported.
+#endif // _AFX_NO_DEBUG_CRT
+}
+#endif // _DEBUG
+
+
+
+CWinThread = CCmdTarget = CObject
+
+
+
+
+#define AFX_NOVTABLE __declspec(novtable)  = afxver_.h
+
+#define AFX_NOVTABLE
+
+novtable
+
+should only be applied to pure interface classes, that is, classes that will never be instantiated
+
+If you attempt to instantiate a class marked with novtable and then access a class member, you will receive an access violation (AV).
+
+
+
+
+#define PASCAL  __stdcall   = afxver_.h
+
+
+
+LPCSTR = <WinNT.h> = <windows.h>
+
+
+
+
+#define AFX_CDECL __cdecl  = afxver_.h
+
+AfxGetThread() = AFX_MODULE_THREAD_STATE
+
+
+
+一直报类未定义之类的问题  可以检查一下头文件的宏指令是否写错。 如： #ifndef 写成 #ifdef
+
+
+
+
+
+AFX_MODULE_STATE = CNoTrackObject
+CThreadLocal = CThreadLocalObject
+AFX_MODULE_THREAD_STATE
+
+
+
+
+#ifndef AFX_INLINE    = afxver_.h
+	#define AFX_INLINE inline /*__forceinline*/
+#endif
+
+
+
+ENSURE = afx.h
+
+
+AfxThrowInvalidArgException 未找到定义？  不能通过定义直接关联  经查找在 except.cpp
+
+
+
+_AFX_THREAD_STATE = CNoTrackObject
+
+
+
+_AFX_BASE_MODULE_STATE = AFX_MODULE_STATE
+
+
+
+AFX_COMDAT   = afxver_.h
+
+
+
+CProcessLocal
+
+
+
+ 
