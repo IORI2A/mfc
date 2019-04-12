@@ -1,0 +1,192 @@
+
+CWinThread = CCmdTarget = CObject
+仅提供构造、析构方法（有些是默认的）
+
+
+
+AfxWinMain @ AfxGetThread @ AfxGetModuleThreadState @ AfxGetModuleState
+                            AFX_MODULE_THREAD_STATE   AFX_MODULE_STATE
+							CWinThread*               CThreadLocal<AFX_MODULE_THREAD_STATE>
+							
+							                          _AFX_THREAD_STATE
+													  AFX_MODULE_STATE*
+							
+							
+
+
+CNoTrackObject = AFX_MODULE_THREAD_STATE
+               = AFX_MODULE_STATE = _AFX_BASE_MODULE_STATE
+			   = _AFX_THREAD_STATE
+			   
+			   
+			   
+			   
+CThreadLocalObject = CThreadLocal<TYPE>			
+
+
+
+
+重载 operator->   
+
+
+/*********************************************************************************************/
+//### 14.7. Member Access Operators
+
+//# Operator arrow must be a member. 
+//# dereference operator usually should be a member as well.
+//# as const members (doesn’t change the state)
+ 
+The dereference (*) and arrow (->) operators are often used in classes 
+that represent iterators and in smart pointer classes (§ 12.1, p. 450). 
+We can logically add these operators to our StrBlobPtr class as well:
+ 
+class StrBlobPtr
+{
+public:
+    std::string& operator*() const
+    {
+		auto p = check(curr, "dereference past end");
+		return (*p)[curr];  // (*p) is the vector to which this object points
+    }
+
+    std::string* operator->() const
+    { // delegate the real work to the dereference operator
+		return & this->operator*();
+    }
+    // other members as before
+};
+ 
+The dereference operator checks that curr is still in range and, 
+if so, returns a reference to the element denoted by curr. 
+The arrow operator avoids doing any work of its own 
+by calling the dereference operator and returning the address of the element returned by that operator.
+ 
+ Note
+ 
+Operator arrow must be a member. 
+The dereference operator is not required to be a member but usually should be a member as well.
+ 
+It is worth noting that we’ve defined these operators as const members. 
+Unlike the increment and decrment operators, fetching an element doesn’t change the state of a StrBlobPtr. 
+Also note that these operators return a reference or pointer to nonconst string. 
+They do so because we know that a StrBlobPtr can only be bound to a nonconst StrBlob (§ 12.1.6, p. 474).
+ 
+We can use these operators the same way that 
+we’ve used the corresponding operations on pointers or vector iterators:
+
+StrBlob a1 = {"hi", "bye", "now"};
+StrBlobPtr p(a1);            // p points to the vector inside a1
+*p = "okay";                 // assigns to the first element in a1
+cout << p->size() << endl;   // prints 4, the size of the first element in a1
+cout << (*p).size() << endl; // equivalent to p->size()
+ 
+/*********************************************************************************************/
+//##### Constraints on the Return from Operator Arrow
+
+//# The arrow operator never loses its fundamental meaning of member access.
+//# When we overload arrow, we change the object from which (cannot change the fact that arrow fetches a member)
+//# point->mem: 
+//# point must be a pointer to a class object  (equivalent: (*point).mem;)
+//# or it must be an object of a class with an overloaded operator->.  (equivalent: point.operator()->mem;)
+//# The overloaded arrow operator must return either a pointer to a class type or an object of a class type that defines its own operator arrow.
+ 
+As with most of the other operators (although it would be a bad idea to do so), 
+we can define operator* to do whatever processing we like. 
+That is, we can define operator* to return a fixed value, say, 42, 
+or print the contents of the object to which it is applied, or whatever. 
+The same is not true for overloaded arrow. 
+The arrow operator never loses its fundamental meaning of member access. 
+When we overload arrow, we change the object from which arrow fetches the specified member.
+We cannot change the fact that arrow fetches a member.
+ 
+When we write point->mem, 
+point must be a pointer to a class object or it must be an object of a class with an overloaded operator->. 
+Depending on the type of point, writing point->mem is equivalent to
+ 
+(*point).mem;          // point is a built-in pointer type
+point.operator()->mem; // point is an object of class type
+ 
+Otherwise the code is in error. That is, point->mem executes as follows:
+ 
+1. If point is a pointer, then the built-in arrow operator is applied, 
+which means this expression is a synonym for (*point).mem. 
+The pointer is dereferenced and the indicated member is fetched from the resulting object. 
+If the type pointed to by point does not have a member named mem, then the code is in error.
+ 
+2. If point is an object of a class that defines operator->, 
+then the result of point.operator->() is used to fetch mem. 
+If that result is a pointer, then step 1 is executed on that pointer. 
+If the result is an object that itself has an overloaded operator->(), 
+then this step is repeated on that object. 
+This process continues until either a pointer to an object with the indicated member is returned 
+or some other value is returned, in which case the code is in error.
+ 
+ Note
+ 
+The overloaded arrow operator must return either a pointer to a class type or
+an object of a class type that defines its own operator arrow.
+
+
+
+
+
+
+#include <string>
+#include <vector>
+
+
+class StrBlobPtr
+{
+public:
+	int curr;
+	//std::vector<std::string> buffer[8];
+	std::vector<std::string> *p;
+
+	StrBlobPtr(): curr(0)/*, p(new std::vector<std::string>())*/ , p(nullptr)
+	{}
+
+public:
+	std::string& operator*() const
+	{
+		//auto p = check(curr, "dereference past end");
+		return (*p)[curr];  // (*p) is the vector to which this object points
+	}
+
+	std::string* operator->() const
+	{ // delegate the real work to the dereference operator
+		return & this->operator*();
+	}
+	// other members as before
+};
+
+void TestOperatorArrowOverload()
+{
+	std::vector<std::string> vs;/* = {"hi", "bye", "now"};*/
+	vs.push_back("hi");
+	vs.push_back("bye");
+	vs.push_back("now");
+
+	StrBlobPtr sbp;
+	sbp.p = &vs;
+	sbp.curr = 2;
+
+	std::string strDeref = *sbp;
+	std::string strArrow = sbp->c_str();
+	char ch = sbp->at(0);
+}
+
+//inline
+//	std::shared_ptr<std::vector<std::string> > 
+//	StrBlobPtr::check(std::size_t i, const std::string &msg) const
+//{
+//	// is the vector still around?
+//	std::shared_ptr<std::vector<std::string> > ret = wptr.lock();   
+//
+//	if (!ret)
+//		throw std::runtime_error("unbound StrBlobPtr");
+//
+//	if (i >= ret->size()) 
+//		throw std::out_of_range(msg);
+//
+//	return ret; // otherwise, return a shared_ptr to the vector
+//}
