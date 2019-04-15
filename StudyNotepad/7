@@ -1,0 +1,83 @@
+
+
+CThreadLocalObject 操作方法获得 CNoTrackObject
+
+
+另一获得 CNoTrackObject 的函数指针定义
+CNoTrackObject* (AFXAPI* pfnCreateObject)()
+
+
+
+
+AFX_MODULE_STATE 含数据成员 CThreadLocal<AFX_MODULE_THREAD_STATE>  也就间接含有 AFX_MODULE_THREAD_STATE
+
+
+
+
+CThreadLocal<TYPE> = CThreadLocalObject
+相关操作获得 TYPE
+
+CThreadLocal<TYPE> 与 CThreadLocalObject 的继承关系，是否就限定了 TYPE 只能是 CNoTrackObject 的子类
+
+AFX_MODULE_THREAD_STATE 是 CNoTrackObject 的子类
+
+
+
+
+
+
+CThreadLocal<_AFX_THREAD_STATE>
+_AFX_THREAD_STATE 含成员 AFX_MODULE_STATE *
+
+
+
+
+
+CProcessLocal<_AFX_BASE_MODULE_STATE> 操作方法 获得 _AFX_BASE_MODULE_STATE *
+其直接赋值给 AFX_MODULE_STATE * ？？？   _AFX_BASE_MODULE_STATE 是 AFX_MODULE_STATE 的子类
+_AFX_BASE_MODULE_STATE = AFX_MODULE_STATE
+
+
+
+
+
+AfxGetThread ~ AfxGetModuleThreadState ~ AfxGetModuleState 【 _afxThreadState 、 _afxBaseModuleState 】
+该部分函数全清空屏蔽
+
+
+
+
+
+
+
+
+CWinApp
+
+
+
+AfxGetApp 内联定义 调试版本非内联 
+#define _AFXWIN_INLINE
+
+
+
+afxCurrentWinApp
+
+AFX_MODULE_STATE 含有数据成员 CWinApp *
+AfxGetModuleState
+
+
+
+
+
+
+
+AfxWinInit
+
+
+
+CWinApp 操作方法 InitApplication
+
+
+
+
+CWnd
