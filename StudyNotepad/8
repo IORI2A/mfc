@@ -1,0 +1,279 @@
+
+
+AfxWinMain ~ AfxGetThread ~ AfxGetModuleThreadState ~ AfxGetModuleState
+
+CWinThread* AFXAPI AfxGetThread()
+AFX_MODULE_THREAD_STATE* AFXAPI AfxGetModuleThreadState()
+AFX_MODULE_STATE* AFXAPI AfxGetModuleState()
+CThreadLocal<_AFX_THREAD_STATE> _afxThreadState  /  CProcessLocal<_AFX_BASE_MODULE_STATE> _afxBaseModuleState
+
+
+CNoTrackObject = AFX_MODULE_STATE = _AFX_BASE_MODULE_STATE
+               = AFX_MODULE_THREAD_STATE
+			   = _AFX_THREAD_STATE
+
+
+
+CThreadLocal<TYPE> 
+
+类似一个创建者 
+可通过其接口 创建 TYPE 的对象。  【TYPE 是否被限制为 CNoTrackObject 及其 子类？？？】
+
+类似一个辅助/包装者
+CThreadLocal<TYPE> 通过实现的转换方法 可转化为 TYPE * 【转换的实现过程中会创建 TYPE 对象】
+CThreadLocal<TYPE> 通过实现的成员访问方法 可直接使用  CThreadLocal<TYPE> 来访问 TYPE 的成员
+
+
+
+类型转换函数重载
+成员访问函数重载
+
+
+
+CThreadLocalObject = CThreadLocal<TYPE> 
+CThreadLocalObject 实现创建 TYPE 时的辅助工作。
+CThreadLocal<TYPE> 提供真实的创建函数， 调用传递给 CThreadLocalObject 创建方法。
+
+
+
+
+
+
+
+CThreadSlotData* _afxThreadData;
+
+BYTE __afxThreadData[sizeof(CThreadSlotData)];
+
+_afxThreadData = new(__afxThreadData) CThreadSlotData;    ？？？ 为何要用这种类型的 new 方法
+
+
+
+
+#define new DEBUG_NEW
+
+#define DEBUG_NEW new(THIS_FILE, __LINE__)
+#define DEBUG_NEW new
+
+
+
+new 函数的重载 ？？？
+
+Placement new Expressions
+
+new(addr) type
+
+
+
+
+EnterCriticalSection 
+
+CRITICAL_SECTION
+
+<winbase.h>
+typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+
+<winnt.h>
+typedef struct _RTL_CRITICAL_SECTION {
+    PRTL_CRITICAL_SECTION_DEBUG DebugInfo;
+
+    //
+    //  The following three fields control entering and exiting the critical
+    //  section for the resource
+    //
+
+    LONG LockCount;
+    LONG RecursionCount;
+    HANDLE OwningThread;        // from the thread's ClientId->UniqueThread
+    HANDLE LockSemaphore;
+    ULONG_PTR SpinCount;        // force size on 64-bit systems when packed
+} RTL_CRITICAL_SECTION, *PRTL_CRITICAL_SECTION;
+
+
+
+
+
+
+CThreadSlotData  头文件 源文件
+
+
+
+
+AtlMultiplyThrow ~ AtlMultiply
+
+模板函数重载
+
+
+
+
+
+AfxThrowMemoryException
+
+
+
+
+#define	_ATL_W64 __w64
+
+
+
+
+CObject = CException = CSimpleException = CMemoryException
+
+
+
+
+
+#define THROW(e) throw e
+
+
+
+
+
+
+
+
+
+AtlThrow
+
+
+
+
+
+
+
+
+
+
+
+
+如何更好的实现 调试版本非内联  发布版本内联
+
+
+
+
+
+
+_free_dbg   <crtdbg.h> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CNoTrackObject 
+主要实现 重载 new/delete 操作符 【调试版本 并未增加有什么实质性的内容】
+LocalAlloc / LocalFree 	
+【ms-help://MS.MSDNQTR.v90.en/memory/base/localalloc.htm】
+Win32 and COM Development = System Services = Memory Management = SDK Documentation = Memory Management   
+
+AfxThrowMemoryException
+
+
+
+CNoTrackObject = AFX_MODULE_STATE = _AFX_BASE_MODULE_STATE
+               = AFX_MODULE_THREAD_STATE
+			   = _AFX_THREAD_STATE
+
+
+
+
+
+
+AfxThrowMemoryException
+except.cpp
+
+CMemoryException _simpleMemoryException(FALSE, AFX_IDS_MEMORY_EXCEPTION);
+
+
+throw 
+抛出什么类型，就得按相应类型接收 ？？？
+
+
+
+
+CObject
+
+CRuntimeClass
+
+
+头文件 相互包含 
+
+头文件包含有一定的操作原则规范
+
+
+前置声明
+
+
+
+CObject
+
+virtual ~CObject() = 0;
+根基类 析构函数 虚函数 纯虚函数【可以给定义】 抽象基类【不可直接用于定义对象】
+
+重载 new/delete
+
+构造函数 protected 外部不可访问【外部不能直接构造对象】 继承体系可访问
+
+拷贝构造函数、赋值操作符 private 禁止对象复制、赋值 【可仅声明、无定义】
+CopyConstructible、CopyAssignable
+
+
+static const CRuntimeClass classCObject;
+成员 运行时类信息【元数据？？？】  静态的 
+const struct CRuntimeClass CObject::classCObject =
+    { "CObject", sizeof(CObject), 0xffff, NULL, NULL, NULL };
+
+
+基类通过 宏 实现动态运行时信息
+DECLARE_DYNAMIC(CDerived)
+IMPLEMENT_DYNAMIC(CDerived, CBase)
+
+
+
+
+MFC 继承类 功能等级
+
+Basic functionality: No support for run-time class information or serialization but includes diagnostic memory management. 
+
+Basic functionality plus support for run-time class information. 
+
+Basic functionality plus support for run-time class information and dynamic creation. 
+
+Basic functionality plus support for run-time class information, dynamic creation, and serialization. 
+
+
+
+
+
+
+CRuntimeClass
+类名
+类尺寸大小
+基类
+创建对象函数
+是否继承于某类
+dynamic name lookup and creation
+链接的下一个类
+
+
+
+
+AFX_CLASSINIT
+AfxClassInit
+AFX_MODULE_STATE ~ AfxGetModuleState
+CTypedSimpleList<CRuntimeClass*>
+
+
+
+AfxLockGlobals、AfxUnlockGlobals
+
+
