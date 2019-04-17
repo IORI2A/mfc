@@ -1,0 +1,13 @@
+
+MFC/.vs/MFC/v15/.suo
+MFC/.vs/MFC/v15/Browse.VC.db
+MFC/.vs/MFC/v15/Browse.VC.opendb
+MFC/MFC/Debug/MFC.log
+*.tlog
+*.idb
+*.pdb
+*.log
+*.ipch
+*.obj
+*.exe
+*.ilk
