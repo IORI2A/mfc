@@ -1,0 +1,223 @@
+
+CObject = CException = CSimpleException = CMemoryException
+
+
+
+
+DECLARE_DYNAMIC(class_name) 
+	static CRuntimeClass* PASCAL _GetBaseClass(); 
+	static const CRuntimeClass class##class_name; 
+	static CRuntimeClass* PASCAL GetThisClass(); 
+	virtual CRuntimeClass* GetRuntimeClass() const; 
+
+	static const CRuntimeClass class##class_name; 
+	virtual CRuntimeClass* GetRuntimeClass() const; 
+
+
+
+
+头文件 代码组织  规范、原则
+
+
+
+
+IMPLEMENT_DYNAMIC(class_name, base_class_name)
+
+IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, NULL, NULL)
+	AFX_COMDAT const CRuntimeClass class_name::class##class_name = { #class_name, sizeof(class class_name)
+	                                                                 , wSchema, pfnNew, RUNTIME_CLASS(base_class_name), NULL, class_init };
+	CRuntimeClass* class_name::GetRuntimeClass() const { return RUNTIME_CLASS(class_name); }
+
+
+
+
+
+#define AFX_COMDAT __declspec(selectany)
+
+
+RUNTIME_CLASS
+#define RUNTIME_CLASS(class_name) (class_name::GetThisClass())
+#define RUNTIME_CLASS(class_name) _RUNTIME_CLASS(class_name)
+
+
+#define _RUNTIME_CLASS(class_name) ((CRuntimeClass*)(&class_name::class##class_name))
+
+强制类型转换 const 转为 非 const 
+
+
+
+
+
+
+
+
+CObject provides basic services:
+Serialization support 
+Run-time class information 
+Object diagnostic output 
+Compatibility with collection classes 
+
+
+
+Disable the copy constructor and assignment by default so you will get compiler errors instead of unexpected behaviour if you pass objects by value or assign objects.
+
+默认情况下禁用复制构造函数和赋值, 以便在按值传递对象或分配对象时, 将获得编译器错误, 而不是意外行为。
+
+
+限定仅能 通过 址传递、引用传递
+
+
+
+use macros in class implementation and declarations. 
+
+
+DECLARE_DYNAMIC
+IMPLEMENT_DYNAMIC
+run-time access to the class name and its position in the hierarchy
+
+DECLARE_SERIAL
+IMPLEMENT_SERIAL
+enable an object to be "serialized" to and from an "archive." 
+
+
+
+
+运行时类型支持
+
+CObject 使用 CRuntimeClass
+
+类型用于定义实体对象，必须包含该类型的完整定义
+
+
+CRuntimeClass 也用到 CObject
+
+
+
+
+CObject::IsKindOf   
+DECLARE_DYNAMIC 
+
+
+CRuntimeClass::CreateObject    
+DECLARE_DYNCREATE 
+
+
+CArchive::operator>> 
+CArchive::operator<< 
+DECLARE_SERIAL 
+
+
+
+Deriving a Class from CObject 
+CSimple 
+
+
+
+
+
+afxmem.cpp 
+主要定义 new/delete 的 调试版本。
+
+
+
+带 文件名和行号的 new / delete 没有找到具体使用 文件名行号的细节地方。
+
+
+
+
+
+CRuntimeClass
+其数据成员包含运行时的类型元数据
+其中，有一个成员 关联到基类的运行时类信息
+#ifdef _AFXDLL
+	CRuntimeClass* (PASCAL* m_pfnGetBaseClass)();
+#else
+	CRuntimeClass* m_pBaseClass;
+#endif
+
+由此 形成一个 逻辑上的串联继承关系图。
+
+
+
+每个类【CObject体系】要支持运行时类型信息 
+都需要有一个 静态的 CRuntimeClass 数据成员 class##class_name
+static const CRuntimeClass class##class_name
+
+使用类的方法 GetRuntimeClass 来获取该类的运行时类信息
+virtual CRuntimeClass* GetRuntimeClass() const; 
+
+
+
+
+RUNTIME_CLASS
+用于获取类的运行时类信息
+
+
+
+
+类【CObject体系】 方法 IsKindOf
+CRuntimeClass
+IsDerivedFrom
+
+
+
+AfxThrowInvalidArgException
+先屏蔽校验和异常。
+
+
+
+IsDerivedFrom
+使用循环，依次遍历基类 
+m_pfnGetBaseClass 、 m_pBaseClass
+
+
+
+Accessing Run-Time Class Information 
+CPerson
+
+
+
+
+
+
+
+
+
+
+
+
+
+DECLARE_DYNCREATE
+
+#define DECLARE_DYNCREATE(class_name) \
+	DECLARE_DYNAMIC(class_name) \
+	static CObject* PASCAL CreateObject();
+
+
+
+IMPLEMENT_DYNCREATE
+
+#define IMPLEMENT_DYNCREATE(class_name, base_class_name) \
+	CObject* PASCAL class_name::CreateObject() \
+		{ return new class_name; } \
+	IMPLEMENT_RUNTIMECLASS(class_name, base_class_name, 0xFFFF, \
+		class_name::CreateObject, NULL)
+
+
+
+
+CRuntimeClass::CreateObject 
+m_pfnCreateObject 【实现了 DECLARE_DYNCREATE 、 IMPLEMENT_DYNCREATE 的类， 才会给 该成员 设值】
+class_name::CreateObject
+
+都是非静态
+
+
+
+
+
+
+运行时类信息 及 运行时创建类对象
+
+
+
