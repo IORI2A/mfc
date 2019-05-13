@@ -1,0 +1,56 @@
+
+_tWinMain 【appmodul.cpp】
+
+
+
+
+AfxWinMain 【winmain.cpp】
+
+
+
+ASSERT(f)
+AfxAssertFailedLine 【afx.h \ afxasert.cpp】
+AfxDebugBreak 【afxver_.h】
+
+
+
+AfxGetThread 【afxwin.h 、 thrdcore.cpp】
+
+
+
+AfxGetModuleThreadState 【afxstat_.h 、 afxstate.cpp】
+
+
+
+AfxGetModuleState 【afxstat_.h 、 afxstate.cpp】
+
+
+
+
+_AFX_THREAD_STATE 【afxstat_.h】  【CThreadLocal<class_name>  【afxtls_.h】】
+
+CNoTrackObject 【afxtls_.h】
+
+THREAD_LOCAL(_AFX_THREAD_STATE, _afxThreadState)  【afxstate.cpp】
+
+
+
+_AFX_THREAD_STATE 使用到的类：
+
+class CNoTrackObject;
+class AFX_MODULE_STATE;
+struct AFX_EXCEPTION_CONTEXT;
+class CWnd;
+class CPoint;
+class CView;
+class CPushRoutingView;
+class CFrameWnd;
+class CPushRoutingFrame;
+
+
+
+
+
+
+
+
