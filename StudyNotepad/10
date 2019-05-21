@@ -1,0 +1,718 @@
+
+
+支持运行时类型信息
+
+
+
+基类必须要将析构函数设为 virtual
+
+私有，无调用，可仅声明不实现
+
+针对外部屏蔽构造函数、拷贝构造和赋值操作符。外界不可直接使用 CObject 定义对象。
+
+
+
+__declspec(selectany) ？
+
+
+GetThisClass 、 _GetBaseClass 【objcore.cpp】
+
+
+
+
+AfxGetThread 
+获取当前执行线程
+
+
+AfxGetApp
+获取当前进程
+
+
+
+Application initialization is conceptually divided into two sections: 
+one-time application initialization that is done the first time the program runs, 
+and instance initialization that runs each time a copy of the program runs, including the first time. 
+
+
+
+
+
+AfxGetModuleState
+返回 AFX_MODULE_STATE *  
+
+
+THREAD_LOCAL(_AFX_THREAD_STATE, _afxThreadState) 【CThreadLocal<class_name> ident_name;】
+
+_AFX_THREAD_STATE 
+含成员  AFX_MODULE_STATE* m_pModuleState;
+
+
+PROCESS_LOCAL(_AFX_BASE_MODULE_STATE, _afxBaseModuleState) 【CProcessLocal<class_name> ident_name;】
+
+_AFX_BASE_MODULE_STATE 是 AFX_MODULE_STATE 的子类
+
+
+
+
+如何声明一个模板类？
+
+template<class TYPE> class CThreadLocal;
+
+
+
+
+静态成员可以通过类名（::）和对象（./->）来访问
+
+
+
+简单设计实现
+AfxGetModuleState   【afxstat_.h】 【afxstate.cpp】
+_AFX_THREAD_STATE   【afxstat_.h】
+AFX_MODULE_STATE    【afxstat_.h】
+
+
+简实
+AfxGetModuleThreadState 【afxstat_.h】 【afxstate.cpp】
+AFX_MODULE_THREAD_STATE 【afxstat_.h】
+
+
+
+简实
+AfxGetThread 【thrdcore.cpp】 【afxwin.h】
+
+
+
+简实
+AfxWinMain 【winmain.cpp】
+AfxGetApp  【afxwin.h】 【afxwin1.inl】        #define afxCurrentWinApp    AfxGetModuleState()->m_pCurrentWinApp  【afxwin1.inl】
+AfxWinInit 【afxwin.h】 【appinit.cpp】
+CWinApp 【afxwin.h】
+AfxInitThread 【afxwin.h】 【thrdcore.cpp】
+AfxGetThreadState 【afxstat_.h】 【afxstate.cpp】
+_AfxMsgFilterHook 【thrdcore.cpp】
+CWinThread 【afxwin.h】
+CWnd 【afxwin.h】【wincore.cpp】
+AfxLockTempMaps 【afxwin.h】【winhand.cpp】
+AfxUnlockTempMaps【afxwin.h】【winhand.cpp】
+
+
+
+
+
+使用WIN32工程 才可使用有关windows 图窗系统的功能，入口函数（winmain）才能传入 实例句柄等参数。
+
+禁用预编译头
+
+简实
+_tWinMain 【appmodul.cpp】
+AfxWinMain 【winmain.cpp】
+
+
+
+
+AfxWinInit 执行 跳转退出
+
+
+ASCII、unicode与Utf8之间的相互转化
+MultiByteToWideChar
+WideCharToMultiByte
+
+Unicode and Character Sets
+
+
+Win32 and COM Development
+User Interface
+Internationalization
+SDK Documentation
+International Text Display
+Unicode and Character Sets
+
+
+
+
+
+
+A.获取 线程对象 和 程序对象。（默认NULL）
+B.初始化MFC工作。（默认FALSE）
+C.程序对象初始化工作。（默认FALSE）
+C.线程对象初始化（实例）工作。（默认FALSE）
+D.线程对象运行起来。
+E.....
+
+
+
+设计时 
+类
+class A
+{
+};
+
+函数
+void fun()
+{
+	return;
+}
+
+
+
+
+
+善
+AfxGetThread 【thrdcore.cpp】 【afxwin.h】
+AfxGetModuleThreadState ~ AFX_MODULE_THREAD_STATE 必须得到一个有效对象 ~ CWinThread
+AfxGetModuleState ~ AFX_MODULE_STATE ~ CThreadLocal<AFX_MODULE_THREAD_STATE>
+_afxThreadState ~ CThreadLocal<_AFX_THREAD_STATE> ~ AFX_MODULE_STATE
+_afxBaseModuleState ~ CProcessLocal<_AFX_BASE_MODULE_STATE> ~ AFX_MODULE_STATE
+
+
+
+
+
+善
+AfxWinInit 【afxwin.h】 【appinit.cpp】
+SetErrorMode 设置错误处理模式
+AfxGetModuleState ~ AFX_MODULE_STATE 设置部分内容
+AfxGetApp ~ CWinApp 设置部分内容
+AfxInitThread
+
+
+
+
+
+
+CThreadLocal<_AFX_THREAD_STATE> _afxThreadState;
+
+
+CNoTrackObject
+重载new
+void* PASCAL CNoTrackObject::operator new(size_t nSize)
+LocalAlloc 零值初始化
+
+
+
+相关/相似类 代码 重用部分 
+构建基类 放入基类中
+
+
+
+CThreadLocalObject
+
+
+
+
+操作对象时 动态创建一些资源\对象
+
+
+
+具有全局性质的动态资源\对象 不应当每次操作时都创建
+CThreadLocalObject  
+进行全局性的存储
+
+
+
+CThreadSlotData
+CRITICAL_SECTION m_sect; 临界区 多线程保护
+
+Win32 and COM Development
+System Services
+DLLs, Processes, and Threads
+SDK Documentation
+DLLs, Processes, and Threads
+Synchronization
+About Synchronization
+Critical Section Objects
+
+
+GlobalAlloc
+Win32 and COM Development
+System Services
+Memory Management
+About Memory Management
+Global and Local Functions
+
+
+are slower than other memory management functions 
+new applications should use the heap functions. 
+
+
+32-bit virtual addresses
+there are no longer near and far pointers
+
+
+
+Memory objects allocated by GlobalAlloc and LocalAlloc are in private, 
+committed pages with read/write access that cannot be accessed by other processes. 
+Memory allocated by using GlobalAlloc with GMEM_DDESHARE is not actually shared globally 
+This value has no effect and is available only for compatibility. 
+Applications requiring shared memory for other purposes must use file-mapping objects. 
+see File Mapping.
+
+
+When you allocate fixed memory, GlobalAlloc and LocalAlloc return a pointer that the calling process can immediately use to access the memory. 
+
+When you allocate moveable memory, the return value is a handle. 
+To get a pointer to a movable memory object, use the GlobalLock and LocalLock functions.
+
+
+The actual size of the memory allocated can be larger than the requested size. 
+To determine the actual number of bytes allocated, use the GlobalSize or LocalSize function. 
+If the amount allocated is greater than the amount requested, the process can use the entire amount.
+
+
+The GlobalReAlloc and LocalReAlloc functions change the size or the attributes of a memory object allocated by GlobalAlloc and LocalAlloc. 
+The size can increase or decrease.
+
+
+The GlobalFree and LocalFree functions release memory allocated by GlobalAlloc, LocalAlloc, GlobalReAlloc, or LocalReAlloc. 
+To discard the specified memory object without invalidating the handle, use the GlobalDiscard or LocalDiscard function. 
+The handle can be used later by GlobalReAlloc or LocalReAlloc to allocate a new block of memory associated with the same handle.
+
+
+To return information about a specified memory object, use the GlobalFlags or LocalFlags function. 
+The information includes the object's lock count and indicates whether the object is discardable or has already been discarded. 
+To return a handle to the memory object associated with a specified pointer, use the GlobalHandle or LocalHandle function.
+
+
+
+
+TlsGetValue
+TLS
+
+Win32 and COM Development
+System Services
+DLLs, Processes, and Threads
+SDK Documentation
+DLLs, Processes, and Threads
+Processes and Threads
+Process and Thread Reference
+Process and Thread Functions
+
+
+Win32 and COM Development
+System Services
+DLLs, Processes, and Threads
+SDK Documentation
+DLLs, Processes, and Threads
+Processes and Threads
+About Processes and Threads
+Multiple Threads
+Thread Local Storage
+
+
+
+
+功能要求
+性能要求
+
+
+
+CThreadSlotData 调测线程本地（全局性）存储数据 相关
+
+int CThreadSlotData::AllocSlot()
+动态分配一块内存 （视作数组） （未初始化） （默认32个元素递增） （首次32个）
+置零
+循环递增取余下的空元素使用 （置标识位为1）
+取完（全满），重新分配一块更大的内存 （包含之前的内容，不变）
+递增的部分，置零
+循环递增取余下的空元素使用 （置标识位为1）
+（全满）......
+
+
+
+
+
+
+
+
+CThreadLocalObject 
+
+int m_nSlot;  （全局对象时 成员值为 0初始化）
+ 为零 说明为新的资源对象 需要分配一个slot 来存储 （新建资源时）
+ 不为零 说明资源对象 已经存储于一个slot中 （资源已经存在）
+ 对应到一个 CNoTrackObject 资源 （CNoTrackObject* ）
+ 
+ 
+
+ 
+CThreadSlotData （全局对象, new replacement 表达式创建， 有构造函数）
+
+void* operator new(size_t, void* p)
+重载new 
+指定替换内存
+
+CSlotData* m_pSlotData; 
+视为数组 可标识slot状态 
+
+DWORD m_tlsIndex;   （CThreadData*））
+线程本地存储索引，关联到一个存储空间对象，其关联一个内存区块（视作数组，并且与m_pSlotData的标识状态有关联），用于存储资源指针（void*）
+
+
+
+
+
+
+CNoTrackObject 
+仅是重载 new/delete
+虚析构 基类
+
+
+
+
+void CThreadSlotData::SetValue(int nSlot, void* pValue)
+根据线程本地存储索引，获取存储空间对象 （m_tlsIndex、CThreadData*）
+存储空间对象不存在，分配存储空间对象 （new CThreadData;） （重载new 0初始化分配空间）
+存储空间对象合入链表中 （m_list.AddHead(pData);）
+（递增）分配内存区块 （视作数组）（LocalAlloc、LocalReAlloc） （测试来看基本上每次都要重新递增分配）
+存储空间对象 关联 内存区块
+（递增）内存区块 置零
+存储空间对象 更新到最新的 空间大小 (刚好是最新的nSlot+1个)
+存储空间对象 存储到 线程本地存储索引 的位置 （m_tlsIndex、CThreadData*）
+存储空间对象 的 内存区块 中取指定 的元素空间 存储 资源 （nSlot, pValue）
+
+
+
+
+inline void* CThreadSlotData::GetThreadValue(int nSlot)
+根据线程本地存储索引，获取存储空间对象 （m_tlsIndex、CThreadData*）
+从存储空间对象 关联的 内存区块 的指定位置 取出数据 （nSlot, void*）
+
+
+
+
+
+
+
+复查
+_tWinMain 【appmodul.cpp】 ~ AfxWinMain 【appmodul.cpp】【winmain.cpp】 ~ AfxGetThread 【afxwin.h】 【thrdcore.cpp】
+                                                        ~ CWinThread 【afxwin.h】                                   ~ InitInstance
+														                                                            ~ CWnd 【afxwin.h】【wincore.cpp】 ~ DestroyWindow
+														                                                            ~ ExitInstance
+																													~ Run
+														~ AfxGetApp  【afxwin.h】 【afxwin1.inl】 
+														~ CWinApp 【afxwin.h】                                      ~ InitApplication
+														~ AfxWinInit 【afxwin.h】 【appinit.cpp】
+														
+														~ AfxGetModuleThreadState 【afxstat_.h】 【afxstate.cpp】
+														~ AfxLockTempMaps 【afxwin.h】【winhand.cpp】
+														~ AfxUnlockTempMaps【afxwin.h】【winhand.cpp】
+														~ AfxWinTerm 【afxwin.h】 【appterm.cpp】
+
+
+
+
+新增头文件加于前面 ？
+
+系统、库头文件加于自有头文件后 ？
+
+
+
+
+AfxGetThread 【afxwin.h】 【thrdcore.cpp】 ~ AfxGetModuleThreadState 【afxstat_.h】 【afxstate.cpp】
+                                           ~ AFX_MODULE_THREAD_STATE 【afxstat_.h】 
+
+
+
+AfxGetModuleThreadState 【afxstat_.h】 【afxstate.cpp】 ~ AfxGetModuleState   【afxstat_.h】 【afxstate.cpp】
+                                                        ~ AFX_MODULE_STATE    【afxstat_.h】 ~ CThreadLocal<TYPE> 【afxtls_.h】
+
+
+
+AfxGetModuleState 【afxstat_.h】 【afxstate.cpp】 ~ _AFX_THREAD_STATE 【afxstat_.h】[afxstate.cpp]
+                                                  ~ _afxThreadState 【afxstat_.h】 【afxstate.cpp】
+												  ~ _afxBaseModuleState 【afxstate.cpp】 ~ CProcessLocal<TYPE> 【afxtls_.h】
+												                                         ~ _AFX_BASE_MODULE_STATE 【afxstate.cpp】
+
+
+
+
+
+
+AfxGetModuleThreadState ~ AFX_MODULE_THREAD_STATE 必须得到一个有效对象 ~ CWinThread
+
+CThreadLocal<_AFX_THREAD_STATE> _afxThreadState;
+
+CThreadLocal<TYPE> 【afxtls_.h】 ~ CThreadLocalObject 【afxtls_.h】 [afxtls.cpp]
+
+
+
+
+
+
+AFX_MODULE_THREAD_STATE 【afxstat_.h】 【afxstate.cpp】 ~ CNoTrackObject 【afxtls_.h】
+
+
+
+
+
+
+类模板 成员函数 声明
+
+
+
+内联函数
+高质量代码
+
+
+
+
+CProcessLocalObject 【afxtls_.h】 【afxtls.cpp】
+
+
+
+
+AFX_MODULE_THREAD_STATE 【afxstat_.h】 【afxstate.cpp】
+CWinThread* m_pCurrentWinThread;
+
+
+CWinApp::CWinApp 【appcore.cpp】
+pThreadState->m_pCurrentWinThread = this;
+
+
+_AfxThreadEntry 【thrdcore.cpp】
+pState->m_pCurrentWinThread = pThread;
+
+
+
+
+
+
+AfxWinMain
+ 运行在 
+CWinApp::CWinApp
+pThreadState->m_pCurrentWinThread = this;
+ 之后
+
+
+
+
+dllinit.cpp
+CWinApp _afxOleWinApp;
+
+自有CPP文件
+CXXXApp theApp;
+
+
+
+
+
+#ifdef _AFX_OLE_IMPL
+
+_DllMainCRTStartup [crtdll.c]
+__DllMainCRTStartup [crtdll.c]
+RawDllMain [dllinit.cpp]
+AfxGetThreadState [afxstate.cpp]
+CThreadLocal<TYPE> [afxtls_.h]   (_afxThreadState [afxstat_.h] [afxstate.cpp])  (EXTERN_THREAD_LOCAL(_AFX_THREAD_STATE, _afxThreadState))
+CThreadLocalObject [afxtls_.h] [afxtls.cpp]
+_AFX_THREAD_STATE [afxstat_.h][afxstate.cpp]
+
+
+RawDllMain [dllinit.cpp]
+AfxSetModuleState [afxstat_.h][afxstate.cpp]   (_AfxGetOleModuleState)
+CThreadLocal<TYPE> [afxtls_.h]   (_afxThreadState [afxstat_.h] [afxstate.cpp]) 
+
+
+
+_DllMainCRTStartup [crtdll.c]
+__DllMainCRTStartup [crtdll.c]
+_CRT_INIT [crtdll.c]
+_initterm [crt0dat.c]
+IMPLEMENT_SERIAL(CMFCToolBarColorButton, CMFCToolBarButton, 1)  [afxcolorbar.cpp]   (AFX_CLASSINIT _init_##class_name(RUNTIME_CLASS(class_name));)
+AFX_CLASSINIT [afx.h]
+AfxClassInit [objcore.cpp]
+AfxSetModuleState [afxstat_.h][afxstate.cpp]   (_AfxGetOleModuleState)
+CThreadLocal<TYPE> [afxtls_.h]   (_afxThreadState [afxstat_.h] [afxstate.cpp]) 
+
+
+...
+IMPLEMENT_SERIAL(CMFCColorBar, CMFCPopupMenuBar, 1) [afxcolorbar.cpp]
+...
+
+
+...
+其他很多 IMPLEMENT_SERIAL
+...
+
+
+...
+AFX_GLOBAL_DATA afxGlobalData;  [afxglobals.cpp]
+UpdateSysColors [afxglobals.cpp]
+CWindowDC [wingdi.cpp]
+Attach [wingdi.cpp]
+afxMapHDC [wingdi.cpp]
+AfxGetModuleThreadState [afxstat_.h] [afxstate.cpp]
+AfxGetModuleState   [afxstat_.h] [afxstate.cpp]
+...
+
+
+...
+AfxGetModuleThreadState [afxstat_.h] [afxstate.cpp]
+CThreadLocal<TYPE> [afxtls_.h] [afxstat_.h] (CThreadLocal<AFX_MODULE_THREAD_STATE> AFX_MODULE_THREAD_STATE::m_thread )
+...
+
+
+...
+AfxSetNewHandler [wingdi.cpp]
+...
+
+
+
+...
+又是其他很多 IMPLEMENT_SERIAL
+...
+
+
+
+
+...
+AfxDiagnosticInit [dumpinit.cpp]
+CProcessLocal<TYPE>  [afxtls_.h]   ( PROCESS_LOCAL(_AFX_DEBUG_STATE, afxDebugState) )
+...
+
+
+
+...
+又是其他很多 全局性的
+...
+
+
+
+...
+CWinApp _afxOleWinApp; [dllinit.cpp]
+...
+
+
+
+...
+CWinApp _afxOleWinApp; [dllinit.cpp]
+CWinApp [appcore.cpp]  (pThreadState->m_pCurrentWinThread = this;)
+...
+
+
+
+
+...
+_DllMainCRTStartup [crtdll.c]
+__DllMainCRTStartup [crtdll.c]
+DllMain [dllinit.cpp]
+AfxInitExtensionModule [dllinit.cpp]
+AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+...
+
+
+
+
+
+
+wWinMainCRTStartup [crtexe.c]
+__tmainCRTStartup [crtexe.c]
+_initterm [crt0dat.c]
+AfxInitialize [appmodul.cpp]
+AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+...
+
+
+
+wWinMainCRTStartup [crtexe.c]
+__tmainCRTStartup [crtexe.c]
+_initterm [crt0dat.c]
+CXXXApp theApp; [自定义]
+..
+AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+...
+
+
+
+
+wWinMainCRTStartup [crtexe.c]
+__tmainCRTStartup [crtexe.c]
+_tWinMain [appmodul.cpp]
+AfxWinMain 【appmodul.cpp】【winmain.cpp】
+...
+
+
+...
+pThread->InitInstance()   程序运行起来了  （AfxWinMain）
+...
+
+
+
+
+如何封装 main 函数
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+如何重新生成MFC库
+
+DLL Version of MFC 
+
+
+
+
+
+
+DLLs (See dynamic link libraries)
+
+DLLs [C++]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+序列转化
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
