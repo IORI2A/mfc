@@ -1,0 +1,210 @@
+先深还是先广？
+
+
+AfxGetThread [afxwin.h] [thrdcore.cpp]
+  ~ AfxGetModuleThreadState [afxstat_.h] [afxstate.cpp]
+  ~ AFX_MODULE_THREAD_STATE [afxstat_.h]
+      ~ CNoTrackObject [afxtls_.h] [afxtls.cpp]
+	  ~ CWinThread [afxwin.h]
+
+
+AfxGetModuleThreadState [afxstat_.h] [afxstate.cpp]
+  ~ AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+  ~ AFX_MODULE_STATE [afxstat_.h]
+      ~ CNoTrackObject [afxtls_.h] [afxtls.cpp]
+	  ~ CThreadLocal<AFX_MODULE_THREAD_STATE> [afxtls_.h]
+
+
+CThreadLocal<TYPE> [afxtls_.h]
+  ~ CThreadLocalObject [afxtls_.h] [afxtls.cpp]
+  ~ CNoTrackObject [afxtls_.h] [afxtls.cpp]
+
+
+AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+  ~ CThreadLocal<_AFX_THREAD_STATE> [afxstate.cpp]
+  ~ _AFX_THREAD_STATE [afxstat_.h]
+      ~ AFX_MODULE_STATE [afxstat_.h]
+  ~ CProcessLocal<_AFX_BASE_MODULE_STATE> [afxstate.cpp]
+  ~ _AFX_BASE_MODULE_STATE [afxstate.cpp]
+      ~ AFX_MODULE_STATE [afxstat_.h]
+
+
+
+CThreadLocalObject [afxtls_.h] [afxtls.cpp] 
+  ~ CNoTrackObject [afxtls_.h] [afxtls.cpp]
+  ~ CThreadSlotData [afxtls_.h] [afxtls.cpp]
+
+
+CThreadSlotData [afxtls_.h] [afxtls.cpp]
+  ~ CSlotData [afxtls.cpp]
+  ~ CThreadData  [afxtls.cpp]
+  ~ CTypedSimpleList<CThreadData*> [afxtls_.h]
+
+
+CTypedSimpleList<TYPE> [afxtls_.h]
+  ~ CSimpleList [afxtls_.h]
+
+
+CProcessLocal<TYPE> [afxtls_.h]
+  ~ CProcessLocalObject [afxtls_.h] [afxtls.cpp]
+  ~ CNoTrackObject [afxtls_.h] [afxtls.cpp]
+
+
+volatile （变量）随时都有可能改变
+编译后的程序都直接从变量地址中读取数据
+防止优化读取和存储 （使用寄存器，可能内存地址内容与寄存器不一致的现象）
+
+
+
+
+
+AfxGetApp [afxwin.h] [afxwin1.inl]
+  ~ AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+  ~ AFX_MODULE_STATE [afxstat_.h]
+      ~ CWinApp [afxwin.h]
+
+
+AfxWinInit [afxwin.h] [appinit.cpp]
+  ~ SetErrorMode
+  ~ AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+  ~ AFX_MODULE_STATE [afxstat_.h]
+      ~ CreateActivationContext [afxstate.cpp]
+  ~ AfxGetApp [afxwin.h] [afxwin1.inl]
+  ~ CWinApp [afxwin.h]
+	  ~ SetCurrentHandles [appinit.cpp]
+  ~ AfxGetModuleState [afxstat_.h] [afxstate.cpp]
+  ~ AFX_MODULE_STATE [afxstat_.h]
+  ~ AfxInitThread [afxwin.h] [thrdcore.cpp]
+
+
+SetErrorMode
+
+Win32 and COM Development
+Diagnostics
+Debugging and Error Handling
+Error Handling
+Error Handling Reference
+Error Handling Functions
+
+
+
+AFX_MODULE_STATE [afxstat_.h]
+  ~ CreateActivationContext [afxstate.cpp]
+      ~ GetModuleFileNameW
+	  ~ ACTCTXW
+	  ~ CreateActCtxW
+
+
+
+GetModuleFileNameW (获取模块《执行》文件全路径。如:c:\A\B\1.exe)
+
+Win32 and COM Development
+System Services
+DLLs, Processes, and Threads
+SDK Documentation
+DLLs, Processes, and Threads
+Dynamic-Link Libraries
+Dynamic-Link Library Functions
+
+
+
+_countof [stdlib.h] ?
+
+
+
+ACTCTXW ?
+ACTCTX [winbase.h]
+CreateActCtxW
+
+Win32 and COM Development
+Administration and Management
+Application Installation and Servicing
+Isolated Applications and Side-by-side Assemblies
+Side-by-side Assemblies Reference
+Activation Context Reference
+
+cpp中引入头文件
+h中 尽量仅使用引用的声明
+
+
+CWinApp [afxwin.h]
+  ~ SetCurrentHandles [appinit.cpp]
+      ~ AFX_MODULE_STATE [afxstat_.h]
+	  ~ GetModuleFileName
+	  ~ PathFindExtension
+	  ~ AfxGetFileName [afximpl.h] [appinit.cpp]
+	  ~ AfxEnableMemoryTracking [afx.h] [afxmem.cpp]
+	  ~ _tcsdup
+	  ~ AfxLoadString [afxpriv.h] [dllinit.cpp]
+	  ~ _tcscpy_s
+	  ~ _tcscat_s
+	  
+
+
+PathFindExtension  (获取文件路径中的后缀名。如:c:\A\B\1.txt  ==>  .txt)
+
+Win32 and COM Development
+User Interface
+Windows User Experience
+Windows Shell
+Windows Shell
+Shell Reference
+Shell Lightweight Utility Functions
+Shell Path Handling Functions (Path Functions)
+
+  
+CWinApp [afxwin.h]
+  ~ InitApplication [appcore.cpp]
+      ~ CDocManager [afxwin.h]
+      ~ LoadSysPolicies [afxwin.h] [appcore.cpp]
+        ~ _LoadSysPolicies [afxwin.h]
+
+  
+CWinApp [afxwin.h]
+  ~ _LoadSysPolicies [afxwin.h] [appcore.cpp]
+  ~ RegOpenKeyEx
+
+
+RegOpenKeyEx
+
+Win32 and COM Development
+System Services
+Windows System Information
+SDK Documentation
+Windows System Information
+Registry
+Registry Reference
+Registry Functions
+
+
+
+CWinThread [afxwin.h]
+  ~ InitInstance [afxwin.h] [thrdcore.cpp]
+
+
+
+
+
+
+
+
+CWinApp [afxwin.h]
+
+
+
+
+
+
+AfxGetModuleThreadState [afxstat_.h] [afxstate.cpp]
+
+
+
+AfxLockTempMaps [afxwin.h] [winhand.cpp]
+
+
+
+AfxUnlockTempMaps [afxwin.h] [winhand.cpp]
+
+
+
+AfxWinTerm [afxwin.h] [appterm.cpp]
