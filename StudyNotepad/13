@@ -1,0 +1,247 @@
+
+CDialog [afxwin.h]
+  ~ DoModal [dlgcore.cpp]
+      ~ AfxGetResourceHandle [afxwin.h] [afxwin1.inl]
+	  ~ FindResource
+	  ~ LoadResource
+	  ~ LockResource
+	  ~ PreModal [afxwin.h] [dlgcore.cpp]
+	  ~ AfxUnhookWindowCreate [afxpriv.h] [wincore.cpp]
+	  ~ AfxHookWindowCreate [afxpriv.h] [wincore.cpp]
+	  ~ CreateDlgIndirect [afxwin.h] [dlgcore.cpp]
+	  ~ RunModalLoop [afxwin.h] [wincore.cpp]
+	  ~ DestroyWindow [afxwin.h] [wincore.cpp]
+	  ~ PostModal [afxwin.h] [dlgcore.cpp]
+
+FindResource
+
+Win32 and COM Development
+User Interface 
+Windows User Experience
+Windows Management
+Windows User Interface 
+Resources
+Resources Overviews
+Resources Reference
+Functions
+
+
+c++ 11
+mfc
+modern c++
+
+
+
+CDialog [afxwin.h]
+  ~ PreModal [afxwin.h] [dlgcore.cpp]
+      ~ AfxGetApp()
+	      ~ EnableModeless [afxwin.h] [appui1.cpp]
+	  ~ GetSafeHwnd [afxwin.h] [afxwin2.inl]
+	  ~ GetSafeOwner_ [afxwin.h] [appui1.cpp]
+	  ~ AfxHookWindowCreate [afxpriv.h] [wincore.cpp]
+
+
+
+c++ this == null
+
+
+AfxHookWindowCreate [afxpriv.h] [wincore.cpp]
+  ~ SetWindowsHookEx
+
+
+SetWindowsHookEx
+UnhookWindowsHookEx
+
+Win32 and COM Development
+User Interface 
+Windows User Experience
+Windows Management
+Windows User Interface
+Windowing 
+Hooks 
+
+
+GetDesktopWindow
+
+Win32 and COM Development
+User Interface 
+Windows User Experience
+Windows Management
+Windows User Interface
+Windowing 
+Windows 
+
+
+IsWindowEnabled
+
+Win32 and COM Development
+User Interface 
+Windows User Experience
+Windows Management
+Windows User Interface 
+User Input
+Keyboard Input 
+
+
+
+CreateDlgIndirect [afxwin.h] [dlgcore.cpp]
+  ~ AfxDeferRegisterClass [afximpl.h]
+      ~ AfxEndDeferRegisterClass [afximpl.h] [wincore.cpp]
+  ~ AfxInitNetworkAddressControl [afximpl.h] [wincore.cpp]
+      ~ AfxCtxInitNetworkAddressControl
+
+
+
+
+CreateDialogIndirect
+
+Win32 and COM Development
+User Interface 
+Windows User Experience
+Windows Management
+Windows User Interface
+Windowing 
+Dialog Boxes 
+
+AfxWndProcBase [afxstate.cpp] (#ifdef _AFXDLL) (内部实际也是调用 AfxWndProc [wincore.cpp])
+AfxWndProc [wincore.cpp]
+AfxCallWndProc [wincore.cpp]
+CWnd::WindowProc [wincore.cpp]
+CWnd::OnWndMsg [wincore.cpp]
+  ~ CWnd::OnCommand [wincore.cpp]  (从消息附带参数中解析出 Control-defined notification code, Control identifier, Handle to the control window <针对Control>)
+      ~ CDialog::OnCmdMsg [dlgcore.cpp]
+          ~ CCmdTarget::OnCmdMsg [cmdtarg.cpp] (virtual)
+              ~ _AfxDispatchCmdMsg [cmdtarg.cpp] (AfxSigCmd_v)
+                  ~ OnBnClickedOk [自定义]
+
+
+
+
+
+CCmdTarget
+The base class for the Microsoft Foundation Class Library message-map architecture. 
+
+
+
+
+DECLARE_MESSAGE_MAP()
+
+BEGIN_MESSAGE_MAP(class, base_class)
+END_MESSAGE_MAP()
+
+
+
+protected: 
+	static const AFX_MSGMAP* PASCAL GetThisMessageMap(); 
+	virtual const AFX_MSGMAP* GetMessageMap() const; 
+	
+
+
+
+struct AFX_MSGMAP
+{
+	const AFX_MSGMAP* (PASCAL* pfnGetBaseMap)();
+	const AFX_MSGMAP_ENTRY* lpEntries;
+};
+
+
+
+struct AFX_MSGMAP_ENTRY
+{
+	UINT nMessage;   // windows message
+	UINT nCode;      // control code or WM_NOTIFY code
+	UINT nID;        // control ID (or 0 for windows messages)
+	UINT nLastID;    // used for entries specifying a range of control id's
+	UINT_PTR nSig;       // signature type (action) or pointer to message #
+	AFX_PMSG pfn;    // routine to call (or special value)
+};
+
+
+
+const AFX_MSGMAP* CCmdTarget::GetMessageMap() const
+{
+	return GetThisMessageMap();
+}
+
+const AFX_MSGMAP* CCmdTarget::GetThisMessageMap()
+{
+	static const AFX_MSGMAP_ENTRY _messageEntries[] =
+	{
+		{ 0, 0, AfxSig_end, 0 }     // nothing here
+	};
+	static const AFX_MSGMAP messageMap =
+	{
+		NULL,
+		&_messageEntries[0]
+	};
+	return &messageMap;	
+}
+
+
+
+
+CCmdTarget 是消息映射的根，其 GetMessageMap 、GetThisMessageMap 非宏定义，而是自定义， 其  messageMap 中设置 pfnGetBaseMap 为 NULL ，标识已经到根。
+for (pMessageMap = GetMessageMap(); pMessageMap->pfnGetBaseMap != NULL;
+	  pMessageMap = (*pMessageMap->pfnGetBaseMap)())
+{
+	// ...
+}
+
+
+
+
+消息处理顺序
+1.类继承体系
+2.父/拥有者继承体系
+3.线程继承体系
+
+
+
+
+
+
+纯虚函数 必须定义？
+
+
+
+AfxEndDeferRegisterClass [afximpl.h] [wincore.cpp]
+
+
+_AfxCbtFilterHook [wincore.cpp]
+
+
+
+
+非模态对话框 
+对话框处理过程 （回调函数）
+消息循环
+
+消息循环过程中会将归属对话框的消息转给 对话框处理过程 处理。
+
+IsDialogMessage 也会调用 对话框处理过程 来处理 满足条件的消息。
+如果自己使用了 IsDialogMessage 来处理了消息，那么后续就不应当再传给 消息循环  的派送函数。否则会出现 对话框处理过程 重复（两次）处理同一消息。
+
+
+对话框 的 处理过程 背后 还有一个 大的消息处理过程？ 窗口处理过程 ？
+
+
+
+SetWindowLongPtr （GWLP_WNDPROC）
+可替换对话框的处理过程 为另一个处理过程。
+
+
+AfxDlgProc : 00A010E6	WndProc : 00A011BD	DefWindowProc : 77E0E640	DefDlgProc : 77E0E700
+oldWndProc : 77E0E700
+
+
+猜测
+自定义的对话框处理过程（AfxDlgProc : 00A010E6） 是被设定套在 默认对话框处理过程（DefDlgProc : 77E0E700） 内的
+SetWindowLongPtr 替换为另一个处理过程（WndProc : 00A011BD） 返回旧的处理过程是（oldWndProc : 77E0E700）
+
+为了形成 处理过程链
+新处理过程（WndProc : 00A011BD）未处理的消息应当传给 旧处理过程（oldWndProc : 77E0E700）
+
+
+
+DefDlgProc 是 dialog box window procedure ？
+
