@@ -1,0 +1,157 @@
+
+#include <windows.h>
+
+
+///////////////////////////////////////////////////////////////////////////// afxver_.h
+#define AFX_STATIC_DATA extern __declspec(selectany)
+#define AFXAPI __stdcall
+/////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////// afximpl.h
+// AFX_CRITICAL_SECTION
+
+//#undef AFX_DATA
+//#define AFX_DATA AFX_CORE_DATA
+
+// these globals are protected by the same critical section
+#define CRIT_DYNLINKLIST    0
+#define CRIT_RUNTIMECLASSLIST   0
+#define CRIT_OBJECTFACTORYLIST  0
+#define CRIT_LOCKSHARED 0
+// these globals are not protected by independent critical sections
+#define CRIT_REGCLASSLIST   1
+#define CRIT_WAITCURSOR     2
+#define CRIT_DROPSOURCE     3
+#define CRIT_DROPTARGET     4
+#define CRIT_RECTTRACKER    5
+#define CRIT_EDITVIEW       6
+#define CRIT_WINMSGCACHE    7
+#define CRIT_HALFTONEBRUSH  8
+#define CRIT_SPLITTERWND    9
+#define CRIT_MINIFRAMEWND   10
+#define CRIT_CTLLOCKLIST    11
+#define CRIT_DYNDLLLOAD     12
+#define CRIT_TYPELIBCACHE   13
+#define CRIT_STOCKMASK      14
+#define CRIT_ODBC           15
+#define CRIT_PROCESSLOCAL   16
+#define CRIT_MAX    17  // Note: above plus one!
+
+#ifdef _MT
+void AFXAPI AfxLockGlobals(int nLockType);
+void AFXAPI AfxUnlockGlobals(int nLockType);
+BOOL AFXAPI AfxCriticalInit();
+void AFXAPI AfxCriticalTerm();
+#else
+#define AfxLockGlobals(nLockType)
+#define AfxUnlockGlobals(nLockType)
+#define AfxCriticalInit() (TRUE)
+#define AfxCriticalTerm()
+#endif
+/////////////////////////////////////////////////////////////////////////////
+
+
+//#include "stdafx.h"
+
+
+
+//#pragma warning(disable: 4706) // assignment within conditional
+
+/////////////////////////////////////////////////////////////////////////////
+// global thread protection
+
+#ifdef _MT
+
+AFX_STATIC_DATA BOOL _afxCriticalInit = 0;   // set _afxGlobalLock, _afxTempLock init
+
+// _afxResourceLock and _afxLockInit are used to lock each MFC global resource
+AFX_STATIC_DATA CRITICAL_SECTION _afxResourceLock[CRIT_MAX] = { { 0 } };
+AFX_STATIC_DATA CRITICAL_SECTION _afxLockInitLock = { 0 };
+AFX_STATIC_DATA BOOL _afxLockInit[CRIT_MAX] = { 0 };
+#ifdef _DEBUG
+AFX_STATIC_DATA BOOL _afxResourceLocked[CRIT_MAX] = { 0 };
+#endif
+
+BOOL AFXAPI AfxCriticalInit()
+{
+	// Note: this must be initialized with only one thread running
+	if (!_afxCriticalInit)
+	{
+		// now we are about to be initialized
+		//VERIFY(++_afxCriticalInit);
+		InitializeCriticalSection(&_afxLockInitLock);
+	}
+	return _afxCriticalInit;
+}
+
+void AFXAPI AfxCriticalTerm()
+{
+	if (_afxCriticalInit)
+	{
+		//VERIFY(!--_afxCriticalInit);
+
+		// delete helper critical sections
+		DeleteCriticalSection(&_afxLockInitLock);
+
+		// delete specific resource critical sections
+		for (int i = 0; i < CRIT_MAX; i++)
+		{
+#ifdef _DEBUG
+			//ASSERT(!_afxResourceLocked[i]);
+#endif
+			if (_afxLockInit[i])
+			{
+				DeleteCriticalSection(&_afxResourceLock[i]);
+				//VERIFY(!--_afxLockInit[i]);
+			}
+		}
+	}
+}
+
+void AFXAPI AfxLockGlobals(int nLockType)
+{
+	//ENSURE((UINT)nLockType < CRIT_MAX);
+
+	// intialize global state, if necessary
+	if (!_afxCriticalInit)
+	{
+		AfxCriticalInit();
+		//ASSERT(_afxCriticalInit);
+	}
+
+	// initialize specific resource if necessary
+	if (!_afxLockInit[nLockType])
+	{
+		EnterCriticalSection(&_afxLockInitLock);
+		if (!_afxLockInit[nLockType])
+		{
+			InitializeCriticalSection(&_afxResourceLock[nLockType]);
+			//VERIFY(++_afxLockInit[nLockType]);
+		}
+		LeaveCriticalSection(&_afxLockInitLock);
+	}
+
+	// lock specific resource
+	EnterCriticalSection(&_afxResourceLock[nLockType]);
+#ifdef _DEBUG
+	//ASSERT(++_afxResourceLocked[nLockType] > 0);
+#endif
+}
+
+void AFXAPI AfxUnlockGlobals(int nLockType)
+{
+	//ASSERT(_afxCriticalInit);
+	//ENSURE((UINT)nLockType < CRIT_MAX);
+
+	// unlock specific resource
+	//ASSERT(_afxLockInit[nLockType]);
+#ifdef _DEBUG
+	//ASSERT(--_afxResourceLocked[nLockType] >= 0);
+#endif
+	LeaveCriticalSection(&_afxResourceLock[nLockType]);
+}
+
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
