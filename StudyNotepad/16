@@ -1,0 +1,453 @@
+
+Answering to the
+"C4275: non dll-interface class 'stdext::exception' used as base for dll-interface class 'std::bad_typeid'"
+error comment when compiling with MD flag.
+You just need to add 
+-D_HAS_EXCEPTIONS=1 
+to the compilation command line under Configuration Properties/C/C++/Command Line/Additional Options.
+
+解决 cef libcef_dll_wrapper 编译为动态库时报错问题：
+1>D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\typeinfo(157): warning C4275: 非 dll 接口 class“stdext::exception”用作 dll 接口 class“std::bad_cast”的基
+1>          D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\exception(218) : 参见“stdext::exception”的声明
+1>          D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\typeinfo(156) : 参见“std::bad_cast”的声明
+
+-D_HAS_EXCEPTIONS=1 
+
+
+
+
+
+
+
+
+CNoTrackObject 
+Designed for use by the MFC framework, classes derived from the CNoTrackObject class are exempt from memory leak detection. 
+免于内存泄漏检查
+
+
+以 CNoTrackObject 为根源切入点
+在 CNoTrackObject 中断点， 追踪调用内容，进行分析研究
+
+
+
+
+winmain 之前已经有很多操作了 
+
+
+_afxInitAppState [appmodul.cpp] 
+AfxInitialize [appmodul.cpp] [afx.h]
+
+char _afxInitAppState = (char)(AfxInitialize(FALSE, _MFC_VER), atexit(&_AfxTermAppState));
+是什么语句写法？ 好像是得到括号内的最后一个值？
+
+
+
+逗号运算符
+逗号表达式
+
+c语言提供一种特殊的运算符，逗号运算符，优先级别最低，它将两式联接起来，如：（3+5,6+8）称为逗号表达式，其求解过程先表达式1，后表达式2，整个表达式值是表达式2的值，
+如：（3+5，6+8）的值是14。（a=3*5,a*4）的值是60 　　
+逗号表达式的形式如下： 　　表达式1，表达式2，表达式3，...... ，表达式n 　　
+逗号表达式的要领：
+ 　　(1) 逗号表达式的运算过程为：从左往右逐个计算表达式。
+ 　　(2) 逗号表达式作为一个整体，它的值为最后一个表达式（也即表达式n）的值。
+ 　　(3) 逗号运算符的优先级别在所有运算符中最低。 
+
+
+for 语句中初值设定部分常用到
+	for(int i = 0, j = 0; i < 10 && j < 10 ; ++i, ++j)
+	{
+		printf("i=%d, j=%d\n", i, j);
+	}
+
+
+
+//char _afxInitAppState = (char)(AfxInitialize(FALSE, _MFC_VER), atexit(&_AfxTermAppState));
+char _afxInitAppState = (char)(1, 0, 99);;
+
+int main()
+{
+	char ch = _afxInitAppState;
+
+	for(int i = 0, j = 0; i < 10 && j < 10 ; ++i, ++j)
+	{
+		printf("i=%d, j=%d\n", i, j);
+	}
+
+	return 0;
+}
+
+
+
+
+
+
+工程属性设置
+
+在共享 DLL 中使用 MFC
+多线程调试 DLL (/MDd)
+
+
+CThreadLocalObject 根
+CThreadSlotData 根
+CNoTrackObject 根
+
+也可以其为根源切入点
+
+
+
+_DllMainCRTStartup
+  ~ __DllMainCRTStartup
+      ~ RawDllMain
+	  ~ _CRT_INIT  构建DLL中的全局、静态变量    DLL ？  mfc100ud.dll
+	  ~ DllMain
+
+
+
+
+wWinMainCRTStartup
+  ~ __tmainCRTStartup
+    ~  _initterm 构建EXE中的全局、静态变量    EXE ？  DlgMini.exe
+
+
+
+
+如何判定一个.lib文件是静态库，还是动态库的导出文件（导入库）？
+
+
+lib.exe /list hello.lib
+如果输出： hello.obj，则是静态库   （无 *.dll 即是静态库？）
+如果输出： hello.dll，则是动态库的导入库。
+
+
+DUMPBIN /EXPORTS mfcs100ud.lib
+无导出名称的是静态库
+
+
+静态库的内容将链接入 EXE 中。
+
+
+
+
+
+
+mfcs100ud.lib 是静态库 其包含有 appmodul.cpp 中的内容， 其中主要是 winmain 函数。 说明 通过链接 静态库 最终将 winmain 函数合入了 EXE 中。
+mfc100ud.lib 是动态库 MFC100UD.DLL 的导入库。
+
+
+
+
+
+
+
+
+
+
+
+
+__declspec(novtable)
+
+novtable 
+
+This form of __declspec can be applied to any class declaration, but should only be applied to pure interface classes, that is, classes that will never be instantiated on their own. 
+The __declspec stops the compiler from generating code to initialize the vfptr in the constructor(s) and destructor of the class. 
+In many cases, this removes the only references to the vtable that are associated with the class and, thus, the linker will remove it. 
+Using this form of __declspec can result in a significant reduction in code size. 
+
+If you attempt to instantiate a class marked with novtable and then access a class member, you will receive an access violation (AV). 
+不能访问虚函数。
+
+
+
+纯虚类是因为class不产生虚表，只能在派生类中实现虚表；
+C++中没有提供类似interface这样的关键字来定义接口，但是Mircrosoft c++中提供了__declspec(novtable)来修饰一个类，来表示该类没有虚函数表，也就是虚函数都(应该)是纯虚的。
+减小SIZE 是因为虚表是需要空间的，在不需要虚表的情况下，把虚表去掉就可以减少SIZE了。
+
+
+
+
+
+class AFX_NOVTABLE CNoTrackObject  
+
+调试版本时 #define AFX_NOVTABLE
+AFX_NOVTABLE 空定义
+
+非调试版本时
+CNoTrackObject 被视作为纯虚类 （即抽象类？）
+不能用于直接实例化对象
+
+
+
+
+
+
+#ifdef _AFX_OLE_IMPL
+
+
+_AFX_OLE_IMPL 的MAKE文件中定义  （mfcdll.mak）
+
+!if "$(MONOLITHIC)" == "1"
+TARGDEFS=$(TARGDEFS) /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD
+RCDEFINES=$(RCDEFINES) /D_AFX_MONOLITHIC
+!endif
+
+
+
+
+
+NMAKE.EXE
+
+NMAKE displays each command before running it, unless /S, .SILENT, !CMDSWITCHES, or @ is used.
+
+
+
+
+
+>nmake /d /n /p /f atlmfc.mak MFC  LIBNAME=MYMFC PLATFORM=INTEL > 1.txt
+
+
+
+..\include\MFCassem.h
+如果 include 目录不存在，无法成功继续执行创建 MFCassem.h
+
+atlmfc.mak(395) : fatal error U1054: 无法创建内联文件“..\include\MFCassem.h”
+
+
+E:>type > nul ..\include\MFCassem.h
+系统找不到指定的路径。
+
+
+
+>nmake /a /b /d /e /g /k /n /p /f atlmfc.mak MFC  LIBNAME=MYMFC PLATFORM=INTEL > 1.txt
+
+>nmake /a /b /d /e /g /i /k /nologo /p /f atlmfc.mak MFC  LIBNAME=MYMFC PLATFORM=INTEL > 1.txt
+
+>nmake /a /b /d /e /g /k /nologo /f atlmfc.mak MFC  LIBNAME=MYMFC PLATFORM=INTEL > 1.txt
+
+>nmake /a /b /d /e /g /nologo /f atlmfc.mak MFC  LIBNAME=MYMFC PLATFORM=INTEL > 1.txt
+
+
+
+无法输出具体命令执行中发生的错误信息。
+如：
+>cd MFC
+系统找不到指定的路径。
+
+
+
+
+type 1>type1.txt 2>type2.txt simple.cpx
+1：标准输出
+2：错误输出
+
+正、误信息分别输出到各个文件。
+
+直接命令行执行，报“另一个程序正在使用此文件，进程无法访问。”
+
+写到文件中执行可正确执行
+
+
+可以通过在命令后增加重定向的方式将命令的错误结果输出到一个文件中，便于方便调试检测 MAKE 文件。
+
+
+
+
+
+
+nmake.exe /ADEL               DEBUG=0 _OD_EXT=  PLATFORM=INTEL
+
+
+
+
+	
+cd MFC 2>error2.txt 直接在命令行是可以跳转到 目标目录的。
+而放到MAKE文件中时，好像没有真的跳转？	
+
+
+	cd MFC 2>error2.txt
+	cd MFC
+	
+多输一个 cd MFC 原来NMAKE报错问题就没有了！？
+
+
+
+
+nmake.exe /ADEIPL             DEBUG=0 _OD_EXT=  PLATFORM=INTEL
+
+
+
+使用一个测试目标 ，并调用 echo 来调测显示宏内容
+goal: test $(GOALS)
+
+test:
+	echo $(GOALS)
+	
+
+
+
+MAKE  文件中 echo 命令过长，报错
+
+
+改进，则可以使用 宏 作为测试目标的依赖 ，使用 /P 命令可预处理打印出宏内容。
+
+
+为测试某个宏最好放到这个宏最后给定值的后面。
+
+
+
+
+nmake.exe /ADEIPL             DEBUG=1 _OD_EXT=  PLATFORM=INTEL
+nmake.exe /ADEIPL               /f mfcdll.mak LIBNAME=MYMFC debug=1 UNICODE=1 _OD_EXT=  PLATFORM=INTEL
+
+nmake.exe /ADEGIPL               /f mfcdll.mak LIBNAME=MYMFC debug=1 UNICODE=1 _OD_EXT=  PLATFORM=INTEL > 2.txt
+
+
+
+
+
+
+
+
+!include makefile
+等同于 将 makefile的内容导入到当前 MAKE 文件的当前位置处
+
+
+
+
+
+
+nmake.exe /ADEIPL             /f mfcdll.mak LIBNAME=TEST90 debug=1 UNICODE=1 _OD_EXT= CLEAN PLATFORM=INTEL
+此处 CLEAN 是一个依赖目标。即明确指定 编译 CLEAN。
+
+
+NMAKE [option...] [macros...] [targets...] [@commandfile...]
+
+[macros...] 的形式
+ABC="abc"
+
+[targets...] 的形式
+ABC
+注：如果没有提供目标，则以 MAKE 文件中的第一个 targets 为目标
+
+
+_LIBNAME = LIBNAME=$(LIBNAME)
+
+宏 _LIBNAME 的内容是 “LIBNAME=$(LIBNAME)”，其中 $(LIBNAME) 展开为具体内容。
+如：
+LIBNAME=TEST90 （ LIBNAME 的内容是 ”TEST90“ ）
+则
+_LIBNAME = LIBNAME=$(LIBNAME)  （ _LIBNAME 的内容是 “LIBNAME=TEST90” ）
+
+
+
+
+nmake /f atlmfc.mak [ALL | ATL | MFC] [CLEAN= ] [LIBNAME= ] [PLATFORM= ]
+
+nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MYMFC90 PLATFORM=INTEL
+
+nmake /ADEGIPL /f atlmfc.mak MFC CLEAN=1 LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+
+nmake.exe /ADEIPL             /f mfcdll.mak LIBNAME=TEST90 debug=1 UNICODE=1 _OD_EXT= CLEAN PLATFORM=INTEL
+
+nmake.exe /ADEIPL             /f mfcdll.mak LIBNAME=TEST90 debug=1 UNICODE=1 _OD_EXT=  PLATFORM=INTEL
+
+
+nmake /ADEGIPL /f atlmfc.mak MFC LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+
+
+
+nmake /AI /f atlmfc.mak MFC LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+nmake /A /f atlmfc.mak MFC LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+nmake /AD /f atlmfc.mak MFC LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+nmake /ADP /f atlmfc.mak MFC LIBNAME=TEST90 PLATFORM=INTEL >test90.txt
+
+
+
+
+
+
+	if not exist ..\lib\INTEL md ..\lib\INTEL
+
+	cd MFC
+	"d:\Program Files\Microsoft Visual Studio 9.0\VC\BIN\nmake.exe" /ADP                /f mfcdll.mak LIBNAME=TEST90 debug=1 UNICODE=1 _OD_EXT=  PLATFORM=INTEL
+
+	if not exist INTEL\$UDLLD.W\*.* mkdir INTEL\$UDLLD.W
+
+	echo >nul "PCH_TARGETS" INTEL\$UDLLD.W\objcore.obj
+	cl >>out.txt /Ycstdafx.h /FpINTEL\$UDLLD.W\stdafx.pch /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Z7  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /FdINTEL\TEST90UD.pdb  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  /c objcore.cpp
+ 
+	echo >nul INTEL\$UDLLD.W\TEST90UD.res
+	rc >>out.txt /r  /D_UNICODE /D_DEBUG /D_AFX_MONOLITHIC /fo INTEL\$UDLLD.W\TEST90UD.res mfcdll.rc
+	
+	echo >nul "BROWSE=0 no def PREPROC .cpp{D}.obj" .cpp{INTEL\$UDLLD.W}.obj
+	cl  /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Z7  /MDd /D_DLL /GF /D_MT /Zc:wchar_t /FdINTEL\TEST90UD.pdb  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Yustdafx.h /FpINTEL\$UDLLD.W\stdafx.pch /MP2 /c except.cpp validadd.cpp dumpcont.cpp dumpflt.cpp arccore.cpp arcobj.cpp arcex.cpp arcstrm.cpp dumpinit.cpp dumpout.cpp afxasert.cpp afxmem.cpp afxabort.cpp afxinl1.cpp afxinl2.cpp afxinl3.cpp afxinl4.cpp filecore.cpp filetxt.cpp filemem.cpp fileshrd.cpp filex.cpp filest.cpp array_b.cpp array_d.cpp array_p.cpp array_o.cpp array_s.cpp array_u.cpp array_w.cpp list_o.cpp list_p.cpp list_s.cpp map_pp.cpp map_pw.cpp map_so.cpp map_sp.cpp map_ss.cpp map_wo.cpp map_wp.cpp plex.cpp strcore.cpp timecore.cpp afxstate.cpp afxtls.cpp fixalloc.cpp mtcore.cpp mtex.cpp wincore.cpp winfrm.cpp winfrm2.cpp winfrmx.cpp winmdi.cpp tooltip.cpp winmini.cpp winhand.cpp winmain.cpp barcore.cpp bartool.cpp bardlg.cpp barstat.cpp bardock.cpp dockcont.cpp dockstat.cpp dcprev.cpp dcmeta.cpp trckrect.cpp barcool.cpp winctrl1.cpp winctrl2.cpp winctrl3.cpp winctrl4.cpp winbtn.cpp dlgcore.cpp dlgdata.cpp dlgfloat.cpp dlgprop.cpp dlgcomm.cpp dlgfile.cpp dlgprnt.cpp dlgprntx.cpp dlgclr.cpp dlgfnt.cpp dlgfr.cpp ccdata.cpp dlgtempl.cpp winctrl6.cpp winctrl7.cpp dlgdhtml.cpp afxautohidebutton.cpp afxautohidedocksite.cpp afxautohidebar.cpp afxpanecontainer.cpp afxpanecontainermanager.cpp afxbasepane.cpp afxbaseribbonelement.cpp afxbasetabbedpane.cpp afxbasetabctrl.cpp afxbasetoolbar.cpp afxtoolbarbuttoncustomizedialog.cpp afxtoolbarbuttonslistbutton.cpp afxtoolbarscommandslistbox.cpp afxcaptionbar.cpp afxcaptionbutton.cpp afxcaptionmenubutton.cpp afxcmdusagecount.cpp afxcolorbar.cpp afxcolorbutton.cpp afxcolormenubutton.cpp afxstandardcolorspropertypage.cpp afxcustomcolorspropertypage.cpp afxcolorpickerctrl.cpp afxcolorpopupmenu.cpp afxcommandmanager.cpp afxcontextmenumanager.cpp afxcontrolrenderer.cpp afxcustomizebutton.cpp afxcustomizemenubutton.cpp afxdialogex.cpp afxdialogimpl.cpp afxdocksite.cpp afxdockingpanesrow.cpp afxdockablepane.cpp afxdockablepaneadapter.cpp afxpanedialog.cpp afxdockingmanager.cpp afxdragframeimpl.cpp afxdrawmanager.cpp afxdropdownlistbox.cpp afxdropdowntoolbar.cpp afxvslistbox.cpp afxfontcombobox.cpp afxframeimpl.cpp afxframewndex.cpp afxfullscreenimpl.cpp afxglobals.cpp afxglobalutils.cpp afximageeditordialog.cpp afximagepaintarea.cpp afxpropertygridtooltipctrl.cpp afxacceleratorkeyassignctrl.cpp afxkeyboardmanager.cpp afxtoolbarskeyboardpropertypage.cpp afxacceleratorkey.cpp afxkeymapdialog.cpp afxmdiclientareawnd.cpp afxmaskededit.cpp afxmenubar.cpp afxmenubutton.cpp afxmenuhash.cpp afxmenuimages.cpp afxtoolbarsmenupropertypage.cpp afxpaneframewnd.cpp afxmousemanager.cpp afxmousepropertypage.cpp afxmultipaneframewnd.cpp afxolecntrframewndex.cpp afxoledocipframewndex.cpp afxoleipframewndex.cpp afxoleserverdocex.cpp afxtoolbarsoptionspropertypage.cpp afxoutlookbar.cpp afxoutlookbarpaneadapter.cpp afxoutlookbarpane.cpp afxoutlookbarpanebutton.cpp afxoutlookbartabctrl.cpp afxdesktopalertdialog.cpp afxpopupmenu.cpp afxpopupmenubar.cpp afxdesktopalertwnd.cpp afxpreviewviewex.cpp afxpropertygridctrl.cpp afxrecentdocksiteinfo.cpp afxsettingsstore.cpp afxregpath.cpp afxribbonbar.cpp afxribbonbutton.cpp afxribbonbuttonsgroup.cpp afxribboncategory.cpp afxribboncheckbox.cpp afxribboncolorbutton.cpp afxribboncombobox.cpp afxribboncommandslistbox.cpp afxpane.cpp afxcontrolbarimpl.cpp afxribboncustomizedialog.cpp afxribbonedit.cpp afxribbonminitoolbar.cpp afxribbonlinkctrl.cpp afxribbonkeyboardcustomizedialog.cpp afxribbonkeytip.cpp afxribbonlabel.cpp afxribbonmainpanel.cpp afxribbonpalettegallery.cpp afxribbonpanel.cpp afxribbonpanelmenu.cpp afxribbonprogressbar.cpp afxribbonquickaccesstoolbar.cpp afxribbonslider.cpp afxribbonstatusbar.cpp afxribbonstatusbarpane.cpp afxtoolbar.cpp afxribbonundobutton.cpp afxshelllistctrl.cpp afxshellmanager.cpp afxshelltreectrl.cpp afxshowallbutton.cpp afxsmartdockingmanager.cpp afxsmartdockingguide.cpp afxsmartdockinghighlighterwnd.cpp afxsound.cpp afxsplitterwndex.cpp afxtabbedpane.cpp afxmdichildwndex.cpp afxmdiframewndex.cpp afxtabview.cpp afxtabctrl.cpp afxtagmanager.cpp afxtaskspaneframewnd.cpp afxtaskspane.cpp afxmenutearoffmanager.cpp afxbutton.cpp afxtoolbarslistcheckbox.cpp afxcolordialog.cpp afxeditbrowsectrl.cpp afxheaderctrl.cpp afxlistctrl.cpp afxpropertypage.cpp afxpropertysheet.cpp afxcolorpropertysheet.cpp afxrebar.cpp afxrebarstate.cpp afxpanedivider.cpp afxspinbuttonctrl.cpp afxstatusbar.cpp afxtooltipctrl.cpp afxtoolbarbutton.cpp afxtoolbarcomboboxbutton.cpp afxtoolbarscustomizedialog.cpp afxtoolbarslistpropertypage.cpp afxtoolbardatetimectrl.cpp afxtoolbardropsource.cpp afxtoolbardroptarget.cpp afxtoolbareditboxbutton.cpp afxtoolbarfontcombobox.cpp afxtoolbarimages.cpp afxtoolbarmenubutton.cpp afxtoolbarmenubuttonsbutton.cpp afxtoolbarnamedialog.cpp afxtoolbarspineditboxbutton.cpp afxtoolbarsystemmenubutton.cpp afxtoolbarstoolspropertypage.cpp afxtooltipmanager.cpp afxtrackmouse.cpp afxlinkctrl.cpp afxusertool.cpp afxusertoolsmanager.cpp afxvisualmanager.cpp afxvisualmanageroffice2003.cpp afxvisualmanageroffice2007.cpp afxvisualmanagervs2005.cpp afxvisualmanagerofficexp.cpp afxwindowsmanagerdialog.cpp afxvisualmanagerwindows.cpp afxwinappex.cpp wingdi.cpp wingdix.cpp winstr.cpp winmenu.cpp auxdata.cpp afxcrit.cpp afxtrace.cpp winutil.cpp winocc.cpp themehelper.cpp cmdtarg.cpp doccore.cpp doctempl.cpp docsingl.cpp docmulti.cpp docmgr.cpp viewcore.cpp viewprnt.cpp winsplit.cpp viewscrl.cpp viewform.cpp viewedit.cpp viewprev.cpp viewcmn.cpp docmapi.cpp thrdcore.cpp appcore.cpp appinit.cpp appterm.cpp appui.cpp appui1.cpp appui2.cpp appui3.cpp appdlg.cpp appprnt.cpp apphelp.cpp apphelpx.cpp filelist.cpp olelock.cpp inet.cpp filefind.cpp daocore.cpp daodfx.cpp daoview.cpp oleinit.cpp olecli1.cpp olecli2.cpp olecli3.cpp olecnvrt.cpp oledobj1.cpp oledobj2.cpp oledisp1.cpp oledisp2.cpp oledlgs1.cpp oledlgs2.cpp oledlgs3.cpp oledata.cpp olevar.cpp olevar1.cpp oledoc1.cpp oledoc2.cpp oledrop1.cpp oledrop2.cpp olemsgf.cpp oleenum.cpp olefact.cpp oleipfrm.cpp olelink.cpp olemisc.cpp olestrm.cpp olesvr1.cpp olesvr2.cpp olereg.cpp oletsvr.cpp oleui1.cpp oleui2.cpp oleunk.cpp oleverb.cpp olecall.cpp viewrich.cpp oledll.cpp oletyplb.cpp olemon.cpp winctrl5.cpp viewhtml.cpp occmgr.cpp occevent.cpp occcont.cpp occsite.cpp occlock.cpp occddx.cpp occddxf.cpp occdlg.cpp oledocvw.cpp oledocob.cpp oledoctg.cpp oledocip.cpp oledoccl.cpp oleasmon.cpp olebar.cpp ctlcache.cpp ctlcore.cpp ctlconn.cpp ctldata.cpp ctlevent.cpp ctlmodul.cpp ctlframe.cpp ctlfont.cpp ctlinplc.cpp ctllic.cpp oleconn.cpp ctlobj.cpp ctlpict.cpp ctlpropx.cpp ctlppg.cpp ctlprop.cpp ctlpset.cpp ctlpstg.cpp ctlpstm.cpp ctlrefl.cpp ctlreg.cpp ctltrack.cpp ctlview.cpp olepset.cpp ctlpbag.cpp ctlquick.cpp ctlnownd.cpp ctlinl.cpp sockcore.cpp dbcore.cpp dbrfx.cpp dbview.cpp dbflt.cpp dblong.cpp dbvar.cpp viewoled.cpp dllinit.cpp 
+
+	echo >nul INTEL\TEST90UD.dll
+	link >>out.txt @C:\Users\CDAM\AppData\Local\Temp\nm8F1E.tmp
+
+	echo >nul ..\..\lib\INTEL\TEST90UD.lib
+	link >>out.txt @C:\Users\CDAM\AppData\Local\Temp\nmA676.tmp
+
+	echo >nul INTEL\$UDLLD.W\stdafx.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Ycstdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch stdafx.cpp
+
+	echo >nul INTEL\$UDLLD.W\nolib.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch nolib.cpp
+
+	echo >nul INTEL\$UDLLD.W\appmodul.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch appmodul.cpp
+
+	echo >nul INTEL\$UDLLD.W\dumpstak.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch dumpstak.cpp
+
+	echo >nul INTEL\$UDLLD.W\dllmodul.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /D_AFX_DISABLE_INLINES dllmodul.cpp
+
+	echo >nul INTEL\$UDLLD.W\rawdllmainproxy.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST rawdllmainproxy.c
+
+	echo >nul INTEL\$UDLLD.W\oleexp.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch oleexp.cpp
+
+	echo >nul INTEL\$UDLLD.W\sockexp.obj
+	cl >>out.txt /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\TEST90SUD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch sockexp.cpp
+
+	echo >nul "..\..\lib\(PLATFORM)\(TARG_STATIC).lib" ..\..\lib\INTEL\TEST90SUD.lib
+	lib /out:..\..\lib\INTEL\TEST90SUD.lib INTEL\$UDLLD.W\stdafx.obj INTEL\$UDLLD.W\nolib.obj  INTEL\$UDLLD.W\appmodul.obj INTEL\$UDLLD.W\dumpstak.obj INTEL\$UDLLD.W\dllmodul.obj INTEL\$UDLLD.W\rawdllmainproxy.obj INTEL\$UDLLD.W\oleexp.obj INTEL\$UDLLD.W\sockexp.obj
+
+	cd ..
+
+
+
+以最基础使用到的类断点调试运行线路、逻辑。
+如何判定一个LIB是静态还是动态库。
+纯虚类/抽象类，VC __declspec(novtable) ，无虚函数表，即虚函数都(应该)是纯虚的。
+NMAKE 编译 MFC DLL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
