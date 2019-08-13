@@ -1,0 +1,603 @@
+1.创建 win32 程序 （DEBUG）
+2.引用 MFC 框架，派生 CWinApp 子类，重写 InitInstance   （#include <afxwin.h>）
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>d:\program files\microsoft visual studio 10.0\vc\atlmfc\include\afx.h(24): fatal error C1189: #error :  Building MFC application with /MD[d] (CRT dll version) requires MFC shared dll version. Please #define _AFXDLL or do not use /MD[d]
+========== 全部重新生成: 成功 0 个，失败 1 个，跳过 0 个 ==========
+
+
+
+
+
+1.需要定义宏 _AFXDLL
+2./VERBOSE:Lib
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>  
+1>  正在搜索库
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>  
+1>  已完成库搜索
+1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Platforms\Win32\Microsoft.Cpp.Win32.Targets(275,5): error MSB6006: “link.exe”已退出，代码为 1120。
+1>msvcrtd.lib(crtexew.obj) : error LNK2019: 无法解析的外部符号 _WinMain@16，该符号在函数 ___tmainCRTStartup 中被引用
+1>D:\temp\win32MFC\Debug\win32MFC.exe : fatal error LNK1120: 1 个无法解析的外部命令
+========== 全部重新生成: 成功 0 个，失败 1 个，跳过 0 个 ==========
+
+默认搜索了库：
+mfc100ud.lib:
+mfcs100ud.lib:
+
+
+
+
+
+1.入口点：/ENTRY:"wWinMainCRTStartup"
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>  
+1>  正在搜索库
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>  
+1>  已完成库搜索
+1>  
+1>  正在搜索库
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>  
+1>  已完成库搜索
+1>  win32MFC.vcxproj -> D:\temp\win32MFC\Debug\win32MFC.exe
+========== 全部重新生成: 成功 1 个，失败 0 个，跳过 0 个 ==========
+
+可编译运行调试    （D:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\src\mfc\winmain.cpp）
+
+
+
+
+
+结：
+1.创建 win32 程序 （DEBUG）
+2.引用 MFC 框架，派生 CWinApp 子类，重写 InitInstance   （#include <afxwin.h>）
+3.需要定义宏 _AFXDLL   (/VERBOSE:Lib   默认搜索了库：mfc100ud.lib: mfcs100ud.lib: )
+4.入口点：/ENTRY:"wWinMainCRTStartup"
+
+
+可编译运行调试    （D:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\src\mfc\winmain.cpp）
+
+
+
+
+
+
+
+
+1.改为使用提取的 VS2008 MFC 源码内容     (#include "../atlmfc/include/afxwin.h")
+2.忽略所有默认库：/NODEFAULTLIB
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>  
+1>  正在搜索库
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>  
+1>  已完成库搜索
+1>LINK : error LNK2001: 无法解析的外部符号 _wWinMainCRTStartup
+1>x.obj : error LNK2001: 无法解析的外部符号 __afxForceEXCLUDE
+1>x.obj : error LNK2001: 无法解析的外部符号 __afxForceSTDAFX
+1>x.obj : error LNK2001: 无法解析的外部符号 "void __cdecl operator delete(void *)" (??3@YAXPAX@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: static struct AFX_MSGMAP const * __stdcall CWinApp::GetThisMessageMap(void)" (?GetThisMessageMap@CWinApp@@KGPBUAFX_MSGMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 __RTC_Shutdown
+1>x.obj : error LNK2001: 无法解析的外部符号 __RTC_InitBase
+1>x.obj : error LNK2019: 无法解析的外部符号 __RTC_CheckEsp，该符号在函数 "protected: virtual struct AFX_MSGMAP const * __thiscall CxApp::GetMessageMap(void)const " (?GetMessageMap@CxApp@@MBEPBUAFX_MSGMAP@@XZ) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CWinApp::CWinApp(wchar_t const *)" (??0CWinApp@@QAE@PB_W@Z)，该符号在函数 "public: __thiscall CxApp::CxApp(void)" (??0CxApp@@QAE@XZ) 中被引用
+1>x.obj : error LNK2001: 无法解析的外部符号 "const type_info::`vftable'" (??_7type_info@@6B@)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const " (?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CObject::Serialize(class CArchive &)" (?Serialize@CObject@@UAEXAAVCArchive@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::AssertValid(void)const " (?AssertValid@CWinApp@@UBEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::Dump(class CDumpContext &)const " (?Dump@CWinApp@@UBEXAAVCDumpContext@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)" (?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)" (?OnFinalRelease@CCmdTarget@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::IsInvokeAllowed(long)" (?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::GetDispatchIID(struct _GUID *)" (?GetDispatchIID@CCmdTarget@@UAEHPAU_GUID@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual unsigned int __thiscall CCmdTarget::GetTypeInfoCount(void)" (?GetTypeInfoCount@CCmdTarget@@UAEIXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CTypeLibCache * __thiscall CCmdTarget::GetTypeLibCache(void)" (?GetTypeLibCache@CCmdTarget@@UAEPAVCTypeLibCache@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual long __thiscall CCmdTarget::GetTypeLib(unsigned long,struct ITypeLib * *)" (?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_OLECMDMAP const * __thiscall CCmdTarget::GetCommandMap(void)const " (?GetCommandMap@CCmdTarget@@MBEPBUAFX_OLECMDMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_DISPMAP const * __thiscall CCmdTarget::GetDispatchMap(void)const " (?GetDispatchMap@CCmdTarget@@MBEPBUAFX_DISPMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_CONNECTIONMAP const * __thiscall CCmdTarget::GetConnectionMap(void)const " (?GetConnectionMap@CCmdTarget@@MBEPBUAFX_CONNECTIONMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_INTERFACEMAP const * __thiscall CCmdTarget::GetInterfaceMap(void)const " (?GetInterfaceMap@CCmdTarget@@MBEPBUAFX_INTERFACEMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_EVENTSINKMAP const * __thiscall CCmdTarget::GetEventSinkMap(void)const " (?GetEventSinkMap@CCmdTarget@@MBEPBUAFX_EVENTSINKMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::OnCreateAggregates(void)" (?OnCreateAggregates@CCmdTarget@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct IUnknown * __thiscall CCmdTarget::GetInterfaceHook(void const *)" (?GetInterfaceHook@CCmdTarget@@UAEPAUIUnknown@@PBX@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual int __thiscall CCmdTarget::GetExtraConnectionPoints(class CPtrArray *)" (?GetExtraConnectionPoints@CCmdTarget@@MAEHPAVCPtrArray@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct IConnectionPoint * __thiscall CCmdTarget::GetConnectionHook(struct _GUID const &)" (?GetConnectionHook@CCmdTarget@@MAEPAUIConnectionPoint@@ABU_GUID@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Run(void)" (?Run@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)" (?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::PumpMessage(void)" (?PumpMessage@CWinThread@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::OnIdle(long)" (?OnIdle@CWinApp@@UAEHJ@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::IsIdleMessage(struct tagMSG *)" (?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::ExitInstance(void)" (?ExitInstance@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)" (?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::ProcessMessageFilter(int,struct tagMSG *)" (?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CWnd * __thiscall CWinThread::GetMainWnd(void)" (?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinThread::Delete(void)" (?Delete@CWinThread@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::InitLibId(void)" (?InitLibId@CWinApp@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Register(void)" (?Register@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Unregister(void)" (?Unregister@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CDocument * __thiscall CWinApp::OpenDocumentFile(wchar_t const *)" (?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PB_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::AddToRecentFileList(wchar_t const *)" (?AddToRecentFileList@CWinApp@@UAEXPB_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::InitApplication(void)" (?InitApplication@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::SaveAllModified(void)" (?SaveAllModified@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::DoMessageBox(wchar_t const *,unsigned int,unsigned int)" (?DoMessageBox@CWinApp@@UAEHPB_WII@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::DoWaitCursor(int)" (?DoWaitCursor@CWinApp@@UAEXH@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::OnDDECommand(wchar_t *)" (?OnDDECommand@CWinApp@@UAEHPA_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::WinHelpW(unsigned long,unsigned int)" (?WinHelpW@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::HtmlHelpW(unsigned long,unsigned int)" (?HtmlHelpW@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::WinHelpInternal(unsigned long,unsigned int)" (?WinHelpInternal@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct HINSTANCE__ * __thiscall CWinApp::LoadAppLangResourceDLL(void)" (?LoadAppLangResourceDLL@CWinApp@@UAEPAUHINSTANCE__@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::LoadSysPolicies(void)" (?LoadSysPolicies@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: static void __stdcall CObject::operator delete(void *)" (??3CObject@@SGXPAX@Z)，该符号在函数 "public: virtual void * __thiscall CxApp::`scalar deleting destructor'(unsigned int)" (??_GCxApp@@UAEPAXI@Z) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: virtual __thiscall CWinApp::~CWinApp(void)" (??1CWinApp@@UAE@XZ)，该符号在函数 "public: virtual __thiscall CxApp::~CxApp(void)" (??1CxApp@@UAE@XZ) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::InitInstance(void)" (?InitInstance@CWinApp@@UAEHXZ)，该符号在函数 "public: virtual int __thiscall CxApp::InitInstance(void)" (?InitInstance@CxApp@@UAEHXZ) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 _atexit，该符号在函数 "void __cdecl `dynamic initializer for 'theApp''(void)" (??__EtheApp@@YAXXZ) 中被引用
+1>D:\temp\win32MFC\Debug\win32MFC.exe : fatal error LNK1120: 59 个无法解析的外部命令
+========== 全部重新生成: 成功 0 个，失败 1 个，跳过 0 个 ==========
+
+有部分库未进行搜索了
+
+
+
+
+
+1.忽略特定默认库：mfcs100ud.lib;mfc100ud.lib;%(IgnoreSpecificDefaultLibraries)
+
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>  
+1>  正在搜索库
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>  
+1>  已完成库搜索
+1>x.obj : error LNK2001: 无法解析的外部符号 __afxForceEXCLUDE
+1>x.obj : error LNK2001: 无法解析的外部符号 __afxForceSTDAFX
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: static struct AFX_MSGMAP const * __stdcall CWinApp::GetThisMessageMap(void)" (?GetThisMessageMap@CWinApp@@KGPBUAFX_MSGMAP@@XZ)
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CWinApp::CWinApp(wchar_t const *)" (??0CWinApp@@QAE@PB_W@Z)，该符号在函数 "public: __thiscall CxApp::CxApp(void)" (??0CxApp@@QAE@XZ) 中被引用
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const " (?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CObject::Serialize(class CArchive &)" (?Serialize@CObject@@UAEXAAVCArchive@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::AssertValid(void)const " (?AssertValid@CWinApp@@UBEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::Dump(class CDumpContext &)const " (?Dump@CWinApp@@UBEXAAVCDumpContext@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)" (?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)" (?OnFinalRelease@CCmdTarget@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::IsInvokeAllowed(long)" (?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::GetDispatchIID(struct _GUID *)" (?GetDispatchIID@CCmdTarget@@UAEHPAU_GUID@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual unsigned int __thiscall CCmdTarget::GetTypeInfoCount(void)" (?GetTypeInfoCount@CCmdTarget@@UAEIXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CTypeLibCache * __thiscall CCmdTarget::GetTypeLibCache(void)" (?GetTypeLibCache@CCmdTarget@@UAEPAVCTypeLibCache@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual long __thiscall CCmdTarget::GetTypeLib(unsigned long,struct ITypeLib * *)" (?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_OLECMDMAP const * __thiscall CCmdTarget::GetCommandMap(void)const " (?GetCommandMap@CCmdTarget@@MBEPBUAFX_OLECMDMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_DISPMAP const * __thiscall CCmdTarget::GetDispatchMap(void)const " (?GetDispatchMap@CCmdTarget@@MBEPBUAFX_DISPMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_CONNECTIONMAP const * __thiscall CCmdTarget::GetConnectionMap(void)const " (?GetConnectionMap@CCmdTarget@@MBEPBUAFX_CONNECTIONMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_INTERFACEMAP const * __thiscall CCmdTarget::GetInterfaceMap(void)const " (?GetInterfaceMap@CCmdTarget@@MBEPBUAFX_INTERFACEMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct AFX_EVENTSINKMAP const * __thiscall CCmdTarget::GetEventSinkMap(void)const " (?GetEventSinkMap@CCmdTarget@@MBEPBUAFX_EVENTSINKMAP@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CCmdTarget::OnCreateAggregates(void)" (?OnCreateAggregates@CCmdTarget@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct IUnknown * __thiscall CCmdTarget::GetInterfaceHook(void const *)" (?GetInterfaceHook@CCmdTarget@@UAEPAUIUnknown@@PBX@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual int __thiscall CCmdTarget::GetExtraConnectionPoints(class CPtrArray *)" (?GetExtraConnectionPoints@CCmdTarget@@MAEHPAVCPtrArray@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "protected: virtual struct IConnectionPoint * __thiscall CCmdTarget::GetConnectionHook(struct _GUID const &)" (?GetConnectionHook@CCmdTarget@@MAEPAUIConnectionPoint@@ABU_GUID@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Run(void)" (?Run@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)" (?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::PumpMessage(void)" (?PumpMessage@CWinThread@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::OnIdle(long)" (?OnIdle@CWinApp@@UAEHJ@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::IsIdleMessage(struct tagMSG *)" (?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::ExitInstance(void)" (?ExitInstance@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)" (?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinThread::ProcessMessageFilter(int,struct tagMSG *)" (?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CWnd * __thiscall CWinThread::GetMainWnd(void)" (?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinThread::Delete(void)" (?Delete@CWinThread@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::InitLibId(void)" (?InitLibId@CWinApp@@UAEXXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Register(void)" (?Register@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::Unregister(void)" (?Unregister@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual class CDocument * __thiscall CWinApp::OpenDocumentFile(wchar_t const *)" (?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PB_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::AddToRecentFileList(wchar_t const *)" (?AddToRecentFileList@CWinApp@@UAEXPB_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::InitApplication(void)" (?InitApplication@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::SaveAllModified(void)" (?SaveAllModified@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::DoMessageBox(wchar_t const *,unsigned int,unsigned int)" (?DoMessageBox@CWinApp@@UAEHPB_WII@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::DoWaitCursor(int)" (?DoWaitCursor@CWinApp@@UAEXH@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::OnDDECommand(wchar_t *)" (?OnDDECommand@CWinApp@@UAEHPA_W@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::WinHelpW(unsigned long,unsigned int)" (?WinHelpW@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::HtmlHelpW(unsigned long,unsigned int)" (?HtmlHelpW@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CWinApp::WinHelpInternal(unsigned long,unsigned int)" (?WinHelpInternal@CWinApp@@UAEXKI@Z)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct HINSTANCE__ * __thiscall CWinApp::LoadAppLangResourceDLL(void)" (?LoadAppLangResourceDLL@CWinApp@@UAEPAUHINSTANCE__@@XZ)
+1>x.obj : error LNK2001: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::LoadSysPolicies(void)" (?LoadSysPolicies@CWinApp@@UAEHXZ)
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: static void __stdcall CObject::operator delete(void *)" (??3CObject@@SGXPAX@Z)，该符号在函数 "public: virtual void * __thiscall CxApp::`scalar deleting destructor'(unsigned int)" (??_GCxApp@@UAEPAXI@Z) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: virtual __thiscall CWinApp::~CWinApp(void)" (??1CWinApp@@UAE@XZ)，该符号在函数 "public: virtual __thiscall CxApp::~CxApp(void)" (??1CxApp@@UAE@XZ) 中被引用
+1>x.obj : error LNK2019: 无法解析的外部符号 "public: virtual int __thiscall CWinApp::InitInstance(void)" (?InitInstance@CWinApp@@UAEHXZ)，该符号在函数 "public: virtual int __thiscall CxApp::InitInstance(void)" (?InitInstance@CxApp@@UAEHXZ) 中被引用
+1>msvcrtd.lib(wcrtexew.obj) : error LNK2019: 无法解析的外部符号 _wWinMain@16，该符号在函数 ___tmainCRTStartup 中被引用
+1>D:\temp\win32MFC\Debug\win32MFC.exe : fatal error LNK1120: 53 个无法解析的外部命令
+========== 全部重新生成: 成功 0 个，失败 1 个，跳过 0 个 ==========
+
+默认搜索有 msvcrtd.lib
+
+
+
+
+
+
+
+
+1.屏蔽 appmodul.cpp 中有关 __forceMFCManifestRTM 的内容。
+2.编译 MFC 库 （ nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MFC90 PLATFORM=INTEL>1.TXT ）  （ nmake /f atlmfc.mak MFC LIBNAME=MFC90 PLATFORM=INTEL>1.TXT ）
+3.工程引用新编译的库。 （D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib;D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib）
+
+
+1>------ 已启动全部重新生成: 项目: win32MFC, 配置: Debug Win32 ------
+1>  x.cpp
+1>  _WIN32_WINNT not defined. Defaulting to _WIN32_WINNT_MAXVER (see WinSDKVer.h)
+1>  
+1>  正在搜索库
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>  
+1>  已完成库搜索
+1>  
+1>  正在搜索库
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\msvcrtd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\windowscodecs.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 d:\Program Files\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\ws2_32.lib:
+1>      正在搜索 C:\Program Files\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib:
+1>      正在搜索 D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib:
+1>  
+1>  已完成库搜索
+1>  win32MFC.vcxproj -> D:\temp\win32MFC\Debug\win32MFC.exe
+========== 全部重新生成: 成功 1 个，失败 0 个，跳过 0 个 ==========
+
+可编译，无法运行。报相关 DLL 丢失。（MFC90UD.DLL）
+
+
+
+1.将 DLL 库COPY到工程执行目录 中。 （MFC90UD.DLL ， 又报丢失 msvcr90d.dll ）
+2.附加清单文件：DLL 库附带的 manifest 。 （<assemblyIdentity type='win32' name='Microsoft.VC90.DebugCRT' version='9.0.21022.8' processorArchitecture='x86' publicKeyToken='1fc8b3b9a1e18e3b' />）
+
+重编译，可运行调试。
+
+
+
+
+结：
+1.改为使用提取的 VS2008 MFC 源码内容     (#include "../atlmfc/include/afxwin.h")
+2.忽略特定默认库：mfcs100ud.lib;mfc100ud.lib;%(IgnoreSpecificDefaultLibraries)
+3.屏蔽 appmodul.cpp 中有关 __forceMFCManifestRTM 的内容。
+4.编译 MFC 库 （ nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MFC90 PLATFORM=INTEL>1.TXT ）  （ nmake /f atlmfc.mak MFC LIBNAME=MFC90 PLATFORM=INTEL>1.TXT ）
+5.工程引用新编译的库。 （D:\temp\win32MFC\atlmfc\lib\INTEL\MFCS90UD.lib;D:\temp\win32MFC\atlmfc\lib\INTEL\MFC90UD.lib）
+6.将 DLL 库COPY到工程执行目录 中。 （MFC90UD.DLL ， 又报丢失 msvcr90d.dll ）
+7.附加清单文件：DLL 库附带的 manifest 。 （<assemblyIdentity type='win32' name='Microsoft.VC90.DebugCRT' version='9.0.21022.8' processorArchitecture='x86' publicKeyToken='1fc8b3b9a1e18e3b' />）
+
+编译可运行调试。
+
+
+
+对上一篇补充(17)：
+设置VC++目录 更改有关引用目录路径，使调试引用到设定的源文件目录
