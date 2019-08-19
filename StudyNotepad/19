@@ -1,0 +1,167 @@
+_tWinMain
+AfxWinMain
+AfxGetThread
+AfxGetModuleThreadState -> AFX_MODULE_THREAD_STATE
+AfxGetModuleState -> AFX_MODULE_STATE
+
+
+AFX_MODULE_STATE::CThreadLocal<AFX_MODULE_THREAD_STATE> m_thread;
+
+
+CThreadLocal<>::GetData
+
+CThreadLocal<>: CThreadLocalObject
+
+CThreadLocalObject::GetData
+  ~ CThreadSlotData* _afxThreadData;
+
+
+
+MFCS90UD.lib 并没有直接包含有 winmain.cpp 、 thrdcore.cpp 等定义内容 
+
+LIB库 缺失实体定义 不会报错 ？？？还是 MFCS90UD.lib 必须与 MFCS90UD.dll(MFC90UD.lib) 配合使用。
+
+MFCS90UD.lib 是使用 LIB 工具生成的 ！？非是 LINK 工具 ！？
+
+
+
+
+屏蔽宏 _AFX_OLE_IMPL ， 重新编译
+
+
+1>e:\lz\test\win32proj\atlmfc\src\mfc\viewrich.cpp(109): warning C4273: “lMaxSize”: dll 链接不一致
+1>          e:\lz\test\win32proj\atlmfc\include\afxrich.h(191) : 参见“public: static unsigned long CRichEditView::lMaxSize”的前一个定义
+1>e:\lz\test\win32proj\atlmfc\src\mfc\viewrich.cpp(109): error C2491: “CRichEditView::lMaxSize”: 不允许 dllimport 静态数据成员 的定义
+
+// afxrich.h
+static AFX_DATA ULONG lMaxSize; // maximum number of characters supported
+
+// viewrich.cpp
+AFX_DATADEF ULONG CRichEditView::lMaxSize = 0xffffff;
+
+
+AFX_DATA
+AFX_DATADEF
+
+#define AFX_DATA AFX_CORE_DATA
+
+#define AFX_DATADEF
+
+
+#define AFX_CORE_DATA       AFX_DATA_IMPORT
+
+
+#undef AFX_DATA
+#define AFX_DATA AFX_OLE_DATA
+
+
+#define AFX_OLE_DATA        AFX_DATA_IMPORT
+
+
+
+MSVC 编译 输出宏定义内容 ???    (CL /P /C ADD.C      注：/P 预处理；/C 保留注释)
+msvc 头文件 引用包含关系 ???
+
+
+在头文件中包含头文件，是不是一个非常坏的习惯？
+
+很正常的用法，头文件用
+#ifndef __XXX_H__
+#define __XXX_H__
+...
+#endif
+限定就好了。
+
+看依赖，头文件中的类定义有依赖，看是否需要引入其他头文件中的类定义或者只需要前置声明。 
+
+1. 头文件应该自包含，也就是说头文件中使用了的定义，需要在将定义所在的头文件包含进来。而没有在本头文件中使用，是在cpp文件中使用的定义，不应该在头文件中包含。
+2. 如1楼的方式防止重复包含 
+
+优先选择前向引用，而不是包含头文件。如果没办法前向引用，才是包含头文件。
+
+需要时再包含，不需要的时候不包含，BS将所有头文件都包含到一个头文件中的做法， 
+
+主要是防止编译依赖吧，有可能只改动一个头文件，结果整个工程全部编译一遍，太造孽了 
+
+是的，随着代码量的增大，这样做的确容易出现问题，
+尤其是有多个人同时进行开发的时候，你很难保证每个人对头文件的依赖都有一个清晰的认识。
+1楼所说的可以解决重复包含，但应该不是楼主所说的问题。
+实际上，这取决于你的代码的物理设计，即你的代码在文件中的分布。
+理论上，如果你的每个头文件设计得足够的内聚，无论如何嵌套包含都不会出现问题。但是，这只是存在于理论上，实际的项目中做到比较因难。
+因此，一个合理的建议：所有的.h中不包含.h，放在CPP中包含。但是每个模块有一个特殊的共通头文件，只用于包含该模块使用的外部的头文件，并且所有的cpp文件必须是最先包含该头文件。模块对外提供与内部使用的文件分目录存放。
+这样做可以强制你清晰化模块之间的依赖关系（模块的共通头文件中的文件包含顺序就是你的模块依赖的顺序）。
+如果把每组.h/.cpp文件看成一个小模块，你可以清晰的看出这些小模块之间的依赖顺序。 
+
+（1）尽量在cpp文件里面包含头文件
+（2）可以把一些公用的结构或者类，写到一个头文件里。比如整个系统的各种数据结构体。
+
+打开stdio.h和stdlib.h看看人家里面包含别的头文件了没。
+
+
+
+
+
+#ifdef _AFX_NO_OLE_SUPPORT
+	#error OLE classes not supported in this library variant.
+#endif
+
+
+
+cl  /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Z7  /MDd /D_DLL /GF /D_MT /Zc:wchar_t /FdINTEL\MFC90UD.pdb  /D_DEBUG /D_AFX_CORE_IMPL /DAFX_OLE_DATA="" /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Yustdafx.h /FpINTEL\$UDLLD.W\stdafx.pch /MP4 /P /C  viewrich.cpp 
+
+
+/P /C
+
+
+/DAFX_OLE_DATA=""     （MSVC 工程属性中配置 写为 AFX_OLE_DATA= 即可）
+
+
+ctlcore.cpp 中 屏蔽 _AfxGetOleModuleState
+
+DEF 文件中 屏蔽 AfxWndProcDllOle
+
+
+编译成功，可调试运行，不再执行 _AFX_OLE_IMPL 段内容。
+
+
+
+
+
+
+
+
+
+构造、创建全局变量    _CRT_INIT
+
+/*
+* Invoke C++ constructors
+*/
+_initterm
+
+
+IMPLEMENT_SERIAL
+
+struct AFX_CLASSINIT
+构造函数
+AFX_CLASSINIT(CRuntimeClass* pNewClass) { AfxClassInit(pNewClass); }
+
+AfxClassInit
+AfxGetModuleState
+_AFX_THREAD_STATE       (EXTERN_THREAD_LOCAL(_AFX_THREAD_STATE, _afxThreadState))        (CThreadLocal<class_name>)
+...
+CThreadLocalObject
+...
+CThreadSlotData        (CThreadSlotData* _afxThreadData;)
+
+该处理底层函数中断点，调测，追溯到首次执行时，没有再_AFX_OLE_IMPL 段内容
+
+
+结：
+1.不定义宏 _AFX_OLE_IMPL 
+2.MSVC 工程属性中配置 宏 AFX_OLE_DATA= 
+3.ctlcore.cpp 中 屏蔽 _AfxGetOleModuleState
+4.DEF 文件中 屏蔽 AfxWndProcDllOle
+
+
+编译成功，可调试运行，不再执行 _AFX_OLE_IMPL 段内容。
+
