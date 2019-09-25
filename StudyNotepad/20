@@ -795,3 +795,54 @@ fixalloc.h 位于 atlmfc\src\mfc 可视为库 “内部” 头文件
 解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: struct __POSITION * __thiscall CMapPtrToPtr::GetStartPosition(void)const " (?GetStartPosition@CMapPtrToPtr@@QBEPAU__POSITION@@XZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
 
 解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetDataNA(void)" (?GetDataNA@CThreadLocalObject@@QAEPAVCNoTrackObject@@XZ)，该符号在函数 "public: class _AFX_THREAD_STATE * __thiscall CThreadLocal<class _AFX_THREAD_STATE>::GetDataNA(void)" (?GetDataNA@?$CThreadLocal@V_AFX_THREAD_STATE@@@@QAEPAV_AFX_THREAD_STATE@@XZ) 中被引用
+
+
+
+
+在 DllMain 编译链接通过 （ revision 1343 ）基础上，进行运行调测
+
+运行时异常，跟踪确认为成员未初始化导致。
+DWORD_PTR ATL::CTrace::m_dwModule    类没有构造函数进行成员初始化
+
+启用 ATL::CTrace 的构造函数。    private
+
+static CTrace ATL::CTrace::s_trace;
+private 构造函数 与 静态类成员 ？？？ 同一空间可访问！？
+
+
+
+CRITICAL_SECTION CThreadSlotData::m_sect 未进行初始化 InitializeCriticalSection
+
+启用 CThreadSlotData 构造函数 （部分内容）
+
+解决 e:\lz\work\doortotalcontrolold\doortotalcontrolold\xafxtls.cpp(414): warning C4291: “void *CThreadSlotData::operator new(size_t,void *)”: 未找到匹配的删除运算符；如果初始化引发异常，则不会释放内存
+
+
+
+运行时异常，跟踪确认为 动态 new 对象 需要零值初始化。
+
+new _AFX_THREAD_STATE _afxThreadState 对象
+启用 CNoTrackObject 类重载的 new / delete 操作符
+
+
+
+运行时异常，跟踪确认为 CSimpleList::m_pHead 成员未有效初始化。
+启用 CSimpleList 的构造函数
+
+
+
+运行时异常，跟踪确认为 AFX_MODULE_STATE* CDynLinkLibrary:CCmdTarget::m_pModuleState; 成员初始化。
+启用 CCmdTarget::CCmdTarget() 构造函数 （ 部分内容 ）
+运行时异常，跟踪确认为 CTypedSimpleList<CDynLinkLibrary*> AFX_MODULE_STATE::m_libraryList; 成员未有效初始化，尤其是其偏移量。
+启用 AFX_MODULE_STATE 的构造函数 （ 部分内容 ）
+启用子类 _AFX_BASE_MODULE_STATE 的构造函数
+解决 Xafxstate.obj : error LNK2001: 无法解析的外部符号 "long __stdcall AfxWndProcBase(struct HWND__ *,unsigned int,unsigned int,long)" (?AfxWndProcBase@@YGJPAUHWND__@@IIJ@Z)
+AfxWndProcBase 暂时置为空体操作，后续分析 消息驱动 时再补充
+
+
+
+
+（最后一个）运行时异常，重复 delete 指针指向的对象。跟踪确认为 delete CTypedSimpleList<CDynLinkLibrary*> AFX_MODULE_STATE::m_libraryList; 链表成员中 CDynLinkLibrary 元素， 而元素 CDynLinkLibrary 未实现析构函数。
+启用 CDynLinkLibrary 的析构函数。 该析构函数反向 查找到 m_libraryList ，并将其中的自己移除。
+
+程序整个可正常运行。
