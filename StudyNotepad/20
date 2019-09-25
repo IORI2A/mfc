@@ -1,0 +1,797 @@
+使用一种方法
+将复制源码文本内容，然后全部进行注释屏蔽。
+打开想要分析调试的，逐步进行编译，根据报错打开需要补充的，或者补充其他源码文件。
+以最少打开为原则。
+类仅打开为空体（体全为注释，后续根据错误调整）。
+涉及到的函数一般全打开。
+
+
+
+从 dllinit.cpp 入手
+
+
+
+实现 RawDllMain
+
+无法识别 BOOL 等 标识 
+
+Xdllinit.cpp
+  ~ Xstdafx.h
+      ~ Xafx.h
+          ~ Xafxver_.h
+              ~ Xafxv_w32.h
+                  ~ windows.h
+
+
+原始 afxtls_.h
+
+Xdllinit.cpp(529): error C3861: “AfxTlsAddRef”: 找不到标识符
+
+Xstdafx.h
+  ~ Xafxcoll.h
+      ~ Xafxstat_.h
+          ~ Xafxtls_.h
+
+
+Xafxtls_.h(241): error C2146: 语法错误: 缺少“;”(在标识符“AfxTlsAddRef”的前面)
+Xafxtls_.h(241): error C2182: “AFXAPI”: 非法使用“void”类型
+Xafxtls_.h(241): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
+
+无法识别 AFXAPI 标识 
+
+afxver_.h    ( Xafxver_.h 有定义 AFXAPI )
+
+Xafxtls_.h 又不引用任何头文件
+
+经调测 Xafxcoll.h 前有引用 Xafx.h
+Xafx.h 有引用 Xafxver_.h
+
+经调测 改为引用 afxver_.h 不再报 
+Xafxtls_.h(241): error C2146: 语法错误: 缺少“;”(在标识符“AfxTlsAddRef”的前面)
+Xafxtls_.h(241): error C2182: “AFXAPI”: 非法使用“void”类型
+
+
+
+Xdllinit.cpp(538): error C3861: “AfxCriticalInit”: 找不到标识符
+
+AfxCriticalInit 声明于 afximpl.h 中
+
+Xstdafx.h 有引用 afximpl.h
+
+追溯到 afximpl.h  解决 Xdllinit.cpp(538): error C3861: “AfxCriticalInit”: 找不到标识符
+
+
+
+Xdllinit.cpp(562): error C3861: “AfxCriticalTerm”: 找不到标识符
+
+AfxCriticalTerm 声明于 afximpl.h 中
+
+已有 Xafximpl.h
+
+追溯到 afximpl.h  解决 Xdllinit.cpp(562): error C3861: “AfxCriticalTerm”: 找不到标识符
+
+
+
+Xdllinit.cpp(565): error C3861: “AfxTlsRelease”: 找不到标识符
+
+AfxTlsRelease 声明于 afxtls_.h 中
+
+已有 Xafxtls_.h
+
+追溯到 afxtls_.h  解决 Xdllinit.cpp(565): error C3861: “AfxTlsRelease”: 找不到标识符
+
+
+
+Xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”
+
+CException 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 Xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”
+
+
+
+Xafx.h(688): error C2470: “CException”: 看起来像函数定义，但没有参数列表；跳过明显的函数体
+
+无法识别 AFX_NOVTABLE 标识
+
+宏 AFX_NOVTABLE 定义于 afxver_.h 中
+
+已有 Xafxver_.h
+
+AFX_ALWAYS_VTABLE 未有定义    (如果工程属性中定义宏 AFX_ALWAYS_VTABLE ， 其代码中也不变色？！)
+
+追溯到 afxver_.h  解决 Xafx.h(688): error C2470: “CException”: 看起来像函数定义，但没有参数列表；跳过明显的函数体     无法识别 AFX_NOVTABLE 标识
+
+
+
+xafx.h(689): error C2504: “CObject”: 未定义基类
+
+CObject 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(689): error C2504: “CObject”: 未定义基类
+
+
+
+xafx.h(504): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
+
+无法识别 CRuntimeClass 标识
+
+CRuntimeClass 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(504): error C2143: 语法错误 : 缺少“;”(在“*”的前面)    无法识别 CRuntimeClass 标识
+
+
+
+xafx.h(419): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
+
+无法识别 CObject 标识
+
+CObject 需要前向声明于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(419): error C2143: 语法错误 : 缺少“;”(在“*”的前面)    CObject 前向声明
+
+
+
+xafx.h(437): error C2061: 语法错误: 标识符“CArchive”
+
+CArchive 需要前向声明于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(437): error C2061: 语法错误: 标识符“CArchive”    CArchive 前向声明
+
+
+
+xafx.h(442): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
+
+无法识别 AFX_CLASSINIT 标识
+
+AFX_CLASSINIT 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(442): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int    AFX_CLASSINIT 声明定义
+
+
+
+
+
+
+从 
+xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”
+重来
+
+
+xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”
+
+CException 声明定义于 afx.h 中
+
+已有 Xafx.h 
+
+仅前向声明 CException
+
+追溯到 afx.h  解决 xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”    仅前向声明 CException
+
+
+
+xdllinit.cpp(570): error C2027: 使用了未定义类型“CException”
+
+需要 CException 的定义    CException 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xdllinit.cpp(570): error C2027: 使用了未定义类型“CException”
+
+
+
+xafx.h(688): error C2470: “CException”: 看起来像函数定义，但没有参数列表；跳过明显的函数体
+
+无法识别 AFX_NOVTABLE 标识
+
+宏 AFX_NOVTABLE 定义于 afxver_.h 中
+
+已有 Xafxver_.h
+
+追溯到 afxver_.h  解决 xafx.h(688): error C2470: “CException”: 看起来像函数定义，但没有参数列表；跳过明显的函数体     无法识别 AFX_NOVTABLE 标识
+
+
+
+xafx.h(689): error C2504: “CObject”: 未定义基类
+
+CObject 声明定义于 afx.h 中 (在进行子类继承定义时，仅使用 CObject 前向声明是不行的，必须知道其真实定义)
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(689): error C2504: “CObject”: 未定义基类    使用 CObject 的前向声明和定义
+
+
+
+xafx.h(504): error C2143: 语法错误 : 缺少“;”(在“*”的前面)
+
+无法识别 CRuntimeClass 标识
+
+CRuntimeClass 声明定义于 afx.h 中    仅前向声明 CRuntimeClass
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(504): error C2143: 语法错误 : 缺少“;”(在“*”的前面)    无法识别 CRuntimeClass 标识    仅前向声明 CRuntimeClass
+
+
+
+xafx.h(534): error C2061: 语法错误: 标识符“CArchive”
+
+CArchive 声明定义于 afx.h 中    仅前向声明 CArchive
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(534): error C2061: 语法错误: 标识符“CArchive”    CArchive 前向声明
+
+
+
+xafx.h(539): error C2061: 语法错误: 标识符“CDumpContext”
+
+CDumpContext 声明定义于 afx.h 中    仅前向声明 CDumpContext
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(539): error C2061: 语法错误: 标识符“CDumpContext”    CDumpContext 前向声明
+
+
+
+xafx.h(693): error C2143: 语法错误 : 缺少“;”(在“public”的前面)
+
+无法识别 DECLARE_DYNAMIC 标识
+
+DECLARE_DYNAMIC 定义于 afx.h 中
+
+已有 Xafx.h
+
+追溯到 afx.h  解决 xafx.h(693): error C2143: 语法错误 : 缺少“;”(在“public”的前面)    使用 DECLARE_DYNAMIC 定义
+
+
+
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CException::Delete(void)" (?Delete@CException@@QAEXXZ)，该符号在函数 __catch$_RawDllMain@12$0 中被引用
+
+CException::Delete 定义于 except.cpp 中
+
+追溯到 except.cpp  解决 error LNK2019: 无法解析的外部符号 "public: void __thiscall CException::Delete(void)" (?Delete@CException@@QAEXXZ)，该符号在函数 __catch$_RawDllMain@12$0 中被引用
+
+
+
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTlsRelease(void)" (?AfxTlsRelease@@YGXXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+AfxTlsRelease 定义于 afxtls.cpp 中
+
+使用 AFX_STATIC_DATA 宏定义  Xafxver_.h 中
+
+追溯到 afxtls.cpp  解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTlsRelease(void)" (?AfxTlsRelease@@YGXXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+
+
+xafxtls.cpp(512): error C2065: “_afxThreadData”: 未声明的标识符
+
+使用 CThreadSlotData 定义    ( 有成员访问 )
+
+
+
+
+
+
+
+解决 无法识别 BOOL 等 标识 
+
+取消 宏定义 _AFXDLL
+
+Xdllinit.cpp
+  ~ Xstdafx.h
+      ~ Xafx.h
+          ~ Xafxver_.h
+              ~ Xafxv_w32.h
+                  ~ windows.h
+
+
+
+解决 error C3861: “AfxTlsAddRef”: 找不到标识符
+
+通过MFC库搜索检测
+afxtls_.h
+  ~ afxstat_.h
+
+afxstat_.h
+  ~ afx.h
+  ~ afxcoll.h
+
+已有 Xafx.h
+
+
+
+解决 无法识别 AFXAPI 标识 
+
+afxver_.h  中有定义 AFXAPI 
+
+已有 Xafxver_.h 
+
+
+
+解决 error C3861: “AfxCriticalInit”: 找不到标识符
+
+AfxCriticalInit 声明于 afximpl.h 中
+
+通过当前项目搜索检测 
+afximpl.h
+  ~ Xstdafx.h
+
+
+
+解决 Xdllinit.cpp(562): error C3861: “AfxCriticalTerm”: 找不到标识符
+
+AfxCriticalTerm 声明于 afximpl.h 中
+
+已有 Xafximpl.h
+
+
+
+解决  Xdllinit.cpp(565): error C3861: “AfxTlsRelease”: 找不到标识符
+
+AfxTlsRelease 声明于 afxtls_.h 中
+
+已有 Xafxtls_.h
+
+
+
+解决 Xdllinit.cpp(568): error C2061: 语法错误: 标识符“CException”
+
+CException 有访问成员， 需要定义
+
+CException 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+解决  AFX_NOVTABLE 不能识别的标识
+
+AFX_NOVTABLE 宏 定义于 afxver_.h
+
+已有 Xafxver_.h
+
+解决 xafx.h(699): error C2504: “CObject”: 未定义基类
+
+CObject 作为基类， 需要定义
+
+CObject 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+解决 xdllinit.cpp(570): error C2039: “Delete”: 不是“CException”的成员
+
+Delete 声明于 afx.h 中
+
+已有 Xafx.h
+
+
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CException::Delete(void)" (?Delete@CException@@QAEXXZ)，该符号在函数 __catch$_RawDllMain@12$0 中被引用
+
+CException::Delete 定义于 except.cpp
+
+增加 Xexcept.cpp
+
+解决 xexcept.cpp(70): error C2653: “CException”: 不是类或命名空间名称
+
+Xexcept.cpp 引用 stdafx.h
+
+已有 Xstdafx.h
+
+解决 xexcept.cpp(73): error C2065: “m_bAutoDelete”: 未声明的标识符
+
+CException::m_bAutoDelete 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+解决 xexcept.cpp(76): error C2065: “m_bReadyForDelete”: 未声明的标识符
+
+CException::m_bReadyForDelete 声明定义于 afx.h 中
+
+已有 Xafx.h
+
+
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTlsRelease(void)" (?AfxTlsRelease@@YGXXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+AfxTlsRelease 定义于 afxtls.cpp
+
+增加 Xafxtls.cpp
+
+解决 无法识别 AFXAPI 标识 
+
+afxver_.h  中有定义 AFXAPI 
+
+已有 Xafxver_.h    Xafxtls.cpp 引用 stdafx.h
+
+解决 xafxtls.cpp(510): error C2065: “_afxTlsRef”: 未声明的标识符
+
+_afxTlsRef 声明定义于 Xafxtls.cpp 中
+
+解决 无法识别 AFX_STATIC_DATA 标识 
+
+afxver_.h  中有定义 AFX_STATIC_DATA 
+
+已有 Xafxver_.h 
+
+解决 xafxtls.cpp(512): error C2065: “_afxThreadData”: 未声明的标识符
+
+_afxThreadData 声明定义于 Xafxtls.cpp 中
+
+解决 无法识别 CThreadSlotData 标识 
+
+CThreadSlotData 有访问成员， 需要定义
+
+CThreadSlotData 声明定义于 afxtls_.h 中
+
+已有 Xafxtls_.h
+
+
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxCriticalTerm(void)" (?AfxCriticalTerm@@YGXXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+AfxCriticalTerm 定义于 afxcrit.cpp
+
+增加 Xafxcrit.cpp
+
+Xafxcrit.cpp 引用 stdafx.h
+
+解决 xafxcrit.cpp(46): error C2065: “_afxCriticalInit”: 未声明的标识符
+
+_afxCriticalInit 声明定义于 Xafxcrit.cpp 中
+
+解决 xafxcrit.cpp(48): error C3861: “VERIFY”: 找不到标识符
+
+VERIFY 宏定义于 Xafx.h 中
+
+解决 xafxcrit.cpp(48): error C3861: “ASSERT”: 找不到标识符
+
+ASSERT 宏定义于 Xafx.h 中
+
+解决 xafxcrit.cpp(48): error C2039: “AfxAssertFailedLine”: 不是“`global namespace'”的成员
+
+AfxAssertFailedLine 声明于 Xafx.h 中
+
+解决 xafxcrit.cpp(48): error C2065: “THIS_FILE”: 未声明的标识符
+
+THIS_FILE 宏定义于 Xafx.h 中
+
+解决 xafxcrit.cpp(48): error C3861: “DEBUG_ONLY”: 找不到标识符
+
+DEBUG_ONLY 宏定义于 Xafx.h 中
+
+解决 xafxcrit.cpp(48): error C3861: “AfxDebugBreak”: 找不到标识符
+
+AfxDebugBreak 宏定义于 Xafxver_.h 中
+
+解决 xafxcrit.cpp(51): error C2065: “_afxLockInitLock”: 未声明的标识符
+
+_afxLockInitLock 声明定义于 Xafxcrit.cpp 中
+
+解决 xafxcrit.cpp(54): error C2065: “CRIT_MAX”: 未声明的标识符
+
+CRIT_MAX 宏定义于 Xafximpl.h 中
+
+解决 xafxcrit.cpp(57): error C2065: “_afxResourceLocked”: 未声明的标识符
+
+_afxResourceLocked 声明定义于 Xafxcrit.cpp 中
+
+解决 xafxcrit.cpp(59): error C2065: “_afxLockInit”: 未声明的标识符
+
+_afxLockInit 声明定义于 Xafxcrit.cpp 中
+
+解决 xafxcrit.cpp(61): error C2065: “_afxResourceLock”: 未声明的标识符
+
+_afxResourceLock 声明定义于 Xafxcrit.cpp 中
+
+
+
+解决 Xafxcrit.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxAssertFailedLine(char const *,int)" (?AfxAssertFailedLine@@YGHPBDH@Z)，该符号在函数 "void __stdcall AfxCriticalTerm(void)" (?AfxCriticalTerm@@YGXXZ) 中被引用
+
+
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxCriticalInit(void)" (?AfxCriticalInit@@YGHXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTlsAddRef(void)" (?AfxTlsAddRef@@YGXXZ)，该符号在函数 _RawDllMain@12 中被引用
+
+
+
+全局变量 默认 有类似0值初始化的  （不能包括静态变量）
+
+
+
+实现 CThreadSlotData::~CThreadSlotData
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CThreadSlotData::~CThreadSlotData(void)" (??1CThreadSlotData@@QAE@XZ)，该符号在函数 "public: void * __thiscall CThreadSlotData::`scalar deleting destructor'(unsigned int)" (??_GCThreadSlotData@@QAEPAXI@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CThreadSlotData::DeleteValues(struct CThreadData *,struct HINSTANCE__ *)" (?DeleteValues@CThreadSlotData@@QAEXPAUCThreadData@@PAUHINSTANCE__@@@Z)，该符号在函数 "public: __thiscall CThreadSlotData::~CThreadSlotData(void)" (??1CThreadSlotData@@QAE@XZ) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CTypedSimpleList<struct CThreadData *>::operator struct CThreadData *(void)" (??B?$CTypedSimpleList@PAUCThreadData@@@@QAEPAUCThreadData@@XZ)，该符号在函数 "public: __thiscall CThreadSlotData::~CThreadSlotData(void)" (??1CThreadSlotData@@QAE@XZ) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CSimpleList::Remove(void *)" (?Remove@CSimpleList@@QAEHPAX@Z)，该符号在函数 "public: int __thiscall CTypedSimpleList<struct CThreadData *>::Remove(struct CThreadData *)" (?Remove@?$CTypedSimpleList@PAUCThreadData@@@@QAEHPAUCThreadData@@@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void * * __thiscall CSimpleList::GetNextPtr(void *)const " (?GetNextPtr@CSimpleList@@QBEPAPAXPAX@Z)，该符号在函数 "public: int __thiscall CSimpleList::Remove(void *)" (?Remove@CSimpleList@@QAEHPAX@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxThrowInvalidArgException(void)" (?AfxThrowInvalidArgException@@YGXXZ)，该符号在函数 "public: void * * __thiscall CSimpleList::GetNextPtr(void *)const " (?GetNextPtr@CSimpleList@@QBEPAPAXPAX@Z) 中被引用
+
+AFX_IDS_INVALID_ARG_EXCEPTION 宏定义于 afxres.h 中
+afxres.h
+  ~ afxwin.h
+
+afxwin.h
+  ~ stdafx.h
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void * __thiscall CSimpleList::GetHead(void)const " (?GetHead@CSimpleList@@QBEPAXXZ)，该符号在函数 "public: __thiscall CTypedSimpleList<struct CThreadData *>::operator struct CThreadData *(void)" (??B?$CTypedSimpleList@PAUCThreadData@@@@QAEPAUCThreadData@@XZ) 中被引用
+
+解决 Xexcept.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CInvalidArgException::CInvalidArgException(int,unsigned int)" (??0CInvalidArgException@@QAE@HI@Z)，该符号在函数 "void __cdecl `dynamic initializer for '_simpleInvalidArgException''(void)" (??__E_simpleInvalidArgException@@YAXXZ) 中被引用
+
+解决 Xexcept.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CSimpleException::CSimpleException(int)" (??0CSimpleException@@QAE@H@Z)，该符号在函数 "public: __thiscall CInvalidArgException::CInvalidArgException(int,unsigned int)" (??0CInvalidArgException@@QAE@HI@Z) 中被引用
+
+解决 Xexcept.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CException::CException(int)" (??0CException@@QAE@H@Z)，该符号在函数 "public: __thiscall CSimpleException::CSimpleException(int)" (??0CSimpleException@@QAE@H@Z) 中被引用
+
+
+
+
+
+
+
+
+
+
+
+实现 DllMain
+
+struct AFX_EXTENSION_MODULE 声明定义于 afxdll_.h
+afxdll_.h
+  ~ afxwin.h
+
+extern "C" IMAGE_DOS_HEADER __ImageBase; 声明于 
+  ~ atltrace.h
+  ~ atlbase.h
+
+atltrace.h
+  ~ Xafx.h
+  ~ atlbase.h
+
+PathFindFileName 声明于 库 shlwapi.h
+shlwapi.h    系统头文件
+  ~ atlbase.h
+  ~ atlimage.h
+
+atlbase.h
+  ~ Xstdafx.h
+
+宏 _T(x) 定义于
+tchar.h
+  ~ Xafxv_w32.h
+  ~ Xatlbase.h
+
+_MFC_FILENAME_VER 定义于
+  ~ Xafxres.h
+  ~ Xafxver_.h
+  ~ afxwinforms.h
+
+
+
+
+
+
+
+Xdllinit.obj : error LNK2005: _DllMain@12 已经在 MSVCRTD.lib(dllmain.obj) 中定义
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z)，该符号在函数 _DllMain@12 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTermLocalData(struct HINSTANCE__ *,int)" (?AfxTermLocalData@@YGXPAUHINSTANCE__@@H@Z)，该符号在函数 _DllMain@12 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CThreadSlotData::DeleteValues(struct HINSTANCE__ *,int)" (?DeleteValues@CThreadSlotData@@QAEXPAUHINSTANCE__@@H@Z)，该符号在函数 "void __stdcall AfxTermLocalData(struct HINSTANCE__ *,int)" (?AfxTermLocalData@@YGXPAUHINSTANCE__@@H@Z) 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxTermExtensionModule(struct AFX_EXTENSION_MODULE &,int)" (?AfxTermExtensionModule@@YGXAAUAFX_EXTENSION_MODULE@@H@Z)，该符号在函数 _DllMain@12 中被引用
+
+AfxResetMsgCache 声明于 
+afxpriv.h
+  ~ Xstdafx.h
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxResetMsgCache(void)" (?AfxResetMsgCache@@YGXXZ)，该符号在函数 "void __stdcall AfxTermExtensionModule(struct AFX_EXTENSION_MODULE &,int)" (?AfxTermExtensionModule@@YGXAAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxUnlockGlobals(int)" (?AfxUnlockGlobals@@YGXH@Z)，该符号在函数 "void __stdcall AfxTermExtensionModule(struct AFX_EXTENSION_MODULE &,int)" (?AfxTermExtensionModule@@YGXAAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxLockGlobals(int)" (?AfxLockGlobals@@YGXH@Z)，该符号在函数 "void __stdcall AfxTermExtensionModule(struct AFX_EXTENSION_MODULE &,int)" (?AfxTermExtensionModule@@YGXAAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "class AFX_MODULE_STATE * __stdcall AfxGetModuleState(void)" (?AfxGetModuleState@@YGPAVAFX_MODULE_STATE@@XZ)，该符号在函数 "void __stdcall AfxTermExtensionModule(struct AFX_EXTENSION_MODULE &,int)" (?AfxTermExtensionModule@@YGXAAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+
+解决 Xafxstate.obj : error LNK2001: 无法解析的外部符号 "class CThreadLocal<class _AFX_THREAD_STATE> _afxThreadState" (?_afxThreadState@@3V?$CThreadLocal@V_AFX_THREAD_STATE@@@@A)
+
+解决 Xafxstate.obj : error LNK2019: 无法解析的外部符号 "public: class CNoTrackObject * __thiscall CProcessLocalObject::GetData(class CNoTrackObject * (__stdcall*)(void))" (?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z)，该符号在函数 "public: class _AFX_BASE_MODULE_STATE * __thiscall CProcessLocal<class _AFX_BASE_MODULE_STATE>::GetData(void)" (?GetData@?$CProcessLocal@V_AFX_BASE_MODULE_STATE@@@@QAEPAV_AFX_BASE_MODULE_STATE@@XZ) 中被引用
+
+解决 Xafxstate.obj : error LNK2019: 无法解析的外部符号 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetData(class CNoTrackObject * (__stdcall*)(void))" (?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z)，该符号在函数 "public: class _AFX_THREAD_STATE * __thiscall CThreadLocal<class _AFX_THREAD_STATE>::GetData(void)" (?GetData@?$CThreadLocal@V_AFX_THREAD_STATE@@@@QAEPAV_AFX_THREAD_STATE@@XZ) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CThreadSlotData::SetValue(int,void *)" (?SetValue@CThreadSlotData@@QAEXHPAX@Z)，该符号在函数 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetData(class CNoTrackObject * (__stdcall*)(void))" (?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z) 中被引用
+
+::ATL::AtlMultiplyThrow 声明定义于
+atlalloc.h
+  ~ atlconv.h
+
+atlconv.h
+  ~ Xatlbase.h
+  ~ Xatltrace.h
+
+AtlThrow 宏定义于 
+atldef.h
+  ~ Xatlbase.h
+  ~ Xatlconv.h
+  ~ Xatltrace.h
+
+ATL::AtlThrowImpl 声明定义于
+atlexcept.h
+  ~ Xatlbase.h
+
+
+AtlTraceRegisterCategoryA 声明于
+atldebugapi.h
+  ~ Xatltrace.h
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxThrowMemoryException(void)" (?AfxThrowMemoryException@@YGXXZ)，该符号在函数 __catch$?SetValue@CThreadSlotData@@QAEXHPAX@Z$0 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxThrowLastCleanup(void)" (?AfxThrowLastCleanup@@YGXXZ)，该符号在函数 __catch$?SetValue@CThreadSlotData@@QAEXHPAX@Z$0 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *)const " (?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z)，该符号在函数 __catch$?SetValue@CThreadSlotData@@QAEXHPAX@Z$0 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: static struct CRuntimeClass * __stdcall CObject::GetThisClass(void)" (?GetThisClass@CObject@@SGPAUCRuntimeClass@@XZ)，该符号在函数 __catch$?SetValue@CThreadSlotData@@QAEXHPAX@Z$0 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void * __thiscall CThreadSlotData::GetThreadValue(int)" (?GetThreadValue@CThreadSlotData@@QAEPAXH@Z)，该符号在函数 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetData(class CNoTrackObject * (__stdcall*)(void))" (?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CThreadSlotData::AllocSlot(void)" (?AllocSlot@CThreadSlotData@@QAEHXZ)，该符号在函数 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetData(class CNoTrackObject * (__stdcall*)(void))" (?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CSimpleList::AddHead(void *)" (?AddHead@CSimpleList@@QAEXPAX@Z)，该符号在函数 "public: void __thiscall CTypedSimpleList<struct CThreadData *>::AddHead(struct CThreadData *)" (?AddHead@?$CTypedSimpleList@PAUCThreadData@@@@QAEXPAUCThreadData@@@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall ATL::CTraceCategory::operator unsigned long(void)const " (??BCTraceCategory@ATL@@QBEKXZ)，该符号在函数 "void __stdcall ATL::AtlThrowImpl(long)" (?AtlThrowImpl@ATL@@YGXJ@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2001: 无法解析的外部符号 "class ATL::CTraceCategory atlTraceException" (?atlTraceException@@3VCTraceCategory@ATL@@A)
+分析 atlTraceException 声明于 atltrace.h， 而定义是在 ATL 中的 ATLS 模块，不直接归属 MFC 。
+所以， atlTraceException 应当是通过外部引入的。而根据分析工程配置的 LIB 库，不包括 ATLS 之类的 LIB。
+通过分析链接配置 “显示所有进度消息 (/VERBOSE)” ，有链接搜索 atlsd.lib 。 最后确认是 Xatlbase.h 通过 #pragma comment(lib, "atlsd.lib") 链接该库。
+引入链接 atlsd.lib ，但仍然报如上错误。
+直接引用 atltrace.h 、 atlalloc.h 该错误消失。
+
+在 直接引用 atltrace.h 、 atlalloc.h 的情况下，先解决其他问题，完全无错后再变更 atltrace.h 、 atlalloc.h 内容分析错误出处。
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CSimpleList::IsEmpty(void)const " (?IsEmpty@CSimpleList@@QBEHXZ)，该符号在函数 _DllMain@12 中被引用
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "struct HINSTANCE__ * __stdcall AfxLoadLangResourceDLL(wchar_t const *,wchar_t const *)" (?AfxLoadLangResourceDLL@@YGPAUHINSTANCE__@@PB_W0@Z)，该符号在函数 _DllMain@12 中被引用
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CDynLinkLibrary::CDynLinkLibrary(struct AFX_EXTENSION_MODULE &,int)" (??0CDynLinkLibrary@@QAE@AAUAFX_EXTENSION_MODULE@@H@Z)，该符号在函数 _DllMain@12 中被引用
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CSimpleList::Construct(int)" (?Construct@CSimpleList@@QAEXH@Z)，该符号在函数 "public: __thiscall CDynLinkLibrary::CDynLinkLibrary(struct AFX_EXTENSION_MODULE &,int)" (??0CDynLinkLibrary@@QAE@AAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+Xdllinit.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct CRuntimeClass * __thiscall CObject::GetRuntimeClass(void)const " (?GetRuntimeClass@CObject@@UBEPAUCRuntimeClass@@XZ)
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxInitExtensionModule(struct AFX_EXTENSION_MODULE &,struct HINSTANCE__ *)" (?AfxInitExtensionModule@@YGHAAUAFX_EXTENSION_MODULE@@PAUHINSTANCE__@@@Z)，该符号在函数 _DllMain@12 中被引用
+Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxInitLocalData(struct HINSTANCE__ *)" (?AfxInitLocalData@@YGXPAUHINSTANCE__@@@Z)，该符号在函数 "int __stdcall AfxInitExtensionModule(struct AFX_EXTENSION_MODULE &,struct HINSTANCE__ *)" (?AfxInitExtensionModule@@YGHAAUAFX_EXTENSION_MODULE@@PAUHINSTANCE__@@@Z) 中被引用
+Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CThreadSlotData::AssignInstance(struct HINSTANCE__ *)" (?AssignInstance@CThreadSlotData@@QAEXPAUHINSTANCE__@@@Z)，该符号在函数 "void __stdcall AfxInitLocalData(struct HINSTANCE__ *)" (?AfxInitLocalData@@YGXPAUHINSTANCE__@@@Z) 中被引用
+Xexcept.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CMemoryException::CMemoryException(int,unsigned int)" (??0CMemoryException@@QAE@HI@Z)，该符号在函数 "void __cdecl `dynamic initializer for '_simpleMemoryException''(void)" (??__E_simpleMemoryException@@YAXXZ) 中被引用
+Xobjcore.obj : error LNK2001: 无法解析的外部符号 "public: static struct CRuntimeClass const CObject::classCObject" (?classCObject@CObject@@2UCRuntimeClass@@B)
+Xobjcore.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CRuntimeClass::IsDerivedFrom(struct CRuntimeClass const *)const " (?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z)，该符号在函数 "public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *)const " (?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z) 中被引用
+Xobjcore.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxIsValidAddress(void const *,unsigned int,int)" (?AfxIsValidAddress@@YGHPBXIH@Z)，该符号在函数 "public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *)const " (?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z) 中被引用
+Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxLockTempMaps(void)" (?AfxLockTempMaps@@YGXXZ)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+Xthrdcore.obj : error LNK2001: 无法解析的外部符号 "class ATL::CTraceCategory traceAppMsg" (?traceAppMsg@@3VCTraceCategory@ATL@@A)
+Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "class AFX_MODULE_THREAD_STATE * __stdcall AfxGetModuleThreadState(void)" (?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxEnableMemoryTracking(int)" (?AfxEnableMemoryTracking@@YGHH@Z)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "class CWinApp * __stdcall AfxGetApp(void)" (?AfxGetApp@@YGPAVCWinApp@@XZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "class CWinThread * __stdcall AfxGetThread(void)" (?AfxGetThread@@YGPAVCWinThread@@XZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CFixedAllocNoSync::FreeAll(void)" (?FreeAll@CFixedAllocNoSync@@QAEXXZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+Xfixalloc.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CPlex::FreeDataChain(void)" (?FreeDataChain@CPlex@@QAEXXZ)，该符号在函数 "public: void __thiscall CFixedAllocNoSync::FreeAll(void)" (?FreeAll@CFixedAllocNoSync@@QAEXXZ) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CMapPtrToPtr::RemoveAll(void)" (?RemoveAll@CMapPtrToPtr@@QAEXXZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+Xmap_pp.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxAssertValidObject(class CObject const *,char const *,int)" (?AfxAssertValidObject@@YGXPBVCObject@@PBDH@Z)，该符号在函数 "public: void __thiscall CMapPtrToPtr::RemoveAll(void)" (?RemoveAll@CMapPtrToPtr@@QAEXXZ) 中被引用
+Xdllinit.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CObject::AssertValid(void)const " (?AssertValid@CObject@@UBEXXZ)
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CMapPtrToPtr::GetNextAssoc(struct __POSITION * &,void * &,void * &)const " (?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+Xmap_pp.obj : error LNK2019: 无法解析的外部符号 "public: unsigned int __thiscall CMapPtrToPtr::HashKey(void *)const " (?HashKey@CMapPtrToPtr@@QBEIPAX@Z)，该符号在函数 "public: void __thiscall CMapPtrToPtr::GetNextAssoc(struct __POSITION * &,void * &,void * &)const " (?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: struct __POSITION * __thiscall CMapPtrToPtr::GetStartPosition(void)const " (?GetStartPosition@CMapPtrToPtr@@QBEPAU__POSITION@@XZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetDataNA(void)" (?GetDataNA@CThreadLocalObject@@QAEPAVCNoTrackObject@@XZ)，该符号在函数 "public: class _AFX_THREAD_STATE * __thiscall CThreadLocal<class _AFX_THREAD_STATE>::GetDataNA(void)" (?GetDataNA@?$CThreadLocal@V_AFX_THREAD_STATE@@@@QAEPAV_AFX_THREAD_STATE@@XZ) 中被引用
+完全无错
+再变更 atltrace.h 、 atlalloc.h 内容进行分析
+最后分析原因为，DECLARE_TRACE_CATEGORY( atlTraceException ) 实际上是声明于 namespace ATL 空间中的
+打开该空间该错误消失。
+
+
+
+
+*.vcxproj.filters  估计是用于配置组织项目CPP、H文件的。没有它之后，CPP、H文件全部混合在项目结构中。
+
+
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __cdecl ATL::CTrace::TraceV(char const *,int,unsigned long,unsigned int,wchar_t const *,char *)const " (?TraceV@CTrace@ATL@@QBAXPBDHKIPB_WPAD@Z)，该符号在函数 "public: void __cdecl ATL::CTraceFileAndLineInfo::operator()(unsigned long,unsigned int,wchar_t const *,...)const " (??RCTraceFileAndLineInfo@ATL@@QBAXKIPB_WZZ) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "void __cdecl AtlTraceVU(unsigned long,char const *,int,unsigned long,unsigned int,wchar_t const *,char *)" (?AtlTraceVU@@YAXKPBDHKIPB_WPAD@Z)，该符号在函数 "public: void __cdecl ATL::CTrace::TraceV(char const *,int,unsigned long,unsigned int,wchar_t const *,char *)const " (?TraceV@CTrace@ATL@@QBAXPBDHKIPB_WPAD@Z) 中被引用
+AtlTraceVU 归属于 atl\atls\AtlDebugAPI.cpp （推断应该也是属于 atlsd.lib ） ，也是声明位于 namespace ATL ，且还是 extern "C" 声明。
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CSimpleList::IsEmpty(void)const " (?IsEmpty@CSimpleList@@QBEHXZ)，该符号在函数 _DllMain@12 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "struct HINSTANCE__ * __stdcall AfxLoadLangResourceDLL(wchar_t const *,wchar_t const *)" (?AfxLoadLangResourceDLL@@YGPAUHINSTANCE__@@PB_W0@Z)，该符号在函数 _DllMain@12 中被引用
+atlchecked.h
+  ~ atlsimpcoll.h
+  ~ atlcore.h
+  ~ atldbgmem.h
+
+atlsimpcoll.h
+  ~ Xatlbase.h
+
+atlcore.h
+  ~ Xatlbase.h
+
+取 atlcore.h
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 __imp__PathFindFileNameW@4，该符号在函数 _DllMain@12 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CDynLinkLibrary::CDynLinkLibrary(struct AFX_EXTENSION_MODULE &,int)" (??0CDynLinkLibrary@@QAE@AAUAFX_EXTENSION_MODULE@@H@Z)，该符号在函数 _DllMain@12 中被引用
+afxdisp.h
+  ~ afxhtml.h
+  ~ afxole.h
+  ~ afxwinforms.h
+  ~ afxdao.h
+  ~ afxdtctl.h
+afxole.h
+  ~ Xstdafx.h
+取 afxole.h
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CSimpleList::Construct(int)" (?Construct@CSimpleList@@QAEXH@Z)，该符号在函数 "public: __thiscall CDynLinkLibrary::CDynLinkLibrary(struct AFX_EXTENSION_MODULE &,int)" (??0CDynLinkLibrary@@QAE@AAUAFX_EXTENSION_MODULE@@H@Z) 中被引用
+
+解决 Xdllinit.obj : error LNK2001: 无法解析的外部符号 "public: virtual struct CRuntimeClass * __thiscall CObject::GetRuntimeClass(void)const " (?GetRuntimeClass@CObject@@UBEPAUCRuntimeClass@@XZ)
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxInitExtensionModule(struct AFX_EXTENSION_MODULE &,struct HINSTANCE__ *)" (?AfxInitExtensionModule@@YGHAAUAFX_EXTENSION_MODULE@@PAUHINSTANCE__@@@Z)，该符号在函数 _DllMain@12 中被引用
+
+解决 Xdllinit.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxInitLocalData(struct HINSTANCE__ *)" (?AfxInitLocalData@@YGXPAUHINSTANCE__@@@Z)，该符号在函数 "int __stdcall AfxInitExtensionModule(struct AFX_EXTENSION_MODULE &,struct HINSTANCE__ *)" (?AfxInitExtensionModule@@YGHAAUAFX_EXTENSION_MODULE@@PAUHINSTANCE__@@@Z) 中被引用
+
+解决 Xafxtls.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CThreadSlotData::AssignInstance(struct HINSTANCE__ *)" (?AssignInstance@CThreadSlotData@@QAEXPAUHINSTANCE__@@@Z)，该符号在函数 "void __stdcall AfxInitLocalData(struct HINSTANCE__ *)" (?AfxInitLocalData@@YGXPAUHINSTANCE__@@@Z) 中被引用
+
+解决 Xexcept.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall CMemoryException::CMemoryException(int,unsigned int)" (??0CMemoryException@@QAE@HI@Z)，该符号在函数 "void __cdecl `dynamic initializer for '_simpleMemoryException''(void)" (??__E_simpleMemoryException@@YAXXZ) 中被引用
+
+解决 Xobjcore.obj : error LNK2001: 无法解析的外部符号 "public: static struct CRuntimeClass const CObject::classCObject" (?classCObject@CObject@@2UCRuntimeClass@@B)
+
+解决 Xobjcore.obj : error LNK2019: 无法解析的外部符号 "public: int __thiscall CRuntimeClass::IsDerivedFrom(struct CRuntimeClass const *)const " (?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z)，该符号在函数 "public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *)const " (?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z) 中被引用
+
+解决 Xobjcore.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxIsValidAddress(void const *,unsigned int,int)" (?AfxIsValidAddress@@YGHPBXIH@Z)，该符号在函数 "public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *)const " (?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z) 中被引用
+
+解决 Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+
+解决 Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxLockTempMaps(void)" (?AfxLockTempMaps@@YGXXZ)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+
+解决 Xthrdcore.obj : error LNK2001: 无法解析的外部符号 "class ATL::CTraceCategory traceAppMsg" (?traceAppMsg@@3VCTraceCategory@ATL@@A)
+
+解决 Xappinit.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall ATL::CTraceCategory::CTraceCategory(wchar_t const *,unsigned int)" (??0CTraceCategory@ATL@@QAE@PB_WI@Z)，该符号在函数 "void __cdecl `dynamic initializer for 'traceAppMsg''(void)" (??__EtraceAppMsg@@YAXXZ) 中被引用
+
+解决 Xthrdcore.obj : error LNK2019: 无法解析的外部符号 "class AFX_MODULE_THREAD_STATE * __stdcall AfxGetModuleThreadState(void)" (?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ)，该符号在函数 "void __stdcall AfxTermThread(struct HINSTANCE__ *)" (?AfxTermThread@@YGXPAUHINSTANCE__@@@Z) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "int __stdcall AfxEnableMemoryTracking(int)" (?AfxEnableMemoryTracking@@YGHH@Z)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "class CWinApp * __stdcall AfxGetApp(void)" (?AfxGetApp@@YGPAVCWinApp@@XZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+fixalloc.h 位于 atlmfc\src\mfc 可视为库 “内部” 头文件
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "class CWinThread * __stdcall AfxGetThread(void)" (?AfxGetThread@@YGPAVCWinThread@@XZ)，该符号在函数 "int __stdcall AfxUnlockTempMaps(int)" (?AfxUnlockTempMaps@@YGHH@Z) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CFixedAllocNoSync::FreeAll(void)" (?FreeAll@CFixedAllocNoSync@@QAEXXZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+
+解决 Xfixalloc.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CPlex::FreeDataChain(void)" (?FreeDataChain@CPlex@@QAEXXZ)，该符号在函数 "public: void __thiscall CFixedAllocNoSync::FreeAll(void)" (?FreeAll@CFixedAllocNoSync@@QAEXXZ) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CMapPtrToPtr::RemoveAll(void)" (?RemoveAll@CMapPtrToPtr@@QAEXXZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+
+解决 Xmap_pp.obj : error LNK2019: 无法解析的外部符号 "void __stdcall AfxAssertValidObject(class CObject const *,char const *,int)" (?AfxAssertValidObject@@YGXPBVCObject@@PBDH@Z)，该符号在函数 "public: void __thiscall CMapPtrToPtr::RemoveAll(void)" (?RemoveAll@CMapPtrToPtr@@QAEXXZ) 中被引用
+
+解决 Xdllinit.obj : error LNK2001: 无法解析的外部符号 "public: virtual void __thiscall CObject::AssertValid(void)const " (?AssertValid@CObject@@UBEXXZ)
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall CMapPtrToPtr::GetNextAssoc(struct __POSITION * &,void * &,void * &)const " (?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+
+解决 Xmap_pp.obj : error LNK2019: 无法解析的外部符号 "public: unsigned int __thiscall CMapPtrToPtr::HashKey(void *)const " (?HashKey@CMapPtrToPtr@@QBEIPAX@Z)，该符号在函数 "public: void __thiscall CMapPtrToPtr::GetNextAssoc(struct __POSITION * &,void * &,void * &)const " (?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: struct __POSITION * __thiscall CMapPtrToPtr::GetStartPosition(void)const " (?GetStartPosition@CMapPtrToPtr@@QBEPAU__POSITION@@XZ)，该符号在函数 "public: void __thiscall CHandleMap::DeleteTemp(void)" (?DeleteTemp@CHandleMap@@QAEXXZ) 中被引用
+
+解决 Xwinhand.obj : error LNK2019: 无法解析的外部符号 "public: class CNoTrackObject * __thiscall CThreadLocalObject::GetDataNA(void)" (?GetDataNA@CThreadLocalObject@@QAEPAVCNoTrackObject@@XZ)，该符号在函数 "public: class _AFX_THREAD_STATE * __thiscall CThreadLocal<class _AFX_THREAD_STATE>::GetDataNA(void)" (?GetDataNA@?$CThreadLocal@V_AFX_THREAD_STATE@@@@QAEPAV_AFX_THREAD_STATE@@XZ) 中被引用
