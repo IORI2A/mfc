@@ -1,0 +1,352 @@
+/A 
+ Forces build of all evaluated targets, even if not out-of-date with respect to dependents. Does not force build of unrelated targets. 
+
+/B 
+ Forces build even if timestamps are equal. Recommended only for very fast systems (resolution of two seconds or less). 
+
+/D 
+ Displays timestamps of each evaluated target and dependent and a message when a target does not exist. Useful with /P for debugging a makefile. Use !CMDSWITCHES to set or clear /D for part of a makefile. 
+
+/E 
+ Causes environment variables to override makefile macro definitions. 
+
+/G 
+ Displays the makefiles included with the !INCLUDE directive. See Makefile Preprocessing Directives for more information. 
+
+/I 
+ Ignores exit codes from all commands. To set or clear /I for part of a makefile, use !CMDSWITCHES. To ignore exit codes for part of a makefile, use a dash (–) command modifier or .IGNORE. Overrides /K if both are specified. 
+
+/K 
+ Continues building unrelated dependencies, if a command returns an error. Also issues a warning and returns an exit code of 1. By default, NMAKE halts if any command returns a nonzero exit code. Warnings from /K are suppressed by /C; /I overrides /K if both are specified. 
+
+/N 
+ Displays but does not execute commands; preprocessing commands are executed. Does not display commands in recursive NMAKE calls. Useful for debugging makefiles and checking timestamps. To set or clear /N for part of a makefile, use !CMDSWITCHES. 
+
+/NOLOGO 
+ Suppresses the NMAKE copyright message. 
+
+/F filename 
+ Specifies filename as a makefile. Spaces or tabs can precede filename. Specify /F once for each makefile. To supply a makefile from standard input, specify a dash (–) for filename, and end keyboard input with either F6 or CTRL+Z. 
+
+/P 
+ Displays information (macro definitions, inference rules, targets, .SUFFIXES list) to standard output, and then runs the build. If no makefile or command-line target exists, it displays information only. Use with /D to debug a makefile. 
+
+
+使用 vs2008sp1 原生 MFC 源码编译。 （atlmfc.mak 基本不修改。）
+
+>nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MYMFC >CLEAN.TXT
+目前生成其它名称的库还不成功。
+生成的 MYMFCUD.LIB 使用 DUMPBIN /EXPORTS 导出的符号很少。之前可以成功调用MFC的WIN32 exe 报无法解析符号。  （ 使用 MFC90 又可以成功编译运行 ） 
+
+还是使用 MFC90
+>nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MFC90 >CLEAN.TXT
+>nmake /f atlmfc.mak MFC LIBNAME=MFC90 >MFC90.TXT
+生成有 DLL 及其 LIB ，及其 manifest 。
+
+1.将 DLL 和 LIB 库及其 manifest 文件，COPY到exe文件目录 中。 
+2.项目工程 配置属性》链接器》输入》附加依赖项 ： mfc90ud.lib
+3.项目工程 配置属性》清单工具》输入和输出》附加清单文件 ： MFC90UD.DLL.manifest
+
+编译调试可运行，并且可断点进入源码或者在源代码中断点。
+
+但 VAassitX 查看分析时，还没法直接跳转到源代码处。
+
+
+
+
+编译 mfcm 目标时 有要求 finalpublickey.snk 文件
+LINK : fatal error LNK1256: ALINK 操作失败(80040414): 读取密钥文件“finalpublickey.snk”时出错 -- 系统找不到指定的文件。 
+
+另外， mfcm 是用于做什么的？ 还区分定义 BUILD_PREBUILT 和 private version 。
+
+
+在 ATLMFC 源中修改 （ dllinit.cpp 中 RawDllMain 增加 MessageBox 进行调试 ），再进行重新编译 生成相关库文件。
+调试工程 EXE 使用该相关 库内容，进行调试，可显示 MessageBox 框。
+
+
+
+
+Makefile project
+生成文件项目
+
+根据向导 配置 
+1.生成命令    
+cd ./atlmfc/src
+nmake /f atlmfc.mak MFC LIBNAME=MFC90 >MFC90.TXT
+2.清除命令
+cd ./atlmfc/src
+nmake /f atlmfc.mak MFC CLEAN=1 LIBNAME=MFC90 >CLEAN.TXT
+3.重新生成命令
+cd ./atlmfc/src
+nmake /A /f atlmfc.mak MFC LIBNAME=MFC90 >MFC90.TXT
+4.将 atlmfc 源码内容 COPY 到项目路径下
+5.配置属性》VC++目录》库目录 ： E:\LZ\work\DoorTotalControlV10\MyMakeProj\atlmfc\lib   （用于搜索 mfcdload.lib ）
+
+可以引导进行编译链接，但仍有报错，可能与其他配置还有关！！！
+目前暂停！！！
+
+
+
+
+使用 >nmake /f atlmfc.mak MFC LIBNAME=MYMFC >MYMFC.TXT 进行私有名字编译
+仅 MFCM 中的内容报错未成功，其他都无报错生成 
+使用 >dumpbin /EXPORTS MYMFCUD.LIB 也导出了许多函数了 其中包括 ?AfxCriticalInit@@YGHXZ (int __stdcall AfxCriticalInit(void))
+
+但使用调测程序运行时，报 “找不到 mfc90ud.dll ”错误。
+
+经调测验证，各 .def 文件中的 LIBRARY 也需要相应修改。
+如:
+mfc90ud.def 中的改为 LIBRARY MYMFCUD.DLL 
+
+
+
+为减少编译时间，修改 atlmfc.mak 文件内容，编译链接目标仅为：
+MFCSRC : MFC_ASSMINFO MFC_DLL
+MFC_DLL: MFC_UNICODE_DEBUG
+
+同时注意，非必需时，不必完全重编译。
+
+
+
+下一步，atlmfc 源码中合入 日志记录工具  便于调测分析代码。
+
+
+Xafxver_.h(91):#include "Xafxv_w32.h"
+Xafx.h(57):#include "Xafxver_.h"
+Xstdafx.h(73):#include "Xafx.h"
+
+引入日志记录工具，将 Tool.h 包含到 stdafx.h 中，并位于 afx.h 之后。
+（ Tool.h 在合入 atlmfc 中时，需要注意不能引入 windows.h 。所以需要放于 afx.h 后。 afxv_w32.h 中有引入 windows.h ）
+#include "afx.h"
+#include "E:\LZ\test\MyToolProject\include\Tool.h"
+
+dllinit.cpp 中引用TOOL工具的　TOOL_AUTO_LOG_FUNCTION_INFO();
+
+
+
+思考引入 Tool 的源码内容
+修改 mfcdll.mak 内容，未能通过源码文件引入 TOOL。
+
+
+通过直接引入 .obj 文件。成功！！！调测有日志打印。
+DLL_OBJS=$(DLL_OBJS) $D\dllinit.obj E:\LZ\work\DoorTotalControlV10\Test\Debug\Tool.obj
+
+
+
+
+新建一个对话框程序 TestDlg 编译可运行。
+
+设置工程属性：对于搜索的库 (/VERBOSE:Lib)
+
+更改工程属性：
+1.配置属性》常规》MFC的使用》使用标准Windows库。 （在共享DLL中使用MFC）
+2.定义宏 _AFXDLL
+仍有搜索
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfc100ud.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\mfcs100ud.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\atlmfc\lib\atlsd.lib:
+报错：
+>msvcrtd.lib(crtexew.obj) : error LNK2019: 无法解析的外部符号 _WinMain@16，该符号在函数 ___tmainCRTStartup 中被引用
+
+更改工程属性：
+1.配置属性》链接器》高级》入口点》wWinMainCRTStartup
+可成功编译并运行。但使用的仍是 VC\atlmfc\lib 中的库。即仍是系统安装的库，非编译出的库。
+
+
+$(VCInstallDir)include
+$(VCInstallDir)atlmfc\include    E:\temp3\atlmfc\include
+$(WindowsSdkDir)include
+$(FrameworkSDKDir)\include
+
+
+$(VCInstallDir)atlmfc\lib
+$(VCInstallDir)lib
+
+
+$(VCInstallDir)lib
+$(VCInstallDir)atlmfc\lib
+$(WindowsSdkDir)lib
+$(FrameworkSDKDir)\lib
+
+
+$(VCInstallDir)atlmfc\src\mfc
+$(VCInstallDir)atlmfc\src\mfcm
+$(VCInstallDir)atlmfc\src\atl
+$(VCInstallDir)crt\src
+
+
+$(VCInstallDir)include
+$(VCInstallDir)atlmfc\include
+$(WindowsSdkDir)include
+$(FrameworkSDKDir)\include
+$(MSBuildToolsPath32)
+
+
+
+
+
+
+
+修改为新建一个 VS2008 的对话框程序
+
+
+设置工程属性：
+1.配置属性》链接器》常规》显示进度》显示某些进度消息(/VERBOSE:LIB)。
+1>------ 已启动全部重新生成: 项目: TestDlg, 配置: Debug Win32 ------
+1>正在删除项目“TestDlg”(配置“Debug|Win32”)的中间文件和输出文件
+1>正在编译...
+1>stdafx.cpp
+1>正在编译...
+1>TestDlg.cpp
+1>TestDlgDlg.cpp
+1>正在生成代码...
+1>正在编译资源...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在编译资源清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>正在链接...
+1>LINK : 没有找到 E:\LZ\test\TestDlg\TestDlg\Debug\TestDlg.exe 或上一个增量链接没有生成它；正在执行完全链接
+1>正在搜索库
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfc90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfcs90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\msvcrtd.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\kernel32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\user32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\gdi32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\msimg32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\comdlg32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\winspool.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\advapi32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\shell32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\comctl32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\shlwapi.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\uuid.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\oledlg.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\ole32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\oleaut32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\urlmon.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\atlsd.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\gdiplus.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\comsuppwd.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\OLDNAMES.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\wininet.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\ws2_32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\mswsock.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfc90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfcs90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\msvcrtd.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\kernel32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\user32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\gdi32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\msimg32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\comdlg32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\winspool.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\advapi32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\shell32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\comctl32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\shlwapi.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\uuid.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\oledlg.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\ole32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\oleaut32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\urlmon.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\atlsd.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\gdiplus.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\comsuppwd.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\lib\OLDNAMES.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\wininet.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\ws2_32.lib:
+1>    正在搜索 C:\Program Files\Microsoft SDKs\Windows\v6.0A\\lib\mswsock.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfc90ud.lib:
+1>已完成库搜索
+1>正在嵌入清单...
+1>Microsoft (R) Windows (R) Resource Compiler Version 6.1.6723.1
+1>Copyright (C) Microsoft Corporation.  All rights reserved.
+1>生成日志保存在“file://e:\LZ\test\TestDlg\TestDlg\TestDlg\Debug\BuildLog.htm”
+1>TestDlg - 0 个错误，0 个警告
+========== 全部重新生成: 成功 1 个，失败 0 个，跳过 0 个 ==========
+
+有搜索ATLMFC的库
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfc90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfcs90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\atlsd.lib:
+
+
+更改工程属性：
+1.配置属性》常规》MFC的使用》使用标准Windows库。 （在共享DLL中使用MFC）
+2.定义宏 _AFXDLL
+仍有搜索
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfc90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\mfcs90ud.lib:
+1>    正在搜索 d:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\atlmfc\lib\atlsd.lib:
+报错：
+>msvcrtd.lib(crtexew.obj) : error LNK2019: 无法解析的外部符号 _WinMain@16，该符号在函数 ___tmainCRTStartup 中被引用
+
+
+更改工程属性：
+1.配置属性》链接器》输入》忽略特定库》mfc90ud.lib;mfcs90ud.lib;atlsd.lib
+报错： error LNK2001: 无法解析的外部符号
+
+
+更改工程属性：
+1.配置属性》链接器》常规》附加库目录》E:\LZ\test\TestDlg\TestDlg\Debug
+2.将 MYMFCSUD.lib 、MYMFCUD.DLL 、 MYMFCUD.DLL.manifest 、MYMFCUD.LIB 复制到该目录下。
+3.配置属性》链接器》输入》附加依赖项》MYMFCSUD.lib MYMFCUD.LIB
+报错有：error LNK2019: 无法解析的外部符号 "public: int __thiscall CRect::Height(void)const " (?Height@CRect@@QBEHXZ)，该符号在函数 "protected: void __thiscall CTestDlgDlg::OnPaint(void)" (?OnPaint@CTestDlgDlg@@IAEXXZ) 中被引用
+
+经查找分析确认 atltypes.h atltypes.inl atltypes.cpp 是属于 atlsd.lib 的
+
+
+更改工程属性：
+1.配置属性》链接器》输入》忽略特定库》mfc90ud.lib;mfcs90ud.lib     （ mfc90ud.lib;mfcs90ud.lib;atlsd.lib ）
+报错： >msvcrtd.lib(crtexew.obj) : error LNK2019: 无法解析的外部符号 _WinMain@16，该符号在函数 ___tmainCRTStartup 中被引用
+
+
+更改工程属性：
+1.配置属性》链接器》高级》入口点》wWinMainCRTStartup
+报错：>MYMFCSUD.lib(appmodul.obj) : error LNK2001: 无法解析的外部符号 __forceMFCManifestRTM
+
+更改源文件
+1.屏蔽 appmodul.cpp 中的 #pragma comment(linker, "/include:__forceMFCManifestRTM")
+可编译运行成功，有日志记录产生。
+
+
+
+
+mfcmdll.mak
+MLIBNAME=$(LIBNAME:MFC90=MFCM90)
+MLIBNAME=$(LIBNAME:MYMFC=MYMFCM)
+
+
+
+
+总结：
+atlmfc 源码中合入 日志记录工具  便于调测分析代码。
+
+1.引入日志记录工具，将 Tool.h 包含到 stdafx.h 中，并位于 afx.h 之后。
+（ Tool.h 在合入 atlmfc 中时，需要注意不能引入 windows.h 。所以需要放于 afx.h 后。 afxv_w32.h 中有引入 windows.h ）
+#include "afx.h"
+#include "E:\LZ\test\MyToolProject\include\Tool.h"
+
+2.dllinit.cpp 中引用TOOL工具的　TOOL_AUTO_LOG_FUNCTION_INFO();
+
+3.为减少编译时间，修改 atlmfc.mak 文件内容，编译链接目标仅为： （ 同时注意，非必需时，不必完全重编译。 ）
+MFCSRC : MFC_ASSMINFO MFC_DLL
+MFC_DLL: MFC_UNICODE_DEBUG
+
+4.引入 Tool 的源码内容，通过直接引入 .obj 文件。
+DLL_OBJS=$(DLL_OBJS) $D\dllinit.obj E:\LZ\work\DoorTotalControlV10\Test\Debug\Tool.obj
+
+5.屏蔽 appmodul.cpp 中的 #pragma comment(linker, "/include:__forceMFCManifestRTM")
+
+6..def 文件中的 LIBRARY 也需要相应修改。
+如:mfc90ud.def 中的改为 LIBRARY MYMFCUD.DLL 
+
+
+
+copy /Y E:\LZ\test\atlmfc\lib\INTEL\MYMFCSUD.lib E:\LZ\test\TestDlg\TestDlg\Debug
+copy /Y E:\LZ\test\atlmfc\lib\INTEL\MYMFCUD.LIB E:\LZ\test\TestDlg\TestDlg\Debug
+copy /Y E:\LZ\test\atlmfc\src\mfc\intel\MYMFCUD.DLL E:\LZ\test\TestDlg\TestDlg\Debug
+copy /Y E:\LZ\test\atlmfc\src\mfc\intel\MYMFCUD.DLL.manifest E:\LZ\test\TestDlg\TestDlg\Debug
