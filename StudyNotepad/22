@@ -1,0 +1,139 @@
+编译动态库的协同静态库时出错，处理问题：
+1>------ 已启动生成: 项目: MYMFC90TEST, 配置: Debug Win32 ------
+1>  
+1>  正在搜索库
+1>      正在搜索 E:\LZ\test\Win32Proj\Debug\MYMFCS90UD.lib:
+1>      正在搜索 E:\LZ\test\Win32Proj\MYMFC90UD\MYMFC90UD.lib:
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: __thiscall ATL::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >(wchar_t const *)" (??0?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@QAE@PB_W@Z) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: __thiscall ATL::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >::~CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >(void)" (??1?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@QAE@XZ) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: __thiscall ATL::CSimpleStringT<wchar_t,1>::operator wchar_t const *(void)const " (??B?$CSimpleStringT@_W$00@ATL@@QBEPB_WXZ) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: bool __thiscall ATL::CSimpleStringT<wchar_t,1>::IsEmpty(void)const " (?IsEmpty@?$CSimpleStringT@_W$00@ATL@@QBE_NXZ) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: int __thiscall ATL::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >::LoadStringW(unsigned int)" (?LoadStringW@?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@QAEHI@Z) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>MYMFC90UD.lib(MYMFC90UD.dll) : error LNK2005: "public: __thiscall ATL::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >::CStringT<wchar_t,class StrTraitMFC_DLL<wchar_t,class ATL::ChTraitsCRT<wchar_t> > >(void)" (??0?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@QAE@XZ) 已经在 MYMFCS90UD.lib(nolib.obj) 中定义
+1>      正在搜索 E:\LZ\test\Win32Proj\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\msvcprtd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\Iphlpapi.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\Ws2_32.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\MSVCRTD.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oledlg.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\urlmon.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdiplus.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\comsuppwd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>      正在搜索 E:\LZ\test\Win32Proj\Debug\MYMFCS90UD.lib:
+1>      正在搜索 E:\LZ\test\Win32Proj\MYMFC90UD\MYMFC90UD.lib:
+1>      正在搜索 E:\LZ\test\Win32Proj\atlmfc\lib\atlsd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\kernel32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\user32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdi32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\winspool.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comdlg32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\advapi32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shell32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\ole32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oleaut32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\uuid.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbc32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\odbccp32.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\msvcprtd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\Iphlpapi.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\Ws2_32.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\MSVCRTD.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\OLDNAMES.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\msimg32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\comctl32.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\shlwapi.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\oledlg.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\urlmon.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\gdiplus.lib:
+1>      正在搜索 D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\lib\comsuppwd.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\wininet.lib:
+1>      正在搜索 C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\lib\mswsock.lib:
+1>  
+1>  已完成库搜索
+1>E:\LZ\test\Win32Proj\Debug\MYMFC90TEST.exe : fatal error LNK1169: 找到一个或多个多重定义的符号
+========== 生成: 成功 0 个，失败 1 个，最新 0 个，跳过 0 个 ==========
+
+
+
+从 mfcdll.mak 的编译中提取编译命令进行分析：
+cl /Ycstdafx.h /FpINTEL\$UDLLD.W\stdafx.pch      /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Z7  /MDd /D_DLL /GF /D_MT /Zc:wchar_t /FdINTEL\MFC90UD.pdb  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  /c objcore.cpp
+
+cl /Yustdafx.h /FpINTEL\$UDLLD.W\stdafx.pch /MP4 /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Z7  /MDd /D_DLL /GF /D_MT /Zc:wchar_t /FdINTEL\MFC90UD.pdb  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  /c except.cpp 
+
+cl /c                             /D_AFX_MFCS    /D_X86_ /FoINTEL\$UDLLD.W\  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t                       /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC                /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Ycstdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch stdafx.cpp
+
+cl /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS                                /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t                       /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC                /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch nolib.cpp
+
+cl /c /FoINTEL\$UDLLD.W\  /D_X86_ /D_AFX_MFCS                                /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t                       /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC                /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch appmodul.cpp
+
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch appmodul.cpp
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch dumpstak.cpp
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /D_AFX_DISABLE_INLINES dllmodul.cpp
+	cl /c /FoINTEL\$UDLLD.W\dllmodulX.obj   /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch /D_AFX_DLLMODULE_HELPER dllmodul.cpp
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST rawdllmainproxy.c
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch oleexp.cpp
+	cl /c /FoINTEL\$UDLLD.W\                /D_X86_ /D_AFX_MFCS  /W4 /WX /Zl /EHsc /GR /GS /Gm- /Od /Gy /Zi  /MDd /D_DLL /GF /D_MT /Zc:wchar_t  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   /Gy /Zi /Fd..\..\lib\INTEL\MFCS90UD.pdb  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch sockexp.cpp
+
+
+	echo >nul "..\..\lib\(PLATFORM)\(TARG_STATIC).lib" ..\..\lib\INTEL\MFCS90UD.lib
+	lib >>out.txt /out:..\..\lib\INTEL\MFCS90UD.lib INTEL\$UDLLD.W\stdafx.obj INTEL\$UDLLD.W\nolib.obj  INTEL\$UDLLD.W\appmodul.obj INTEL\$UDLLD.W\dumpstak.obj INTEL\$UDLLD.W\dllmodul.obj INTEL\$UDLLD.W\dllmodulX.obj INTEL\$UDLLD.W\rawdllmainproxy.obj INTEL\$UDLLD.W\oleexp.obj INTEL\$UDLLD.W\sockexp.obj
+	cd ..
+    
+    
+/FoINTEL\$UDLLD.W\                  /Fd..\..\lib\INTEL\MFCS90UD.pdb  
+ /Yustdafx.h /FpINTEL\$UDLLD.W\stdafxs.pch    
+
+
+/I"E:\LZ\test\Win32Proj\atlmfc\include" /nologo   /Oy- /D "WIN32" /D "_DEBUG" /D "_LIB" /D "_AFXDLL" /D "_UNICODE" /D "UNICODE" 
+/Gm  /RTC1 /GS /fp:precise  /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\MYMFCS90UD.pch" /Fa"Debug\" /Fo"Debug\" /Fd"Debug\vc100.pdb" 
+/Gd /analyze- /errorReport:queue 
+
+/OUT:"E:\LZ\test\Win32Proj\Debug\MYMFCS90UD.lib" /NOLOGO 
+
+
+
+/I"E:\LZ\test\Win32Proj\atlmfc\include" /Zi /W4 /nologo /WX /Zl /GR /Gy /MDd /D_DLL /GF 
+/D_X86_ /D_AFX_MFCS  /D_MT  
+/D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED 
+/D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  
+-D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST
+/Od /Oy- /D "WIN32" /D "_DEBUG" /D "_LIB" /D "_AFXDLL" /D "_UNICODE" /D "UNICODE" /Gm- /EHsc /RTC1 /GS /fp:precise /Zc:wchar_t /Zc:forScope 
+/Yc"StdAfx.h" /Fp"Debug\MYMFCS90UD.pch" /Fa"Debug\" /Fo"Debug\" /Fd"Debug\vc100.pdb" /Gd /analyze- /errorReport:queue 
+
+得出
+
+/I"E:\LZ\test\Win32Proj\atlmfc\include" /Zi /W4 /nologo /WX /Zl /GR /Gy /MDd /D_DLL /GF /D_X86_ /D_AFX_MFCS  /D_MT  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST /Od /Oy- /D "WIN32" /D "_DEBUG" /D "_LIB" /D "_AFXDLL" /D "_UNICODE" /D "UNICODE" /Gm- /EHsc /RTC1 /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\MYMFCS90UD.pch" /Fa"Debug\" /Fo"Debug\" /Fd"Debug\vc100.pdb" /Gd /analyze- /errorReport:queue 
+
+
+/Zl /GR /Gy /MDd /D_DLL /GF /D_X86_ /D_AFX_MFCS  /D_MT  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  -D_AFX_NOFORCE_MANIFEST -D_ATL_NOFORCE_MANIFEST -D_CRT_NOFORCE_MANIFEST 
+ 
+ 
+ 
+规蔽问题后，可编译链接通过，进行原旧对比：
+/D_X86_ /D_DLL /D_MT /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   %(AdditionalOptions)</AdditionalOptions>
+/D_X86_ /D_AFX_MFCS  /D_MT  /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC  /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  
+
+
+/D_X86_ /D_DLL              /D_MT /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC /D_MFC_DLL_BLD /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING   %(AdditionalOptions)</AdditionalOptions>
+/D_X86_ /D_DLL /D_AFX_MFCS  /D_MT /D_DEBUG /D_AFX_CORE_IMPL /D_AFX_OLE_IMPL /D_AFX_DB_IMPL /D_AFX_NET_IMPL /D_AFX_MONOLITHIC                /D_WINDLL /D_AFXDLL /D_UNICODE /D_AFX_DISABLE_DEPRECATED /D_MFC_BLD /D_MFC_USER_BUILD /D_AFX_NOFORCE_MANIFEST /D_ATL_NOFORCE_MANIFEST /D_CRT_NOFORCE_MANIFEST /D_ATL_ENABLE_PTM_WARNING  
+
+
+具体是哪个更改项使得可正确编译链接，目前 未确定！！！
